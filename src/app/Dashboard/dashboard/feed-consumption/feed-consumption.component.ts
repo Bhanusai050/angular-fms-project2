@@ -1,7 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-feed-consumption',
-  template: '<p>Feed Consumption works!</p>'
+  templateUrl: './feed-consumption.component.html',
+  styleUrls: ['./feed-consumption.component.scss']
 })
-export class FeedConsumptionComponent {}
+export class FeedConsumptionComponent  {
+ 
+}

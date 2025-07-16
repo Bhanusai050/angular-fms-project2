@@ -6,7 +6,7 @@ import { CustomersComponent } from './customers/customers.component';
 import { ExpensesComponent } from './expenses/expenses.component';
 import { FeedInventoryComponent } from './feed-inventory/feed-inventory.component';
 import { OrdersComponent } from './orders/orders.component';
-import { ProductionComponent } from '../production/production.component';
+import { ProductionsComponent } from '../production/production.component';
 import { VendorComponent } from '../vendor/vendor.component';
 
 import { AnimalBatchesComponent } from './animal-batches/animal-batches.component';
@@ -22,7 +22,7 @@ const routes: Routes = [
       { path: 'expenses', component: ExpensesComponent, canActivate: [RbacGuard], data: { permission: 'ViewExpenses' } },
       { path: 'feed-inventory', component: FeedInventoryComponent, canActivate: [RbacGuard], data: { permission: 'ViewFeedInventory' } },
       { path: 'orders', component: OrdersComponent, canActivate: [RbacGuard], data: { permission: 'ViewOrders' } },
-      { path: 'production', component: ProductionComponent, canActivate: [RbacGuard], data: { permission: 'ViewProduction' } },
+      { path: 'production', component: ProductionsComponent, canActivate: [RbacGuard], data: { permission: 'ViewProduction' } },
       { path: 'vendor', component: VendorComponent, canActivate: [RbacGuard], data: { permission: 'ViewVendor' } },
       { path: 'animalbatches', component: AnimalBatchesComponent, canActivate: [RbacGuard], data: { permission: 'ViewAnimalBatches' } },
     ]
