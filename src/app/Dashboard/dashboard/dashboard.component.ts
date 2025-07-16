@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../auth.service';
+import { Observable } from 'rxjs';
+import { UserService,User } from '../../user.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,10 +14,9 @@ export class DashboardComponent implements OnInit {
   constructor(private authService: AuthService) {}
 
   ngOnInit() {
-    // Try to get username from localStorage/sessionStorage after login
-    const storedUser = localStorage.getItem('username') || sessionStorage.getItem('username');
-    this.userName = storedUser ? storedUser : 'User';
-  }
+  const stored = localStorage.getItem('username') ?? sessionStorage.getItem('username');
+  this.userName = stored || 'User';
+}
 
   logout() {
     // Clear tokens and username
