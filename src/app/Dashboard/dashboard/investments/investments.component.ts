@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-investments',
-  templateUrl: './investments.component.html'
+  templateUrl: './investments.component.html',
 
 })
 export class InvestmentComponent {

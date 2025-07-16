@@ -23,7 +23,7 @@ import { VendorComponent } from './Dashboard/vendor/vendor.component';
 import { OrdersComponent } from './Dashboard/dashboard/orders/orders.component';
 // TODO: Update the path below to the correct location of ProductionComponent
 // If ProductionComponent exists, uncomment and update the import path below:
-// import { ProductionComponent } from './Dashboard/dashboard/production/production.component';
+//import { ProductionsComponent } from './Dashboard/dashboard/production/production.component';
 import { ExpensesComponent } from './Dashboard/dashboard/expenses/expenses.component';
 
 
