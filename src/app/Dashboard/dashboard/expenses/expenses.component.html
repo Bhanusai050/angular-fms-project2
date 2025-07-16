@@ -5,73 +5,76 @@
     <form [formGroup]="expenseForm" (ngSubmit)="onSubmit()" novalidate>
       <div class="row g-3">
 
+        <!-- Expense ID -->
         <div class="col-md-4">
           <label for="expenseId" class="form-label">Expense ID</label>
           <input type="text" class="form-control" id="expenseId" formControlName="expenseId"
             [ngClass]="{ 'is-invalid': expenseForm.get('expenseId')?.invalid && expenseForm.get('expenseId')?.touched }" />
           <div *ngIf="expenseForm.get('expenseId')?.touched && expenseForm.get('expenseId')?.invalid" class="text-danger">
-            <small>Expense ID is required.</small>
+            <small *ngIf="expenseForm.get('expenseId')?.errors?.['required']">Expense ID is required.</small>
+            <small *ngIf="expenseForm.get('expenseId')?.errors?.['pattern']">Only numbers allowed.</small>
           </div>
         </div>
 
-        <div class="col-md-4">
-          <label for="category" class="form-label">Category</label>
-          <select class="form-select" id="category" formControlName="category"
-            [ngClass]="{ 'is-invalid': expenseForm.get('category')?.invalid && expenseForm.get('category')?.touched }">
-            <option value="">-- Select --</option>
-            <option value="Feed">Feed</option>
-            <option value="Medical">Medical</option>
-            <option value="Maintenance">Maintenance</option>
-            <option value="Salary">Salary</option>
-            <option value="Other">Other</option>
-          </select>
-          <div *ngIf="expenseForm.get('category')?.touched && expenseForm.get('category')?.invalid" class="text-danger">
-            <small>Category is required.</small>
-          </div>
-        </div>
-
-        <div class="col-md-4">
-          <label for="description" class="form-label">Description</label>
-          <input type="text" class="form-control" id="description" formControlName="description"
-            [ngClass]="{ 'is-invalid': expenseForm.get('description')?.invalid && expenseForm.get('description')?.touched }" />
-          <div *ngIf="expenseForm.get('description')?.touched && expenseForm.get('description')?.invalid" class="text-danger">
-            <small>Description is required.</small>
-          </div>
-        </div>
-
-        <div class="col-md-4">
-          <label for="amount" class="form-label">Amount</label>
-          <input type="number" class="form-control" id="amount" formControlName="amount"
-            [ngClass]="{ 'is-invalid': expenseForm.get('amount')?.invalid && expenseForm.get('amount')?.touched }" />
-          <div *ngIf="expenseForm.get('amount')?.touched && expenseForm.get('amount')?.invalid" class="text-danger">
-            <small *ngIf="expenseForm.get('amount')?.errors?.['required']">Amount is required.</small>
-            <small *ngIf="expenseForm.get('amount')?.errors?.['min']">Amount must be greater than 0.</small>
-          </div>
-        </div>
-
+        <!-- Date -->
         <div class="col-md-4">
           <label for="date" class="form-label">Date</label>
-          <input type="date" class="form-control" id="date" formControlName="date"
+          <input type="date" class="form-control" id="date" formControlName="date" [attr.max]="today"
             [ngClass]="{ 'is-invalid': expenseForm.get('date')?.invalid && expenseForm.get('date')?.touched }" />
           <div *ngIf="expenseForm.get('date')?.touched && expenseForm.get('date')?.invalid" class="text-danger">
             <small>Date is required.</small>
           </div>
         </div>
 
+        <!-- Type -->
         <div class="col-md-4">
-          <label for="paymentMode" class="form-label">Payment Mode</label>
-          <select class="form-select" id="paymentMode" formControlName="paymentMode"
-            [ngClass]="{ 'is-invalid': expenseForm.get('paymentMode')?.invalid && expenseForm.get('paymentMode')?.touched }">
+          <label for="type" class="form-label">Type</label>
+          <select class="form-select" id="type" formControlName="type"
+            [ngClass]="{ 'is-invalid': expenseForm.get('type')?.invalid && expenseForm.get('type')?.touched }">
             <option value="">-- Select --</option>
-            <option value="Cash">Cash</option>
-            <option value="UPI">UPI</option>
-            <option value="Bank Transfer">Bank Transfer</option>
+            <option value="Food">Food</option>
+            <option value="Transport">Transport</option>
+            <option value="Maintenance">Maintenance</option>
           </select>
-          <div *ngIf="expenseForm.get('paymentMode')?.touched && expenseForm.get('paymentMode')?.invalid" class="text-danger">
-            <small>Payment mode is required.</small>
+          <div *ngIf="expenseForm.get('type')?.touched && expenseForm.get('type')?.invalid" class="text-danger">
+            <small>Type is required.</small>
           </div>
         </div>
 
+        <!-- Amount -->
+        <div class="col-md-4">
+          <label for="amount" class="form-label">Amount</label>
+          <input type="number" class="form-control" id="amount" formControlName="amount"
+            [ngClass]="{ 'is-invalid': expenseForm.get('amount')?.invalid && expenseForm.get('amount')?.touched }" />
+          <div *ngIf="expenseForm.get('amount')?.touched && expenseForm.get('amount')?.invalid" class="text-danger">
+            <small *ngIf="expenseForm.get('amount')?.errors?.['required']">Amount is required.</small>
+            <small *ngIf="expenseForm.get('amount')?.errors?.['max']">Maximum value is 100.</small>
+          </div>
+        </div>
+
+        <!-- Feed -->
+        <div class="col-md-4">
+          <label for="feed" class="form-label">Feed</label>
+          <input type="text" class="form-control" id="feed" formControlName="feed"
+            [ngClass]="{ 'is-invalid': expenseForm.get('feed')?.invalid && expenseForm.get('feed')?.touched }" />
+          <div *ngIf="expenseForm.get('feed')?.touched && expenseForm.get('feed')?.invalid" class="text-danger">
+            <small *ngIf="expenseForm.get('feed')?.errors?.['required']">Feed value is required.</small>
+            <small *ngIf="expenseForm.get('feed')?.errors?.['pattern']">Only numbers allowed.</small>
+          </div>
+        </div>
+
+        <!-- Animal -->
+        <div class="col-md-4">
+          <label for="animal" class="form-label">Animal</label>
+          <input type="text" class="form-control" id="animal" formControlName="animal"
+            [ngClass]="{ 'is-invalid': expenseForm.get('animal')?.invalid && expenseForm.get('animal')?.touched }" />
+          <div *ngIf="expenseForm.get('animal')?.touched && expenseForm.get('animal')?.invalid" class="text-danger">
+            <small *ngIf="expenseForm.get('animal')?.errors?.['required']">Animal value is required.</small>
+            <small *ngIf="expenseForm.get('animal')?.errors?.['pattern']">Only numbers allowed.</small>
+          </div>
+        </div>
+
+        <!-- Buttons -->
         <div class="col-12 mt-3">
           <button class="btn btn-success" type="submit" [disabled]="expenseForm.invalid">Submit</button>
           <button class="btn btn-danger" type="button" (click)="oncancel()">Cancel</button>
@@ -82,42 +85,40 @@
   </div>
 
   <div *ngIf="!isvisible">
-    <h4>Expenses List</h4>
+    <h4>Expenses </h4>
     <div class="d-flex justify-content-end mb-3">
       <button class="btn btn-success" (click)="onAdd()">Add Expense</button>
     </div>
+    <hr class="my-5" />
 
-    <table class="table table-bordered mt-3">
-      <thead class="table-white">
-        <tr>
-          <th>ID</th>
-          <th>Category</th>
-          <th>Description</th>
-          <th>Amount</th>
+    <!-- Updated Table Design -->
+    <table class="table table-bordered text-center shadow-sm bg-white rounded">
+      <thead style="background-color: #f8f9fa;">
+        <tr class="fw-semibold text-dark">
+          <th>Expense </th>
           <th>Date</th>
-          <th>Payment Mode</th>
-          <th class="text-center">Action</th>
+          <th>Type</th>
+          <th>Amount</th>
+          <th>Feed</th>
+          <th>Animal</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let e of expensesData">
-          <td>{{ e.ExpenseID }}</td>
-          <td>{{ e.Type }}</td>
-          <td>{{ e.description }}</td>
-          <td>{{ e.Amount }}</td>
-          <td>{{ e.Date | date: 'yyyy-MM-dd' }}</td>
-          <td>{{ e.paymentMode }}</td>
+          <td>{{ e.expenseId }}</td>
+          <td>{{ e.date | date: 'yyyy-MM-dd' }}</td>
+          <td>{{ e.type }}</td>
+          <td>{{ e.amount }}</td>
+          <td>{{ e.feed }}</td>
+          <td>{{ e.animal }}</td>
           <td>
-            <button class="btn btn-warning btn-sm me-2" (click)="onEdit(e)">
-              <i class="bi bi-pencil-square"></i> Edit
-            </button>
-            <button class="btn btn-danger btn-sm" type="button" (click)="onDelete(e)">
-              <i class="bi bi-trash"></i> Delete
-            </button>
+            <button class="btn btn-primary btn-sm me-2" (click)="onEdit(e)">Edit</button>
+            <button class="btn btn-danger btn-sm" (click)="onDelete(e)">Delete</button>
           </td>
         </tr>
         <tr *ngIf="expensesData.length === 0">
-          <td colspan="7" class="text-danger text-center">No records found</td>
+          <td colspan="7" class="text-center text-danger fw-bold py-4">No records found</td>
         </tr>
       </tbody>
     </table>
