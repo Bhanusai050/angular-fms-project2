@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './Layout/login/login.component';
@@ -20,9 +21,13 @@ import { FeedInventoryComponent } from './Dashboard/dashboard/feed-inventory/fee
 import { CustomersComponent } from './Dashboard/dashboard/customers/customers.component';
 import { VendorComponent } from './Dashboard/vendor/vendor.component';
 import { OrdersComponent } from './Dashboard/dashboard/orders/orders.component';
-import { ProductionComponent } from './Dashboard/production/production.component';
+// TODO: Update the path below to the correct location of ProductionComponent
+// If ProductionComponent exists, uncomment and update the import path below:
+// import { ProductionComponent } from './Dashboard/dashboard/production/production.component';
 import { ExpensesComponent } from './Dashboard/dashboard/expenses/expenses.component';
-import { investmentsComponent } from './Dashboard/dashboard/investments/investments.component';
+
+
+
 
 
 
@@ -41,7 +46,9 @@ import { investmentsComponent } from './Dashboard/dashboard/investments/investme
     ContactComponent,
     ResetPasswordComponent,
     OnlyNumberDirective,
-  ],
+   
+    ExpensesComponent,
+    ],
   imports: [
     BrowserModule,
     AppRoutingModule,

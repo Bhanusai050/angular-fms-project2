@@ -8,7 +8,7 @@ import { CustomersComponent } from './customers/customers.component';
 import { ExpensesComponent } from './expenses/expenses.component';
 import { FeedInventoryComponent } from './feed-inventory/feed-inventory.component';
 import { OrdersComponent } from './orders/orders.component';
-import { ProductionComponent } from '../production/production.component';
+import { ProductionsComponent } from '../production/production.component';
 import { VendorComponent } from '../vendor/vendor.component';
 import { AuthService } from '../../auth.service';
 import { RbacGuard } from '../../rbac.guard';
@@ -23,7 +23,7 @@ import { CompanyInfoComponent } from './company-info/company-info.component';
 import { LookupManagementComponent } from './lookup-management/lookup-management.component';
 import { ReportsComponent } from './reports/reports.component';
 import { AdminSettingsComponent } from './admin-settings/admin-settings.component';
-import { investmentsComponent } from './investments/investments.component';
+import { InvestmentComponent } from './investments/investments.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
@@ -34,7 +34,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ExpensesComponent,
     FeedInventoryComponent,
     OrdersComponent,
-    ProductionComponent,
+    ProductionsComponent,
     VendorComponent,
     AnimalBatchesComponent,
     AssetsComponent,
@@ -47,7 +47,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     LookupManagementComponent,
     ReportsComponent,
     AdminSettingsComponent,
-    investmentsComponent
+    InvestmentComponent
     
   ],
   imports: [

@@ -1,4 +1,4 @@
-<section class="min-vh-100 d-flex align-items-center justify-content-center" style="background-color: #a15088;">
+<section class="min-vh-100 d-flex align-items-center justify-content-center" style="background-color: white;">
   <div class="card shadow p-4" style="width: 400px;">
     <h4 class="text-center mb-3">Create Account</h4>
     <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
@@ -41,49 +41,62 @@
       </div>
 
       <!-- Password Field -->
-      <div class="mb-3">
-        <label class="form-label">Password <span class="text-danger">*</span></label>
-        <div class="input-group">
-          <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
-          <input
-            type="password"
-            formControlName="password"
-            class="form-control"
-            placeholder="Password"
-            required
-            [ngClass]="{'is-invalid': f['password'].touched && f['password'].invalid}" />
-        </div>
-        <div class="text-danger small mt-1" *ngIf="f['password'].touched && f['password'].invalid">
-          <div *ngIf="f['password'].errors?.['required']">Password is required.</div>
-          <div *ngIf="f['password'].errors?.['minlength']">Use at least 12 characters.</div>
-          <div *ngIf="f['password'].errors?.['pattern']">
-            Must include uppercase, lowercase, number & symbol.
-          </div>
-        </div>
-      </div>
+     <div class="mb-3">
+  <label class="form-label">Password <span class="text-danger">*</span></label>
+  <div class="input-group">
+    <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
 
+    <input
+      [type]="showPassword ? 'text' : 'password'"
+      formControlName="password"
+      class="form-control"
+      placeholder="Password"
+      required
+      [ngClass]="{'is-invalid': f['password'].touched && f['password'].invalid}" />
+
+    <span class="input-group-text" (click)="showPassword = !showPassword" style="cursor: pointer;">
+      <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash-fill' : 'bi-eye-fill'"></i>
+    </span>
+  </div>
+
+  <div class="text-danger small mt-1" *ngIf="f['password'].touched && f['password'].invalid">
+    <div *ngIf="f['password'].errors?.['required']">Password is required.</div>
+    <div *ngIf="f['password'].errors?.['minlength']">Use at least 12 characters.</div>
+    <div *ngIf="f['password'].errors?.['pattern']">
+      Must include uppercase, lowercase, number & symbol.
+    </div>
+  </div>
+</div>
       <!-- Confirm Password Field -->
-      <div class="mb-3">
-        <label class="form-label">Confirm Password <span class="text-danger">*</span></label>
-        <div class="input-group">
-          <span class="input-group-text"><i class="bi bi-shield-lock-fill"></i></span>
-          <input
-            type="password"
-            formControlName="confirmPassword"
-            class="form-control"
-            placeholder="Confirm Password"
-            [ngClass]="{
-              'is-invalid': (signupForm.errors?.['mismatch'] && f['confirmPassword'].touched)
-                || (f['confirmPassword'].invalid && f['confirmPassword'].touched)
-            }" />
-        </div>
-        <div class="text-danger small mt-1" *ngIf="f['confirmPassword'].touched && f['confirmPassword'].invalid">
-          <div *ngIf="f['confirmPassword'].errors?.['required']">Confirm Password is required.</div>
-        </div>
-        <div class="text-danger small mt-1" *ngIf="signupForm.errors?.['mismatch'] && f['confirmPassword'].touched">
-          Passwords do not match.
-        </div>
-      </div>
+     <div class="mb-3">
+  <label class="form-label">Confirm Password <span class="text-danger">*</span></label>
+  <div class="input-group">
+    <span class="input-group-text"><i class="bi bi-shield-lock-fill"></i></span>
+
+    <input
+      [type]="showConfirmPassword ? 'text' : 'password'"
+      formControlName="confirmPassword"
+      class="form-control"
+      placeholder="Confirm Password"
+      [ngClass]="{
+        'is-invalid': (signupForm.errors?.['mismatch'] && f['confirmPassword'].touched)
+          || (f['confirmPassword'].invalid && f['confirmPassword'].touched)
+      }" />
+
+    <!-- Eye Icon on Right -->
+    <span class="input-group-text" (click)="showConfirmPassword = !showConfirmPassword" style="cursor: pointer;">
+      <i class="bi" [ngClass]="showConfirmPassword ? 'bi-eye-slash-fill' : 'bi-eye-fill'"></i>
+    </span>
+  </div>
+
+  <div class="text-danger small mt-1" *ngIf="f['confirmPassword'].touched && f['confirmPassword'].invalid">
+    <div *ngIf="f['confirmPassword'].errors?.['required']">Confirm Password is required.</div>
+  </div>
+
+  <div class="text-danger small mt-1" *ngIf="signupForm.errors?.['mismatch'] && f['confirmPassword'].touched">
+    Passwords do not match.
+  </div>
+</div>
 
       <!-- Success Message -->
       <div *ngIf="successMessage" class="alert alert-success text-center">
@@ -99,7 +112,7 @@
       <button
         type="submit"
         class="btn w-100 text-white"
-        style="background-color: #a15088;"
+        style="background-color: green;"
         [disabled]="signupForm.invalid">
         Sign Up
       </button>

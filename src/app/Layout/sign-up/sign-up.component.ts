@@ -24,6 +24,10 @@ export class SignUpComponent {
    signupForm: FormGroup;
   successMessage = '';
   errorMessage = '';
+  showPassword: boolean = false;
+  showConfirmPassword: boolean = false;
+
+
 
   constructor(
     private fb: FormBuilder,

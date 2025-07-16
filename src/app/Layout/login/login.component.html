@@ -1,4 +1,4 @@
-<section id="login" class="min-vh-100 d-flex align-items-center justify-content-center" style="background-color: #a15088;">
+<section id="login" class="min-vh-100 d-flex align-items-center justify-content-center" style="background-color: white;">
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-md-6 col-lg-4">
@@ -21,18 +21,20 @@
 
               <!-- Password -->
               <div class="mb-3">
-                <div class="input-group">
-                  <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
-                  <input type="password" formControlName="password" class="form-control" placeholder="Password" />
-                </div>
-                <div class="text-danger" *ngIf="f['password'].touched && f['password.errors']">
-                 <small *ngIf="f['password']?.errors?.['required']">Password is required.</small>
-                 <small *ngIf="f['password']?.errors?.['minlength']">Use at least 12 characters.</small>
-                 <small *ngIf="f['password']?.errors?.['pattern']">
-                    Must include uppercase, lowercase, number & symbol
-                  </small>
-                </div>
-              </div>
+  <div class="input-group">
+    <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+    <input [type]="showPassword ? 'text' : 'password'" formControlName="password" class="form-control" placeholder="Password" />
+    <span class="input-group-text" (click)="showPassword = !showPassword" style="cursor: pointer;">
+      <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash-fill' : 'bi-eye-fill'"></i>
+    </span>
+  </div>
+
+  <div class="text-danger" *ngIf="f['password'].touched && f['password'].errors">
+    <small *ngIf="f['password']?.errors?.['required']">Password is required.</small>
+    <small *ngIf="f['password']?.errors?.['minlength']">Use at least 12 characters.</small>
+    <small *ngIf="f['password']?.errors?.['pattern']">Must include uppercase, lowercase, number & symbol</small>
+  </div>
+</div>
 
               <!-- Remember Me -->
               <div class="mb-3 form-check">
@@ -41,8 +43,8 @@
               </div>
 
               <!-- Submit Button -->
-              <button type="submit" class="btn btn-orange w-100" [disabled]="loginForm.invalid">
-                Login
+              <button type="submit" class="btn w-100 text-white" style="background-color: green;" [disabled]="loginForm.invalid">
+                 Login
               </button>
 
               <!-- Messages -->
