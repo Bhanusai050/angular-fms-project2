@@ -1,140 +1,126 @@
 <div class="container mt-4">
   <div *ngIf="isvisible">
     <h3 class="mb-4">Add Order</h3>
-
+ 
     <form [formGroup]="orderForm" (ngSubmit)="onSubmit()" novalidate>
       <div class="row g-3">
-
+ 
         <div class="col-md-4">
-  <label for="OrderID" class="form-label">Order</label>
-  <input type="text" class="form-control" id="OrderID" formControlName="OrderID"
-         [ngClass]="{ 'is-invalid': orderForm.get('OrderID')?.invalid && orderForm.get('OrderID')?.touched }" />
-  <div *ngIf="orderForm.get('OrderID')?.touched && orderForm.get('OrderID')?.invalid" class="text-danger">
-    <small>Order is required.</small>
-  </div>
-</div>
-
-
+          <label for="order" class="form-label">Order ID</label>
+          <input type="text" class="form-control" id="order" formControlName="order"
+            [ngClass]="{ 'is-invalid': orderForm.get('order')?.invalid && orderForm.get('order')?.touched }" />
+          <div *ngIf="orderForm.get('order')?.touched && orderForm.get('order')?.invalid" class="text-danger">
+            <small *ngIf="orderForm.get('order')?.errors?.['required']">Order ID is required.</small>
+            <small *ngIf="orderForm.get('order')?.errors?.['pattern']">Only integers allowed.</small>
+          </div>
+        </div>
+ 
         <div class="col-md-4">
-  <label for="CustomerID" class="form-label">Customer Name</label>
-  <input type="text" class="form-control" id="CustomerID" formControlName="CustomerID"
-         [ngClass]="{ 'is-invalid': orderForm.get('CustomerID')?.invalid && orderForm.get('CustomerID')?.touched }" />
-  <div *ngIf="orderForm.get('CustomerID')?.touched && orderForm.get('CustomerID')?.invalid" class="text-danger">
-    <small>Customer name is required.</small>
-  </div>
-</div>
-
-
+          <label for="customer" class="form-label">Customer</label>
+          <input type="text" class="form-control" id="customer" formControlName="customer"
+            [ngClass]="{ 'is-invalid': orderForm.get('customer')?.invalid && orderForm.get('customer')?.touched }" />
+          <div *ngIf="orderForm.get('customer')?.touched && orderForm.get('customer')?.invalid" class="text-danger">
+            <small *ngIf="orderForm.get('customer')?.errors?.['required']">Customer is required.</small>
+            <small *ngIf="orderForm.get('customer')?.errors?.['pattern']">Only integers allowed.</small>
+          </div>
+        </div>
+ 
         <div class="col-md-4">
-  <label for="orderDate" class="form-label">Order Date</label>
-  <input type="date" class="form-control" id="orderDate" formControlName="orderDate"
-         [ngClass]="{ 'is-invalid': orderForm.get('orderDate')?.invalid && orderForm.get('orderDate')?.touched }" />
-  <div *ngIf="orderForm.get('orderDate')?.touched && orderForm.get('orderDate')?.invalid" class="text-danger">
-    <small>Order date is required.</small>
-  </div>
-</div>
-
-
+          <label for="orderDate" class="form-label">Order Date</label>
+          <input type="date" class="form-control" id="orderDate" formControlName="orderDate" [max]="today"
+            [ngClass]="{ 'is-invalid': orderForm.get('orderDate')?.invalid && orderForm.get('orderDate')?.touched }" />
+          <div *ngIf="orderForm.get('orderDate')?.touched && orderForm.get('orderDate')?.invalid" class="text-danger">
+            <small>Order Date is required.</small>
+          </div>
+        </div>
+ 
         <div class="col-md-4">
-  <label for="paymentStatus" class="form-label">Payment Status</label>
-  <select class="form-select" id="paymentStatus" formControlName="paymentStatus"
-          [ngClass]="{ 'is-invalid': orderForm.get('paymentStatus')?.invalid && orderForm.get('paymentStatus')?.touched }">
-    <option value="">-- Select --</option>
-    <option value="Completed">Completed</option>
-    <option value="Pending">Pending</option>
-    <option value="Failed">Failed</option>
-  </select>
-  <div *ngIf="orderForm.get('paymentStatus')?.touched && orderForm.get('paymentStatus')?.invalid" class="text-danger">
-    <small *ngIf="orderForm.get('paymentStatus')?.errors?.['required']">Payment status is required.</small>
-    <small *ngIf="orderForm.get('paymentStatus')?.errors?.['pattern']">Invalid status.</small>
-  </div>
-</div>
-
-
+          <label for="paymentStatus" class="form-label">Payment Status</label>
+          <select class="form-select" id="paymentStatus" formControlName="paymentStatus"
+            [ngClass]="{ 'is-invalid': orderForm.get('paymentStatus')?.invalid && orderForm.get('paymentStatus')?.touched }">
+            <option value="">-- Select --</option>
+            <option value="Pending">Pending</option>
+            <option value="Completed">Completed</option>
+            <option value="Failed">Failed</option>
+          </select>
+          <div *ngIf="orderForm.get('paymentStatus')?.touched && orderForm.get('paymentStatus')?.invalid" class="text-danger">
+            <small>Payment status is required.</small>
+          </div>
+        </div>
+ 
         <div class="col-md-4">
-  <label for="orderStatus" class="form-label">Order Status</label>
-  <select class="form-select" id="orderStatus" formControlName="orderStatus"
-          [ngClass]="{ 'is-invalid': orderForm.get('orderStatus')?.invalid && orderForm.get('orderStatus')?.touched }">
-    <option value="">-- Select --</option>
-    <option value="Confirmed">Confirmed</option>
-    <option value="Pending">Pending</option>
-    <option value="Cancelled">Cancelled</option>
-  </select>
-  <div *ngIf="orderForm.get('orderStatus')?.touched && orderForm.get('orderStatus')?.invalid" class="text-danger">
-    <small *ngIf="orderForm.get('orderStatus')?.errors?.['required']">Order status is required.</small>
-    <small *ngIf="orderForm.get('orderStatus')?.errors?.['pattern']">Invalid status.</small>
-  </div>
-</div>
-
-
+          <label for="orderStatus" class="form-label">Order Status</label>
+          <select class="form-select" id="orderStatus" formControlName="orderStatus"
+            [ngClass]="{ 'is-invalid': orderForm.get('orderStatus')?.invalid && orderForm.get('orderStatus')?.touched }">
+            <option value="">-- Select --</option>
+            <option value="Confirmed">Confirmed</option>
+            <option value="Pending">Pending</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
+          <div *ngIf="orderForm.get('orderStatus')?.touched && orderForm.get('orderStatus')?.invalid" class="text-danger">
+            <small>Order status is required.</small>
+          </div>
+        </div>
+ 
         <div class="col-md-4">
-  <label for="ProductionID" class="form-label">Production</label>
-  <select class="form-select" id="ProductionID" formControlName="ProductionID"
-          [ngClass]="{ 'is-invalid': orderForm.get('ProductionID')?.invalid && orderForm.get('ProductionID')?.touched }">
-    <option value="">-- Select --</option>
-    <option value="Milk">Milk</option>
-    <option value="Egg">Egg</option>
-    <option value="Meat">Meat</option>
-  </select>
-  <div *ngIf="orderForm.get('ProductionID')?.touched && orderForm.get('ProductionID')?.invalid" class="text-danger">
-    <small>Production is required.</small>
-  </div>
-</div>
-
-
-
+          <label for="production" class="form-label">Production</label>
+          <input type="text" class="form-control" id="production" formControlName="production"
+            [ngClass]="{ 'is-invalid': orderForm.get('production')?.invalid && orderForm.get('production')?.touched }" />
+          <div *ngIf="orderForm.get('production')?.touched && orderForm.get('production')?.invalid" class="text-danger">
+            <small *ngIf="orderForm.get('production')?.errors?.['required']">Production is required.</small>
+            <small *ngIf="orderForm.get('production')?.errors?.['pattern']">Only integers allowed.</small>
+          </div>
+        </div>
+ 
         <div class="col-md-4">
-  <label for="quantity" class="form-label">Quantity</label>
-  <input type="number" class="form-control" id="quantity" formControlName="quantity"
-         [ngClass]="{ 'is-invalid': orderForm.get('quantity')?.invalid && orderForm.get('quantity')?.touched }" />
-  <div *ngIf="orderForm.get('quantity')?.touched && orderForm.get('quantity')?.invalid" class="text-danger">
-    <small *ngIf="orderForm.get('quantity')?.errors?.['required']">Quantity is required.</small>
-    <small *ngIf="orderForm.get('quantity')?.errors?.['min']">Minimum value must be 1.</small>
-  </div>
-</div>
-
-
+          <label for="quantity" class="form-label">Quantity</label>
+          <input type="number" class="form-control" id="quantity" formControlName="quantity"
+            [ngClass]="{ 'is-invalid': orderForm.get('quantity')?.invalid && orderForm.get('quantity')?.touched }" />
+          <div *ngIf="orderForm.get('quantity')?.touched && orderForm.get('quantity')?.invalid" class="text-danger">
+            <small *ngIf="orderForm.get('quantity')?.errors?.['required']">Quantity is required.</small>
+            <small *ngIf="orderForm.get('quantity')?.errors?.['min']">Must be at least 1.</small>
+          </div>
+        </div>
+ 
         <div class="col-md-4">
-  <label for="unitPrice" class="form-label">Unit Price</label>
-  <input type="number" class="form-control" id="unitPrice" formControlName="unitPrice"
-         [ngClass]="{ 'is-invalid': orderForm.get('unitPrice')?.invalid && orderForm.get('unitPrice')?.touched }" />
-  <div *ngIf="orderForm.get('unitPrice')?.touched && orderForm.get('unitPrice')?.invalid" class="text-danger">
-    <small *ngIf="orderForm.get('unitPrice')?.errors?.['required']">Unit Price is required.</small>
-    <small *ngIf="orderForm.get('unitPrice')?.errors?.['min']">Must be a non-negative number.</small>
-  </div>
-</div>
-
-
+          <label for="unitPrice" class="form-label">Unit Price</label>
+          <input type="number" class="form-control" id="unitPrice" formControlName="unitPrice"
+            [ngClass]="{ 'is-invalid': orderForm.get('unitPrice')?.invalid && orderForm.get('unitPrice')?.touched }" />
+          <div *ngIf="orderForm.get('unitPrice')?.touched && orderForm.get('unitPrice')?.invalid" class="text-danger">
+            <small>Unit Price is required and must be at least 1.</small>
+          </div>
+        </div>
+ 
         <div class="col-md-4">
-  <label for="totalAmount" class="form-label">Total Amount</label>
-  <input type="number" class="form-control" id="totalAmount" formControlName="totalAmount"
-         [ngClass]="{ 'is-invalid': orderForm.get('totalAmount')?.invalid && orderForm.get('totalAmount')?.touched }" />
-  <div *ngIf="orderForm.get('totalAmount')?.touched && orderForm.get('totalAmount')?.invalid" class="text-danger">
-    <small *ngIf="orderForm.get('totalAmount')?.errors?.['required']">Total Amount is required.</small>
-    <small *ngIf="orderForm.get('totalAmount')?.errors?.['min']">Must be a non-negative number.</small>
-  </div>
-</div>
-
-
+          <label for="totalAmount" class="form-label">Total Amount</label>
+          <input type="number" class="form-control" id="totalAmount" formControlName="totalAmount"
+            [ngClass]="{ 'is-invalid': orderForm.get('totalAmount')?.invalid && orderForm.get('totalAmount')?.touched }" />
+          <div *ngIf="orderForm.get('totalAmount')?.touched && orderForm.get('totalAmount')?.invalid" class="text-danger">
+            <small>Total Amount is required and must be at least 1.</small>
+          </div>
+        </div>
+ 
         <div class="col-12 mt-3">
-          <button class="btn btn-success" type="submit">Submit</button>
+          <button class="btn btn-success" type="submit" [disabled]="orderForm.invalid">Submit</button>
           <button class="btn btn-danger" type="button" (click)="oncancel()">Cancel</button>
         </div>
+ 
       </div>
     </form>
   </div>
-
+ 
   <div *ngIf="!isvisible">
-    <h4>Orders List</h4>
+    <h4>Orders</h4>
     <div class="d-flex justify-content-end mb-3">
-      <button class="btn btn-success" type="button" (click)="onAdd()">Add Order</button>
+      <button class="btn btn-success" (click)="onAdd()">Add Order</button>
     </div>
-
-    <table class="table table-bordered mt-3">
-      <thead class="table-white">
-        <tr>
+    <hr class="my-5" />
+ 
+    <table class="table table-bordered text-center shadow-sm bg-white rounded">
+      <thead style="background-color: #f8f9fa;">
+        <tr class="fw-semibold text-dark">
           <th>Order</th>
-          <th>Customer Name</th>
+          <th>Customer</th>
           <th>Order Date</th>
           <th>Payment Status</th>
           <th>Order Status</th>
@@ -142,31 +128,27 @@
           <th>Quantity</th>
           <th>Unit Price</th>
           <th>Total Amount</th>
-          <th class="text-center">Action</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let order of ordersData">
-          <td>{{ order.OrderID }}</td>
-          <td>{{ order.CustomerID }}</td>
+        <tr *ngFor="let order of orderData">
+          <td>{{ order.order }}</td>
+          <td>{{ order.customer }}</td>
           <td>{{ order.orderDate | date: 'yyyy-MM-dd' }}</td>
           <td>{{ order.paymentStatus }}</td>
           <td>{{ order.orderStatus }}</td>
-          <td>{{ order.ProductionID }}</td>
+          <td>{{ order.production }}</td>
           <td>{{ order.quantity }}</td>
           <td>{{ order.unitPrice }}</td>
           <td>{{ order.totalAmount }}</td>
           <td>
-            <button class="btn btn-warning btn-sm me-2" (click)="onEdit(order)">
-              <i class="bi bi-pencil-square"></i> Edit
-            </button>
-            <button class="btn btn-danger btn-sm" type="button" (click)="onDelete(order)">
-              <i class="bi bi-trash"></i> Delete
-            </button>
+            <button class="btn btn-primary btn-sm me-2" (click)="onEdit(order)">Edit</button>
+            <button class="btn btn-danger btn-sm" (click)="onDelete(order)">Delete</button>
           </td>
         </tr>
-        <tr *ngIf="ordersData.length === 0">
-          <td colspan="10" class="text-danger text-center">No records found</td>
+        <tr *ngIf="orderData.length === 0">
+          <td colspan="10" class="text-center text-danger fw-bold py-4">No records found</td>
         </tr>
       </tbody>
     </table>

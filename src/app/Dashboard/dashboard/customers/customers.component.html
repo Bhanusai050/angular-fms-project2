@@ -1,109 +1,109 @@
 <div class="container mt-4">
   <div *ngIf="isvisible">
-    <h3 class="mb-4">
-      <span *ngIf="isEditing">Edit</span>
-      <span *ngIf="!isEditing">Add</span> Customer
-    </h3>
-
+    <h3 class="mb-4">Add Customer</h3>
+ 
     <form [formGroup]="customerForm" (ngSubmit)="onSubmit()" novalidate>
       <div class="row g-3">
-
+ 
         <div class="col-md-4">
-          <label for="customerId" class="form-label">Customer ID</label>
-          <input type="text" class="form-control" id="customerId" formControlName="customerId"
-            [class.is-invalid]="customerForm.get('customerId')?.touched && customerForm.get('customerId')?.invalid" />
-          <div class="invalid-feedback" *ngIf="customerForm.get('customerId')?.touched && customerForm.get('customerId')?.invalid">
-            Customer ID is required.
+          <label for="customer" class="form-label">Customer ID</label>
+          <input type="text" class="form-control" id="customer" formControlName="customer"
+            [ngClass]="{ 'is-invalid': customerForm.get('customer')?.invalid && customerForm.get('customer')?.touched }" />
+          <div *ngIf="customerForm.get('customer')?.touched && customerForm.get('customer')?.invalid" class="text-danger">
+            <small *ngIf="customerForm.get('customer')?.errors?.['required']">Customer ID is required.</small>
+            <small *ngIf="customerForm.get('customer')?.errors?.['pattern']">Only integers allowed.</small>
           </div>
         </div>
-
+ 
         <div class="col-md-4">
-          <label for="FullName" class="form-label">Customer FullName</label>
-          <input type="text" class="form-control" id="FullName" formControlName="FullName"
-            [class.is-invalid]="customerForm.get('FullName')?.touched && customerForm.get('FullName')?.invalid" />
-          <div class="invalid-feedback" *ngIf="customerForm.get('FullName')?.touched && customerForm.get('FullName')?.invalid">
-            Customer FullName is required.
+          <label for="fullName" class="form-label">Full Name</label>
+          <input type="text" class="form-control" id="fullName" formControlName="fullName"
+            [ngClass]="{ 'is-invalid': customerForm.get('fullName')?.invalid && customerForm.get('fullName')?.touched }" />
+          <div *ngIf="customerForm.get('fullName')?.touched && customerForm.get('fullName')?.invalid" class="text-danger">
+            <small *ngIf="customerForm.get('fullName')?.errors?.['required']">Full Name is required.</small>
+            <small *ngIf="customerForm.get('fullName')?.errors?.['maxlength']">Max 100 characters allowed.</small>
           </div>
         </div>
-
+ 
         <div class="col-md-4">
-          <label for="PhoneNumber" class="form-label">Phone Number</label>
-          <input type="text" class="form-control" id="PhoneNumber" formControlName="PhoneNumber"
-            [class.is-invalid]="customerForm.get('PhoneNumber')?.touched && customerForm.get('PhoneNumber')?.invalid" />
-          <div class="invalid-feedback" *ngIf="customerForm.get('PhoneNumber')?.touched && customerForm.get('PhoneNumber')?.invalid">
-            <span *ngIf="customerForm.get('PhoneNumber')?.errors?.['required']">Phone is required.</span>
-            <span *ngIf="customerForm.get('PhoneNumber')?.errors?.['pattern']">Enter a valid 10-digit phone number.</span>
+          <label for="phone" class="form-label">Phone Number</label>
+          <input type="text" class="form-control" id="phone" formControlName="phone"
+            [ngClass]="{ 'is-invalid': customerForm.get('phone')?.invalid && customerForm.get('phone')?.touched }" />
+          <div *ngIf="customerForm.get('phone')?.touched && customerForm.get('phone')?.invalid" class="text-danger">
+            <small *ngIf="customerForm.get('phone')?.errors?.['required']">Phone number is required.</small>
+            <small *ngIf="customerForm.get('phone')?.errors?.['pattern']">Enter a valid international phone number (e.g., +91XXXXXXXXXX).</small>
           </div>
         </div>
-
+ 
         <div class="col-md-4">
           <label for="email" class="form-label">Email</label>
           <input type="email" class="form-control" id="email" formControlName="email"
-            [class.is-invalid]="customerForm.get('email')?.touched && customerForm.get('email')?.invalid" />
-          <div class="invalid-feedback" *ngIf="customerForm.get('email')?.touched && customerForm.get('email')?.invalid">
-            <span *ngIf="customerForm.get('email')?.errors?.['required']">Email is required.</span>
-            <span *ngIf="customerForm.get('email')?.errors?.['email']">Invalid email format.</span>
+            [ngClass]="{ 'is-invalid': customerForm.get('email')?.invalid && customerForm.get('email')?.touched }" />
+          <div *ngIf="customerForm.get('email')?.touched && customerForm.get('email')?.invalid" class="text-danger">
+            <small>Email is required and must be valid.</small>
           </div>
         </div>
-
-        <div class="col-md-8">
+ 
+        <div class="col-md-4">
           <label for="address" class="form-label">Address</label>
-          <textarea class="form-control" id="address" rows="2" formControlName="address"
-            [class.is-invalid]="customerForm.get('address')?.touched && customerForm.get('address')?.invalid"></textarea>
-          <div class="invalid-feedback" *ngIf="customerForm.get('address')?.touched && customerForm.get('address')?.invalid">
-            Address is required.
+          <input type="text" class="form-control" id="address" formControlName="address"
+            [ngClass]="{ 'is-invalid': customerForm.get('address')?.invalid && customerForm.get('address')?.touched }" />
+          <div *ngIf="customerForm.get('address')?.touched && customerForm.get('address')?.invalid" class="text-danger">
+            <small>Address is required.</small>
           </div>
         </div>
-
-        <div class="col-12 mt-3">
-          <button class="btn btn-success m-2" type="submit">
-            <i class="bi bi-check-circle"></i> Submit
-          </button>
-          <button class="btn btn-outline-secondary" type="button" (click)="oncancel()">
-            <i class="bi bi-x-circle"></i> Cancel
-          </button>
+ 
+        <div class="col-md-4">
+          <label for="createdAt" class="form-label">Created At</label>
+          <input type="date" class="form-control" id="createdAt" formControlName="createdAt" [max]="today"
+            [ngClass]="{ 'is-invalid': customerForm.get('createdAt')?.invalid && customerForm.get('createdAt')?.touched }" />
+          <div *ngIf="customerForm.get('createdAt')?.touched && customerForm.get('createdAt')?.invalid" class="text-danger">
+            <small>Valid date is required (today or past only).</small>
+          </div>
         </div>
-
+ 
+        <div class="col-12 mt-3">
+          <button class="btn btn-success" type="submit" [disabled]="customerForm.invalid">Submit</button>
+          <button class="btn btn-danger" type="button" (click)="oncancel()">Cancel</button>
+        </div>
       </div>
     </form>
   </div>
-
+ 
   <div *ngIf="!isvisible">
-    <h4>Customers List</h4>
+    <h4>Customers</h4>
     <div class="d-flex justify-content-end mb-3">
-      <button class="btn btn-primary" type="button" (click)="onAdd()">
-        <i class="bi bi-plus-circle"></i> Add Customer
-      </button>
+      <button class="btn btn-success" (click)="onAdd()">Add Customer</button>
     </div>
-    <table class="table table-bordered mt-3">
-      <thead class="table-white">
-        <tr>
-          <th>Customer ID</th>
-          <th>FullName</th>
-          <th>PhoneNumber</th>
+    <hr class="my-5" />
+ 
+    <table class="table table-bordered text-center shadow-sm bg-white rounded">
+      <thead style="background-color: #f8f9fa;">
+        <tr class="fw-semibold text-dark">
+          <th>Customer</th>
+          <th>Full Name</th>
+          <th>Phone Number</th>
           <th>Email</th>
           <th>Address</th>
-          <th class="text-center">Action</th>
+          <th>Created At</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let c of customerData">
-          <td>{{ c.customerId }}</td>
-          <td>{{ c.FullName }}</td>
-          <td>{{ c.PhoneNumber }}</td>
+          <td>{{ c.customer }}</td>
+          <td>{{ c.fullName }}</td>
+          <td>{{ c.phone }}</td>
           <td>{{ c.email }}</td>
           <td>{{ c.address }}</td>
+          <td>{{ c.createdAt | date: 'yyyy-MM-dd' }}</td>
           <td>
-            <button class="btn btn-warning btn-sm me-2" (click)="onEdit(c)">
-              <i class="bi bi-pencil-square"></i> Edit
-            </button>
-            <button class="btn btn-danger btn-sm" (click)="onDelete(c)">
-              <i class="bi bi-trash"></i> Delete
-            </button>
+            <button class="btn btn-primary btn-sm me-2" (click)="onEdit(c)">Edit</button>
+            <button class="btn btn-danger btn-sm" (click)="onDelete(c)">Delete</button>
           </td>
         </tr>
         <tr *ngIf="customerData.length === 0">
-          <td colspan="6" class="text-danger text-center">No records found</td>
+          <td colspan="7" class="text-center text-danger fw-bold py-4">No records found</td>
         </tr>
       </tbody>
     </table>
