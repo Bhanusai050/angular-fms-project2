@@ -8,18 +8,24 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   templateUrl: './investments.component.html'
 
 })
-export class investmentsComponent {
+export class InvestmentComponent {
   isvisible = false;
   investmentForm: FormGroup;
   investmentsData: any[] = [];
 
+   today: string = new Date().toISOString().split('T')[0];
+
   constructor(private fb: FormBuilder) {
     this.investmentForm = this.fb.group({
-  investmentId: ['', Validators.required],
-  date: ['', Validators.required],
-  capitalAmount: ['', [Validators.required, Validators.min(1)]],
-  description: ['', [Validators.required, Validators.maxLength(200)]]
+  investmentId: ['', [Validators.required, Validators.pattern(/^\d+$/)]], // Integers only
+  date: ['', [Validators.required]], // Validated in template using [max] attribute
+  capitalAmount: ['', [Validators.required, Validators.min(1)]], // Min value 1
+  description: ['', [Validators.required, Validators.maxLength(200)]] // Max 200 characters
 });
+
+ 
+
+ 
 
   }
   onEdit(investment: any): void {
@@ -27,12 +33,13 @@ export class investmentsComponent {
   this.isvisible = true;
 }
 
-  onDelete(investment: any): void {
-  if (confirm(`Are you sure you want to delete Investment ID: ${investment.investmentId}?`)) {
-    this.investmentsData = this.investmentsData.filter(inv => inv !== investment);
+   onDelete(investments: any): void {
+    const confirmDelete = confirm('Are you sure you want to delete this investment item?');
+    if (confirmDelete) {
+      this.investmentsData = this.investmentsData.filter(f => f !== investments);
+      alert('Deleted successfully!');
+    }
   }
-}
-
   onAdd() {
     this.isvisible = true;
     this.investmentForm.reset();
@@ -42,10 +49,11 @@ export class investmentsComponent {
     this.isvisible = false;
   }
 
-  onSubmit() {
+  onSubmit(): void {
     if (this.investmentForm.valid) {
       this.investmentsData.push(this.investmentForm.value);
       this.investmentForm.reset();
+      alert('Submitted successfully!');
       this.isvisible = false;
     }
   }

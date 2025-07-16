@@ -1,68 +1,71 @@
 <div class="container mt-4">
   <div *ngIf="isvisible">
     <h3 class="mb-4">Add Investment</h3>
+    
+
 
     <form [formGroup]="investmentForm" (ngSubmit)="onSubmit()" novalidate>
       <div class="row g-3">
-
-       <div class="col-md-4">
-  <label for="investmentId" class="form-label">Investment ID</label>
-  <input type="text" class="form-control" id="investmentId" formControlName="investmentId"
-         [ngClass]="{ 'is-invalid': investmentForm.get('investmentId')?.invalid && investmentForm.get('investmentId')?.touched }" />
-  <div *ngIf="investmentForm.get('investmentId')?.touched && investmentForm.get('investmentId')?.invalid" class="text-danger">
-    <small>Investment ID is required.</small>
-  </div>
-</div>
-
         <div class="col-md-4">
-  <label for="date" class="form-label">Date</label>
-  <input type="date" class="form-control" id="date" formControlName="date"
-         [ngClass]="{ 'is-invalid': investmentForm.get('date')?.invalid && investmentForm.get('date')?.touched }" />
-  <div *ngIf="investmentForm.get('date')?.touched && investmentForm.get('date')?.invalid" class="text-danger">
-    <small>Date is required.</small>
-  </div>
-</div>
-
-        <div class="col-md-4">
-  <label for="capitalAmount" class="form-label">Capital Amount</label>
-  <input type="number" class="form-control" id="capitalAmount" formControlName="capitalAmount"
-         [ngClass]="{ 'is-invalid': investmentForm.get('capitalAmount')?.invalid && investmentForm.get('capitalAmount')?.touched }" />
-  <div *ngIf="investmentForm.get('capitalAmount')?.touched && investmentForm.get('capitalAmount')?.invalid" class="text-danger">
-    <small *ngIf="investmentForm.get('capitalAmount')?.errors?.['required']">Capital amount is required.</small>
-    <small *ngIf="investmentForm.get('capitalAmount')?.errors?.['min']">Amount must be at least 1.</small>
-  </div>
-</div>
-
-
-        <div class="col-md-8">
-  <label for="description" class="form-label">Description</label>
-  <input type="text" class="form-control" id="description" formControlName="description"
-         [ngClass]="{ 'is-invalid': investmentForm.get('description')?.invalid && investmentForm.get('description')?.touched }" />
-  <div *ngIf="investmentForm.get('description')?.touched && investmentForm.get('description')?.invalid" class="text-danger">
-    <small *ngIf="investmentForm.get('description')?.errors?.['required']">Description is required.</small>
-    <small *ngIf="investmentForm.get('description')?.errors?.['maxLength']">Max 200 characters allowed.</small>
-  </div>
-</div>
-
-
-        <div class="col-12 mt-3">
-          <button class="btn btn-success" type="submit">Submit</button>
-          <button class="btn btn-danger" type="button" (click)="oncancel()">Cancel</button>
+          <label for="investmentId" class="form-label">Investment ID</label>
+          <input type="text" class="form-control" id="investmentId" formControlName="investmentId"
+            [ngClass]="{ 'is-invalid': investmentForm.get('investmentId')?.invalid && investmentForm.get('investmentId')?.touched }" />
+          <div *ngIf="investmentForm.get('investmentId')?.touched && investmentForm.get('investmentId')?.invalid"
+            class="text-danger">
+            <small *ngIf="investmentForm.get('investmentId')?.errors?.['required']">Investment ID is required.</small>
+            <small *ngIf="investmentForm.get('investmentId')?.errors?.['pattern']">Only integers allowed.</small>
+          </div>
         </div>
 
+        <div class="col-md-4">
+          <label for="date" class="form-label">Date</label>
+          <input type="date" class="form-control" id="date" formControlName="date" [max]="today"
+            [ngClass]="{ 'is-invalid': investmentForm.get('date')?.invalid && investmentForm.get('date')?.touched }" />
+          <div *ngIf="investmentForm.get('date')?.touched && investmentForm.get('date')?.invalid" class="text-danger">
+            <small>Date is required.</small>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <label for="capitalAmount" class="form-label">Capital Amount</label>
+          <input type="number" class="form-control" id="capitalAmount" formControlName="capitalAmount"
+            [ngClass]="{ 'is-invalid': investmentForm.get('capitalAmount')?.invalid && investmentForm.get('capitalAmount')?.touched }" />
+          <div *ngIf="investmentForm.get('capitalAmount')?.touched && investmentForm.get('capitalAmount')?.invalid"
+            class="text-danger">
+            <small *ngIf="investmentForm.get('capitalAmount')?.errors?.['required']">Capital amount is required.</small>
+            <small *ngIf="investmentForm.get('capitalAmount')?.errors?.['min']">Amount must be at least 1.</small>
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <label for="description" class="form-label">Description</label>
+          <input type="text" class="form-control" id="description" formControlName="description"
+            [ngClass]="{ 'is-invalid': investmentForm.get('description')?.invalid && investmentForm.get('description')?.touched }" />
+          <div *ngIf="investmentForm.get('description')?.touched && investmentForm.get('description')?.invalid"
+            class="text-danger">
+            <small *ngIf="investmentForm.get('description')?.errors?.['required']">Description is required.</small>
+            <small *ngIf="investmentForm.get('description')?.errors?.['maxlength']">Max 200 characters allowed.</small>
+          </div>
+        </div>
+
+        <div class="col-12 mt-3">
+          <button class="btn btn-success" type="submit" [disabled]="investmentForm.invalid">Submit</button>
+          <button class="btn btn-danger" type="button" (click)="oncancel()">Cancel</button>
+        </div>
       </div>
     </form>
   </div>
 
   <div *ngIf="!isvisible">
-    <h4>Investments List</h4>
+    <h4>Investments</h4>
     <div class="d-flex justify-content-end mb-3">
-      <button class="btn btn-success" type="button" (click)="onAdd()">Add Investment</button>
+      <button class="btn btn-success" (click)="onAdd()">Add Investment</button>
     </div>
     <hr class="my-5" />
 
-    <table class="table table-bordered table-striped mt-3 text-center">
-      <thead class="table-dark">
+    <table class="table table-bordered text-center shadow-sm bg-white rounded">
+      <thead style="background-color: #f8f9fa;">
+        <tr class="fw-semibold text-dark">
         <tr>
           <th>Investment ID</th>
           <th>Date</th>
@@ -70,24 +73,22 @@
           <th>Description</th>
           <th>Actions</th>
         </tr>
-        </thead>
+      </thead>
       <tbody>
         <tr *ngFor="let investment of investmentsData">
           <td>{{ investment.investmentId }}</td>
-          <td>{{ investment.date  }}</td>
-          <td>{{ investment.capitalAmount  }}</td>
+          <td>{{ investment.date | date: 'yyyy-MM-dd' }}</td>
+          <td>{{ investment.capitalAmount | currency }}</td>
           <td>{{ investment.description }}</td>
-    <td>
-      <button class="btn btn-primary btn-sm me-2" (click)="onEdit(investment)">Edit</button>
-      <button class="btn btn-danger btn-sm" (click)="onDelete(investment)">Delete</button>
-    </td>
+          <td>
+            <button class="btn btn-primary btn-sm me-2" (click)="onEdit(investment)">Edit</button>
+            <button class="btn btn-danger btn-sm" (click)="onDelete(investment)">Delete</button>
+          </td>
         </tr>
         <tr *ngIf="investmentsData.length === 0">
-    <td colspan="6" class="text-center py-4 fw-bold">
-      No Data Found
-    </td>
-  </tr>
-        </tbody>
+          <td colspan="5" class="text-danger py-3 fw-bold">No records found</td>
+        </tr>
+      </tbody>
     </table>
   </div>
 </div>

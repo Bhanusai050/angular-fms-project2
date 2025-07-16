@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   selector: 'app-production',
   templateUrl: './production.component.html'
 })
-export class ProductionComponent implements OnInit {
+export class ProductionsComponent implements OnInit {
   productionForm!: FormGroup;
   isvisible = false;
   productionData: any[] = [];
