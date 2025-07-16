@@ -1,13 +1,14 @@
 <!-- Dashboard Header -->
 <header class="dashboard-header">
   <div class="header-content">
-      <img src="https://static.vecteezy.com/system/resources/previews/040/328/743/non_2x/cattle-animal-farm-livestock-logo-icon-and-template-illustration-vector.jpg"
-     alt="Farm Livestock Logo"
-     height="50"
-     class="d-inline-block align-text-top me-3">
+    <img src="https://static.vecteezy.com/system/resources/previews/040/328/743/non_2x/cattle-animal-farm-livestock-logo-icon-and-template-illustration-vector.jpg"
+         alt="Farm Livestock Logo"
+         height="50"
+         class="d-inline-block align-text-top me-3">
     <span class="dashboard-title">Farm Management System</span>
     <div class="user-info">
-      <span class="user-name">{{userName}}</span>
+      <!-- ✅ This shows the username -->
+      <span class="user-name">Welcome, {{ userName }}!</span>
       <button class="btn btn-primary" (click)="logout()">Logout</button>
     </div>
   </div>
@@ -27,8 +28,9 @@
       <li><a routerLink="/dashboard/investments" routerLinkActive="active">Investments</a></li>
     </ul>
   </nav>
+
   <div class="dashboard-content">
-    <!-- Main content -->
+    <!-- Main content appears here -->
     <router-outlet></router-outlet>
   </div>
 </div>
@@ -37,8 +39,6 @@
 <footer class="dashboard-footer">
   <div class="footer-content">
     <span class="footer-center">&copy; 2025 Farm Management System. All rights reserved.</span>
-    <span class="footer-links">
-      
-    </span>
+    <span class="footer-links"></span>
   </div>
 </footer>
