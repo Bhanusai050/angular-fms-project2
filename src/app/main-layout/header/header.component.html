@@ -1,0 +1,27 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-blue">
+  <div class="container-fluid">
+    <button class="btn btn-outline-light me-2" (click)="toggleSidenav.emit()">
+      ☰
+    </button>
+    <a class="navbar-brand" href="#">Farm_Management_System</a>
+    
+
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" routerLink="/Dashboard">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/employee">Employee</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            👤 John Doe
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+            <li><a class="dropdown-item" href="#" (click)="logout()">Logout</a></li> 
+          </ul>
+        </li>
+      </ul>
+
+    </div>
+  </div>
+</nav>
+

@@ -1,0 +1,92 @@
+<div class="container mt-4">
+  <div *ngIf="isvisible">
+    <h3 class="mb-4">Add Feed Inventory</h3>
+    <form [formGroup]="feedForm" (ngSubmit)="onSubmit()" novalidate>
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label for="feedName" class="form-label">Feed Name</label>
+          <input type="text" class="form-control" id="feedName" formControlName="feedName" placeholder="Enter Feed Name" />
+          <div *ngIf="feedForm.get('feedName')?.touched && feedForm.get('feedName')?.invalid" class="text-danger">
+            <small>Feed Name is required.</small>
+          </div>
+        </div> 
+        <div class="col-md-4">
+          <label for="feedType" class="form-label">Feed Type</label>
+          <select class="form-control" id="feedType" formControlName="feedType">
+            <option *ngFor="let type of feedTypes" [value]="type.IdValueID">{{ type.Name }}</option>
+          </select>
+          <div *ngIf="feedForm.get('feedType')?.touched && feedForm.get('feedType')?.invalid" class="text-danger">
+            <small>Feed Type is required.</small>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label for="quantity" class="form-label">Quantity</label>
+          <input type="number" class="form-control" id="quantity" formControlName="quantity" />
+          <div *ngIf="feedForm.get('quantity')?.touched && feedForm.get('quantity')?.invalid" class="text-danger">
+            <small *ngIf="feedForm.get('quantity')?.errors?.['required']">Quantity is required.</small>
+            <small *ngIf="feedForm.get('quantity')?.errors?.['min']">Minimum value must be 1.</small>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label for="Price" class="form-label">Price</label>
+          <input type="text" class="form-control" id="Price" formControlName="Price" />
+          <div *ngIf="feedForm.get('Price')?.touched && feedForm.get('Price')?.invalid" class="text-danger">
+            <small>Price is required.</small>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label for="expiryDate" class="form-label">Expiry Date</label>
+          <input type="date" class="form-control" id="expiryDate" formControlName="expiryDate" />
+          <div *ngIf="feedForm.get('expiryDate')?.touched && feedForm.get('expiryDate')?.invalid" class="text-danger">
+            <small>Expiry Date is required.</small>
+          </div>
+        </div>
+        <div class="col-12 mt-3">
+          <button class="btn btn-success" type="submit">Submit</button>
+          <button class="btn btn-danger" type="button" (click)="oncancel()">Cancel</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+
+  <div *ngIf="!isvisible">
+    <h4>Feed Inventory List</h4>
+    <div class="d-flex justify-content-end mb-3">
+      <button class="btn btn-primary btn-purple" style="background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%); border: none; color: #fff;" (click)="onAdd()">Add Feed</button>
+    </div>
+
+    <table class="table table-bordered mt-3">
+      <thead class="table-white">
+        <tr>
+          <th>Feed</th>
+          <th>Feed Type</th>
+          <th>Quantity (kg)</th>
+          <th>Price </th>
+          <th>ExpiryDate</th>
+          <th class="text-center">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let feed of feedData">
+          <td>{{ feed.FeedID }}</td>
+          <td>{{ feed.FeedTypeID }}</td>
+          <td>{{ feed.StockQuantity }}</td>
+          <td>{{ feed.Unit }}</td>
+          <td>{{ feed.ExpiryDate | date: 'yyyy-MM-dd' }}</td>
+          <td>
+            <button class="btn btn-warning btn-sm me-2" (click)="onEdit(feed)">
+              <i class="bi bi-pencil-square"></i> Edit
+            </button>
+            <button class="btn btn-danger btn-sm" type="button" (click)="onDelete(feed)">
+              <i class="bi bi-trash"></i> Delete
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="feedData.length === 0">
+          <td colspan="8" class="text-danger text-center">No records found</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

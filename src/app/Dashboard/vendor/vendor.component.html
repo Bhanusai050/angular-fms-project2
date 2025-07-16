@@ -1,0 +1,84 @@
+<div class="container mt-4">
+  <!-- Vendor Form -->
+  <div *ngIf="isVisible">
+    <h3 class="mb-4">
+      <span *ngIf="isEditing">Edit</span>
+      <span *ngIf="!isEditing">Add</span> Vendor
+    </h3>
+    <form [formGroup]="vendorForm" (ngSubmit)="onSubmit()" novalidate>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label">Vendor Name<span class="text-danger">*</span></label>
+          <input type="text" class="form-control" formControlName="vendorName" placeholder="Enter Vendor Name"/>
+          <div *ngIf="vendorForm.get('vendorName')?.touched && vendorForm.get('vendorName')?.invalid" class="text-danger">
+            Vendor Name is required
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Category</label>
+          <input type="text" class="form-control" formControlName="category" placeholder="Enter Category"/>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Email<span class="text-danger">*</span></label>
+          <input type="email" class="form-control" formControlName="email" placeholder="Enter email" />
+          <div *ngIf="vendorForm.get('email')?.touched && vendorForm.get('email')?.invalid" class="text-danger">
+            <span *ngIf="vendorForm.get('email')?.errors?.['required']">Email is required</span>
+            <span *ngIf="vendorForm.get('email')?.errors?.['email']">Invalid email</span>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Phone<span class="text-danger">*</span> </label>
+          <input type="text" class="form-control" formControlName="phone" placeholder="Enter Phone Number" maxlength="15" />
+          <div *ngIf="vendorForm.get('phone')?.touched && vendorForm.get('phone')?.invalid" class="text-danger">
+            <span *ngIf="vendorForm.get('phone')?.errors?.['required']">Phone is required</span>
+            <span *ngIf="vendorForm.get('phone')?.errors?.['pattern']">Phone must be digits only</span>
+          </div>
+        </div>
+        <div class="col-12">
+          <label class="form-label">Location</label>
+          <textarea class="form-control" rows="2" formControlName="address" placeholder="Enter Location"></textarea>
+        </div>
+        <div class="col-12 mt-3">
+          <button class="btn btn-primary m-2" type="submit">Submit</button>
+          <button class="btn btn-danger" type="button" (click)="onCancel()">Cancel</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Vendor List -->
+  <div *ngIf="!isVisible" class="mb-3">
+    <h4>Vendor List</h4>
+    <div class="d-flex justify-content-end mb-3">
+      <button class="btn btn-primary" type="button" (click)="onAdd()">Add Vendor</button>
+    </div>
+    <table class="table table-bordered table-hover">
+      <thead class="table-white">
+        <tr>
+          <th>Name</th>
+          <th>Category</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Location</th>
+          <th class="text-center">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let vendor of VendorData; let i = index">
+          <td>{{ vendor.VendorName }}</td>
+          <td>{{ vendor.Category }}</td>
+          <td>{{ vendor.Email }}</td>
+          <td>{{ vendor.PhoneNumber }}</td>
+          <td>{{ vendor.Location }}</td>
+          <td class="text-center">
+            <button class="btn btn-sm btn-primary me-1" (click)="onEdit(vendor, i)">Edit</button>
+            <button class="btn btn-sm btn-danger" (click)="onDelete(i)">Delete</button>
+          </td>
+        </tr>
+        <tr *ngIf="VendorData.length === 0">
+          <td colspan="6" class="text-danger text-center"> No vendor records found</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,67 @@
+<section id="login" class="min-vh-100 d-flex align-items-center justify-content-center" style="background-color: #a15088;">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-4">
+        <div class="card shadow-lg" style="width:100%; max-width:400px;">
+          <div class="card-body p-4">
+            <h4 class="card-title text-center mb-4">Login</h4>
+
+            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+              <!-- Email -->
+              <div class="mb-3">
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+                  <input type="email" formControlName="email" class="form-control" placeholder="Email" />
+                </div>
+                <div class="text-danger" *ngIf="f['email'].touched && f['email'].errors">
+                  <small *ngIf="f['email'].errors['required']">Email is required.</small>
+                  <small *ngIf="f['email'].errors['email']">Enter a valid email address.</small>
+                </div>
+              </div>
+
+              <!-- Password -->
+              <div class="mb-3">
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                  <input type="password" formControlName="password" class="form-control" placeholder="Password" />
+                </div>
+                <div class="text-danger" *ngIf="f['password'].touched && f['password.errors']">
+                 <small *ngIf="f['password']?.errors?.['required']">Password is required.</small>
+                 <small *ngIf="f['password']?.errors?.['minlength']">Use at least 12 characters.</small>
+                 <small *ngIf="f['password']?.errors?.['pattern']">
+                    Must include uppercase, lowercase, number & symbol
+                  </small>
+                </div>
+              </div>
+
+              <!-- Remember Me -->
+              <div class="mb-3 form-check">
+                <input type="checkbox" formControlName="remember" class="form-check-input" id="rememberMe" />
+                <label class="form-check-label" for="rememberMe">Remember me</label>
+              </div>
+
+              <!-- Submit Button -->
+              <button type="submit" class="btn btn-orange w-100" [disabled]="loginForm.invalid">
+                Login
+              </button>
+
+              <!-- Messages -->
+              <div *ngIf="successMessage" class="alert alert-success mt-3">{{ successMessage }}</div>
+              <div *ngIf="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
+
+              <!-- Forgot & Signup Links -->
+              <div class="text-center mt-2">
+                <a routerLink="/forgot">Forgot password?</a>
+              </div>
+              <div class="text-center mt-3">
+                <small>Don't have an account? <a routerLink="/SignUp">Sign Up</a></small>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">

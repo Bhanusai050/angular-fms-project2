@@ -1,0 +1,83 @@
+<div class="container mt-4">
+  <div *ngIf="isvisible">
+    <h3 class="mb-4"><span *ngIf="isEditing">Edit</span> <span *ngIf="!isEditing">Add</span> Animal Batch</h3>
+    <form [formGroup]="batchForm" (ngSubmit)="onSubmit()" novalidate>
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label for="BatchName" class="form-label">Batch Name <span class="text-danger">*</span></label>
+          <input type="text" class="form-control" id="BatchName" formControlName="BatchName"
+            placeholder="Enter Batch Name" [class.is-invalid]="batchForm.get('BatchName')?.touched && batchForm.get('BatchName')?.invalid" />
+          <div class="invalid-feedback" *ngIf="batchForm.get('BatchName')?.touched && batchForm.get('BatchName')?.hasError('required')">
+            Batch Name is required.
+          </div>
+          <div class="invalid-feedback" *ngIf="batchForm.get('BatchName')?.touched && batchForm.get('BatchName')?.hasError('maxlength')">
+            Maximum 50 characters allowed.
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label for="PurchasedDate" class="form-label">Purchased Date <span class="text-danger">*</span></label>
+          <input type="date" class="form-control" id="PurchasedDate" formControlName="PurchasedDate"
+            [class.is-invalid]="batchForm.get('PurchasedDate')?.touched && batchForm.get('PurchasedDate')?.invalid" />
+          <div class="invalid-feedback" *ngIf="batchForm.get('PurchasedDate')?.touched && batchForm.get('PurchasedDate')?.hasError('required')">
+            Purchased Date is required.
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label for="Purpose" class="form-label">Purpose <span class="text-danger">*</span></label>
+          <input type="text" class="form-control" id="Purpose" formControlName="Purpose"
+            placeholder="Enter Purpose" [class.is-invalid]="batchForm.get('Purpose')?.touched && batchForm.get('Purpose')?.invalid" />
+          <div class="invalid-feedback" *ngIf="batchForm.get('Purpose')?.touched && batchForm.get('Purpose')?.hasError('required')">
+            Purpose is required.
+          </div>
+          <div class="invalid-feedback" *ngIf="batchForm.get('Purpose')?.touched && batchForm.get('Purpose')?.hasError('maxlength')">
+            Maximum 50 characters allowed.
+          </div>
+        </div>
+        <div class="col-12 mt-3">
+          <button class="btn btn-success m-2" type="submit">
+            <i class="bi bi-check-circle"></i> Submit
+          </button>
+          <button class="btn btn-outline-secondary" type="button" (click)="onCancel()">
+            <i class="bi bi-x-circle"></i> Cancel
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div *ngIf="!isvisible">
+    <h4>Animal Batches List</h4>
+    <div class="d-flex justify-content-end mb-3">
+      <button class="btn btn-primary" type="button" (click)="onAdd()">
+        <i class="bi bi-plus-circle"></i> Add Batch
+      </button>
+    </div>
+    <table class="table table-bordered mt-3">
+      <thead class="table-white">
+        <tr>
+          <th>Batch Name</th>
+          <th>Purchased Date</th>
+          <th>Purpose</th>
+          <th class="text-center">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let batch of animalBatchesData">
+          <td>{{ batch.BatchName }}</td>
+          <td>{{ batch.PurchasedDate | date: 'dd-MMM-yy' }}</td>
+          <td>{{ batch.Purpose }}</td>
+          <td>
+            <button class="btn btn-warning btn-sm me-2" (click)="onEdit(batch)">
+              <i class="bi bi-pencil-square"></i> Edit
+            </button>
+            <button class="btn btn-danger btn-sm" type="button" (click)="onDelete(batch)">
+              <i class="bi bi-trash"></i> Delete
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="animalBatchesData.length==0">
+          <td colspan="4" class="text-danger text-center">No records found</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

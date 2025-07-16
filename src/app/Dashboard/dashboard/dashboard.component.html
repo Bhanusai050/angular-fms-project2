@@ -1,0 +1,40 @@
+<!-- Dashboard Header -->
+<header class="dashboard-header">
+  <div class="header-content">
+    <span class="dashboard-title">Farm Management System</span>
+    <div class="user-info">
+      <span class="user-name">{{userName}}</span>
+      <button class="btn btn-primary" (click)="logout()">Logout</button>
+    </div>
+  </div>
+</header>
+
+<div class="dashboard-layout">
+  <nav class="sidebar">
+    <ul>
+      <li><a routerLink="/dashboard/animals" routerLinkActive="active">Animals</a></li>
+      <li><a routerLink="/dashboard/animalbatches" routerLinkActive="active">Animal Batches</a></li>
+      <li><a routerLink="/dashboard/vendor" routerLinkActive="active">Vendors</a></li>
+      <li><a routerLink="/dashboard/feed-inventory" routerLinkActive="active">Feed Inventory</a></li>
+      <li><a routerLink="/dashboard/orders" routerLinkActive="active">Orders</a></li>
+      <li><a routerLink="/dashboard/customers" routerLinkActive="active">Customers</a></li>
+      <li><a routerLink="/dashboard/expenses" routerLinkActive="active">Expenses</a></li>
+      <li><a routerLink="/dashboard/production" routerLinkActive="active">Production</a></li>
+      <li><a routerLink="/dashboard/investments" routerLinkActive="active">Investments</a></li>
+    </ul>
+  </nav>
+  <div class="dashboard-content">
+    <!-- Main content -->
+    <router-outlet></router-outlet>
+  </div>
+</div>
+
+<!-- Dashboard Footer -->
+<footer class="dashboard-footer">
+  <div class="footer-content">
+    <span class="footer-center">&copy; 2025 Farm Management System. All rights reserved.</span>
+    <span class="footer-links">
+      
+    </span>
+  </div>
+</footer>

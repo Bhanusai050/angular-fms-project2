@@ -1,0 +1,21 @@
+.container {
+  padding: 20px;
+}
+
+h2 {
+  font-weight: bold;
+}
+
+.table th, .table td {
+  vertical-align: middle;
+}
+
+input.form-control,
+select.form-control {
+  height: 35px;
+  font-size: 14px;
+}
+
+button.btn {
+  min-width: 70px;
+}

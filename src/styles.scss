@@ -1,0 +1,138 @@
+/* You can add global styles to this file, and also import other style files */
+.full-bg {
+  background-color: #8e44ad; /* Bootstrap success green */
+  color: white;
+  min-height: 100vh; /* full height */
+  display: flex;
+  align-items: center;
+}
+//* 1. Root-level orange variables */
+:root {
+  --bs-orange: #a15088;
+  --bs-orange-hover: #a15088;
+}
+
+/* 2. Sections with class `.orange-bg` become full-orange background */
+.orange-bg {
+  background-color: var(--bs-orange) !important;
+  color: white !important;
+}
+
+/* 3. Orange buttons: apply to all btn, or only specific types */
+.btn-orange,
+.btn-orange:hover,
+.btn-orange:focus,
+.btn-orange:active {
+  background-color: var(--bs-orange) !important;
+  border-color: var(--bs-orange) !important;
+  color: white !important;
+}
+
+.btn-orange:hover,
+.btn-orange:focus {
+  background-color: var(--bs-orange-hover) !important;
+  border-color: var(--bs-orange-hover) !important;
+}
+
+/* If you use .btn-primary and want it orange: */
+.btn-primary {
+  background-color: var(--bs-orange) !important;
+  border-color: var(--bs-orange) !important;
+}
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: var(--bs-orange-hover) !important;
+  border-color: var(--bs-orange-hover) !important;
+}
+
+/* 4. Optional: make navbars orange */
+.navbar {
+  background-color: var(--bs-orange) !important;
+}
+
+/* 5. Ensure text contrast on orange backgrounds */
+.text-on-orange {
+  color: white !important;
+}
+:root {
+  --bs-orange: #a15088;
+  --bs-orange-hover: #a15088;
+}
+
+/* Orange backgrounds */
+.orange-bg {
+  background-color: var(--bs-orange) !important;
+  color: white !important;
+}
+
+/* Orange buttons */
+.btn-orange,
+.btn-orange:hover,
+.btn-orange:focus,
+.btn-orange:active,
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+  background-color: var(--bs-orange) !important;
+  border-color: var(--bs-orange) !important;
+  color: white !important;
+}
+.btn-orange:hover,
+.btn-orange:focus,
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: var(--bs-orange-hover) !important;
+  border-color: var(--bs-orange-hover) !important;
+}
+
+/* Orange navbars */
+.navbar {
+  background-color: var(--bs-orange) !important;
+}
+
+:root {
+  --bs-orange: #8e44ad;
+  --bs-orange-hover: #8e44ad;
+}
+
+/* Orange backgrounds */
+.orange-bg {
+  background-color: var(--bs-purple) !important;
+  color: white !important;
+}
+
+/* Orange buttons */
+.btn-orange,
+.btn-orange:hover,
+.btn-orange:focus,
+.btn-orange:active,
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+  background-color: var(--bs-purple) !important;
+  border-color: var(--bs-purple) !important;
+  color: white !important;
+}
+.btn-orange:hover,
+.btn-orange:focus,
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: var(-s-purple) !important;
+  border-color: var(--hovs-purple) !important;
+}
+
+/* Orange navbars */
+.navbar-purple {
+  background-color: var(--bs-purple) !important;
+}
+
+/* Text contrast */
+.text-on-orange {
+  color: white !important;
+}
+input.form-control.ng-invalid.ng-touched {
+  border-color: red !important;
+  box-shadow: none;
+}

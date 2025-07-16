@@ -1,0 +1,125 @@
+<div class="container mt-4">
+  <div *ngIf="isvisible">
+    <h3 class="mb-4">Add Expense</h3>
+
+    <form [formGroup]="expenseForm" (ngSubmit)="onSubmit()" novalidate>
+      <div class="row g-3">
+
+        <div class="col-md-4">
+          <label for="expenseId" class="form-label">Expense ID</label>
+          <input type="text" class="form-control" id="expenseId" formControlName="expenseId"
+            [ngClass]="{ 'is-invalid': expenseForm.get('expenseId')?.invalid && expenseForm.get('expenseId')?.touched }" />
+          <div *ngIf="expenseForm.get('expenseId')?.touched && expenseForm.get('expenseId')?.invalid" class="text-danger">
+            <small>Expense ID is required.</small>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <label for="category" class="form-label">Category</label>
+          <select class="form-select" id="category" formControlName="category"
+            [ngClass]="{ 'is-invalid': expenseForm.get('category')?.invalid && expenseForm.get('category')?.touched }">
+            <option value="">-- Select --</option>
+            <option value="Feed">Feed</option>
+            <option value="Medical">Medical</option>
+            <option value="Maintenance">Maintenance</option>
+            <option value="Salary">Salary</option>
+            <option value="Other">Other</option>
+          </select>
+          <div *ngIf="expenseForm.get('category')?.touched && expenseForm.get('category')?.invalid" class="text-danger">
+            <small>Category is required.</small>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <label for="description" class="form-label">Description</label>
+          <input type="text" class="form-control" id="description" formControlName="description"
+            [ngClass]="{ 'is-invalid': expenseForm.get('description')?.invalid && expenseForm.get('description')?.touched }" />
+          <div *ngIf="expenseForm.get('description')?.touched && expenseForm.get('description')?.invalid" class="text-danger">
+            <small>Description is required.</small>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <label for="amount" class="form-label">Amount</label>
+          <input type="number" class="form-control" id="amount" formControlName="amount"
+            [ngClass]="{ 'is-invalid': expenseForm.get('amount')?.invalid && expenseForm.get('amount')?.touched }" />
+          <div *ngIf="expenseForm.get('amount')?.touched && expenseForm.get('amount')?.invalid" class="text-danger">
+            <small *ngIf="expenseForm.get('amount')?.errors?.['required']">Amount is required.</small>
+            <small *ngIf="expenseForm.get('amount')?.errors?.['min']">Amount must be greater than 0.</small>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <label for="date" class="form-label">Date</label>
+          <input type="date" class="form-control" id="date" formControlName="date"
+            [ngClass]="{ 'is-invalid': expenseForm.get('date')?.invalid && expenseForm.get('date')?.touched }" />
+          <div *ngIf="expenseForm.get('date')?.touched && expenseForm.get('date')?.invalid" class="text-danger">
+            <small>Date is required.</small>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <label for="paymentMode" class="form-label">Payment Mode</label>
+          <select class="form-select" id="paymentMode" formControlName="paymentMode"
+            [ngClass]="{ 'is-invalid': expenseForm.get('paymentMode')?.invalid && expenseForm.get('paymentMode')?.touched }">
+            <option value="">-- Select --</option>
+            <option value="Cash">Cash</option>
+            <option value="UPI">UPI</option>
+            <option value="Bank Transfer">Bank Transfer</option>
+          </select>
+          <div *ngIf="expenseForm.get('paymentMode')?.touched && expenseForm.get('paymentMode')?.invalid" class="text-danger">
+            <small>Payment mode is required.</small>
+          </div>
+        </div>
+
+        <div class="col-12 mt-3">
+          <button class="btn btn-success" type="submit" [disabled]="expenseForm.invalid">Submit</button>
+          <button class="btn btn-danger" type="button" (click)="oncancel()">Cancel</button>
+        </div>
+
+      </div>
+    </form>
+  </div>
+
+  <div *ngIf="!isvisible">
+    <h4>Expenses List</h4>
+    <div class="d-flex justify-content-end mb-3">
+      <button class="btn btn-success" (click)="onAdd()">Add Expense</button>
+    </div>
+
+    <table class="table table-bordered mt-3">
+      <thead class="table-white">
+        <tr>
+          <th>ID</th>
+          <th>Category</th>
+          <th>Description</th>
+          <th>Amount</th>
+          <th>Date</th>
+          <th>Payment Mode</th>
+          <th class="text-center">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let e of expensesData">
+          <td>{{ e.ExpenseID }}</td>
+          <td>{{ e.Type }}</td>
+          <td>{{ e.description }}</td>
+          <td>{{ e.Amount }}</td>
+          <td>{{ e.Date | date: 'yyyy-MM-dd' }}</td>
+          <td>{{ e.paymentMode }}</td>
+          <td>
+            <button class="btn btn-warning btn-sm me-2" (click)="onEdit(e)">
+              <i class="bi bi-pencil-square"></i> Edit
+            </button>
+            <button class="btn btn-danger btn-sm" type="button" (click)="onDelete(e)">
+              <i class="bi bi-trash"></i> Delete
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="expensesData.length === 0">
+          <td colspan="7" class="text-danger text-center">No records found</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

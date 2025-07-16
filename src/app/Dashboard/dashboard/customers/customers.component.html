@@ -1,0 +1,111 @@
+<div class="container mt-4">
+  <div *ngIf="isvisible">
+    <h3 class="mb-4">
+      <span *ngIf="isEditing">Edit</span>
+      <span *ngIf="!isEditing">Add</span> Customer
+    </h3>
+
+    <form [formGroup]="customerForm" (ngSubmit)="onSubmit()" novalidate>
+      <div class="row g-3">
+
+        <div class="col-md-4">
+          <label for="customerId" class="form-label">Customer ID</label>
+          <input type="text" class="form-control" id="customerId" formControlName="customerId"
+            [class.is-invalid]="customerForm.get('customerId')?.touched && customerForm.get('customerId')?.invalid" />
+          <div class="invalid-feedback" *ngIf="customerForm.get('customerId')?.touched && customerForm.get('customerId')?.invalid">
+            Customer ID is required.
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <label for="FullName" class="form-label">Customer FullName</label>
+          <input type="text" class="form-control" id="FullName" formControlName="FullName"
+            [class.is-invalid]="customerForm.get('FullName')?.touched && customerForm.get('FullName')?.invalid" />
+          <div class="invalid-feedback" *ngIf="customerForm.get('FullName')?.touched && customerForm.get('FullName')?.invalid">
+            Customer FullName is required.
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <label for="PhoneNumber" class="form-label">Phone Number</label>
+          <input type="text" class="form-control" id="PhoneNumber" formControlName="PhoneNumber"
+            [class.is-invalid]="customerForm.get('PhoneNumber')?.touched && customerForm.get('PhoneNumber')?.invalid" />
+          <div class="invalid-feedback" *ngIf="customerForm.get('PhoneNumber')?.touched && customerForm.get('PhoneNumber')?.invalid">
+            <span *ngIf="customerForm.get('PhoneNumber')?.errors?.['required']">Phone is required.</span>
+            <span *ngIf="customerForm.get('PhoneNumber')?.errors?.['pattern']">Enter a valid 10-digit phone number.</span>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" id="email" formControlName="email"
+            [class.is-invalid]="customerForm.get('email')?.touched && customerForm.get('email')?.invalid" />
+          <div class="invalid-feedback" *ngIf="customerForm.get('email')?.touched && customerForm.get('email')?.invalid">
+            <span *ngIf="customerForm.get('email')?.errors?.['required']">Email is required.</span>
+            <span *ngIf="customerForm.get('email')?.errors?.['email']">Invalid email format.</span>
+          </div>
+        </div>
+
+        <div class="col-md-8">
+          <label for="address" class="form-label">Address</label>
+          <textarea class="form-control" id="address" rows="2" formControlName="address"
+            [class.is-invalid]="customerForm.get('address')?.touched && customerForm.get('address')?.invalid"></textarea>
+          <div class="invalid-feedback" *ngIf="customerForm.get('address')?.touched && customerForm.get('address')?.invalid">
+            Address is required.
+          </div>
+        </div>
+
+        <div class="col-12 mt-3">
+          <button class="btn btn-success m-2" type="submit">
+            <i class="bi bi-check-circle"></i> Submit
+          </button>
+          <button class="btn btn-outline-secondary" type="button" (click)="oncancel()">
+            <i class="bi bi-x-circle"></i> Cancel
+          </button>
+        </div>
+
+      </div>
+    </form>
+  </div>
+
+  <div *ngIf="!isvisible">
+    <h4>Customers List</h4>
+    <div class="d-flex justify-content-end mb-3">
+      <button class="btn btn-primary" type="button" (click)="onAdd()">
+        <i class="bi bi-plus-circle"></i> Add Customer
+      </button>
+    </div>
+    <table class="table table-bordered mt-3">
+      <thead class="table-white">
+        <tr>
+          <th>Customer ID</th>
+          <th>FullName</th>
+          <th>PhoneNumber</th>
+          <th>Email</th>
+          <th>Address</th>
+          <th class="text-center">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let c of customerData">
+          <td>{{ c.customerId }}</td>
+          <td>{{ c.FullName }}</td>
+          <td>{{ c.PhoneNumber }}</td>
+          <td>{{ c.email }}</td>
+          <td>{{ c.address }}</td>
+          <td>
+            <button class="btn btn-warning btn-sm me-2" (click)="onEdit(c)">
+              <i class="bi bi-pencil-square"></i> Edit
+            </button>
+            <button class="btn btn-danger btn-sm" (click)="onDelete(c)">
+              <i class="bi bi-trash"></i> Delete
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="customerData.length === 0">
+          <td colspan="6" class="text-danger text-center">No records found</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

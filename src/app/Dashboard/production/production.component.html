@@ -1,0 +1,120 @@
+<div class="container mt-4">
+  <div *ngIf="isvisible">
+    <h3 class="mb-4">Add Production</h3>
+
+    <form [formGroup]="productionForm" (ngSubmit)="onSubmit()" novalidate>
+      <div class="row g-3">
+
+        <div class="col-md-4">
+          <label for="productionId" class="form-label">Production ID</label>
+          <input type="text" class="form-control" id="productionId" formControlName="productionId"
+            [ngClass]="{ 'is-invalid': productionForm.get('productionId')?.invalid && productionForm.get('productionId')?.touched }" />
+          <div *ngIf="productionForm.get('productionId')?.touched && productionForm.get('productionId')?.invalid" class="text-danger">
+            <small>Production ID is required.</small>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <label for="productionType" class="form-label">Production Type</label>
+          <select class="form-select" id="productionType" formControlName="productionType"
+            [ngClass]="{ 'is-invalid': productionForm.get('productionType')?.invalid && productionForm.get('productionType')?.touched }">
+            <option value="">-- Select --</option>
+            <option value="Milk">Milk</option>
+            <option value="Egg">Egg</option>
+            <option value="Meat">Meat</option>
+          </select>
+          <div *ngIf="productionForm.get('productionType')?.touched && productionForm.get('productionType')?.invalid" class="text-danger">
+            <small>Production type is required.</small>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <label for="animalType" class="form-label">Animal Type</label>
+          <input type="text" class="form-control" id="animalType" formControlName="animalType"
+            [ngClass]="{ 'is-invalid': productionForm.get('animalType')?.invalid && productionForm.get('animalType')?.touched }" />
+          <div *ngIf="productionForm.get('animalType')?.touched && productionForm.get('animalType')?.invalid" class="text-danger">
+            <small>Animal type is required.</small>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <label for="date" class="form-label">Date</label>
+          <input type="date" class="form-control" id="date" formControlName="date"
+            [ngClass]="{ 'is-invalid': productionForm.get('date')?.invalid && productionForm.get('date')?.touched }" />
+          <div *ngIf="productionForm.get('date')?.touched && productionForm.get('date')?.invalid" class="text-danger">
+            <small>Date is required.</small>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <label for="quantity" class="form-label">Quantity</label>
+          <input type="number" class="form-control" id="quantity" formControlName="quantity"
+            [ngClass]="{ 'is-invalid': productionForm.get('quantity')?.invalid && productionForm.get('quantity')?.touched }" />
+          <div *ngIf="productionForm.get('quantity')?.touched && productionForm.get('quantity')?.invalid" class="text-danger">
+            <small *ngIf="productionForm.get('quantity')?.errors?.['required']">Quantity is required.</small>
+            <small *ngIf="productionForm.get('quantity')?.errors?.['min']">Must be at least 1.</small>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <label for="unit" class="form-label">Unit</label>
+          <select class="form-select" id="unit" formControlName="unit"
+            [ngClass]="{ 'is-invalid': productionForm.get('unit')?.invalid && productionForm.get('unit')?.touched }">
+            <option value="">-- Select --</option>
+            <option value="Liters">Liters</option>
+            <option value="Kilograms">Kilograms</option>
+            <option value="Units">Units</option>
+          </select>
+          <div *ngIf="productionForm.get('unit')?.touched && productionForm.get('unit')?.invalid" class="text-danger">
+            <small>Unit is required.</small>
+          </div>
+        </div>
+
+        <div class="col-12 mt-3">
+          <button class="btn btn-success" type="submit" [disabled]="productionForm.invalid">Submit</button>
+          <button class="btn btn-danger" type="button" (click)="oncancel()">Cancel</button>
+        </div>
+
+      </div>
+    </form>
+  </div>
+
+  <div *ngIf="!isvisible">
+    <h4>Production Records</h4>
+    <div class="d-flex justify-content-end mb-3">
+      <button class="btn btn-success" (click)="onAdd()">Add Production</button>
+    </div>
+    <hr class="my-5" />
+
+    <table class="table table-bordered table-striped text-center">
+      <thead class="table-dark">
+        <tr>
+          <th>Production ID</th>
+          <th>Type</th>
+          <th>Animal</th>
+          <th>Date</th>
+          <th>Quantity</th>
+          <th>Unit</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of productionData">
+          <td>{{ p.productionId }}</td>
+          <td>{{ p.productionType }}</td>
+          <td>{{ p.animalType }}</td>
+          <td>{{ p.date | date: 'yyyy-MM-dd' }}</td>
+          <td>{{ p.quantity }}</td>
+          <td>{{ p.unit }}</td>
+          <td>
+            <button class="btn btn-primary btn-sm me-2" (click)="onEdit(p)">Edit</button>
+            <button class="btn btn-danger btn-sm" (click)="onDelete(p)">Delete</button>
+          </td>
+        </tr>
+        <tr *ngIf="productionData.length === 0">
+          <td colspan="7" class="text-center fw-bold py-4">No Data Found</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
