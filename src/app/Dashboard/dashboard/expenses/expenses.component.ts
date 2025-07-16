@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ApiService } from '../../../api.service';
 
 @Component({
   selector: 'app-expenses',
@@ -8,53 +7,36 @@ import { ApiService } from '../../../api.service';
 })
 export class ExpensesComponent implements OnInit {
   expenseForm!: FormGroup;
+  today: string = new Date().toISOString().split('T')[0];
+
   isvisible = false;
   expensesData: any[] = [];
+  
 
-  constructor(private fb: FormBuilder, private api: ApiService) {}
-
+  constructor(private fb: FormBuilder) {}
+  
   ngOnInit(): void {
-    this.expenseForm = this.fb.group({
-      expenseId: [''],
-      category: ['', Validators.required],
-      description: ['', Validators.required], // This is your "category"
-      amount: ['', [Validators.required, Validators.min(1)]],
-      date: [''],
-      paymentMode: ['']
-    });
-    this.loadExpenses();
-  }
-
-  loadExpenses(): void {
-    debugger;
-    this.api.getExpenses().subscribe({
-      next: data => this.expensesData = data,
-      error: () => this.expensesData = []
-    });
-  }
+  this.expenseForm = this.fb.group({
+    expenseId: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
+    date: ['', Validators.required],
+    type: ['', Validators.required],
+    amount: ['', [Validators.required, Validators.max(100)]],
+    feed: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
+    animal: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
+  });
+}
 
   onSubmit(): void {
-    debugger
-        const formValue = this.expenseForm.value;
-        console.log('Form Value:', formValue);
-      const orderPayload = {
-        expenseId: formValue.expenseId,
-        category: formValue.category,
-        description: formValue.description,
-        amount: formValue.amount,
-        date: formValue.date,
-        paymentMode: formValue.paymentMode,
-  
-      };
-    this.api.addExpense(orderPayload).subscribe({
-      
-      next: () => {
-        this.loadExpenses();
-        this.expenseForm.reset();
-        this.isvisible = false;
-      },
-      error: () => alert('Failed to add expense')
-    });
+    if (this.expenseForm.valid) {
+    this.expensesData.push(this.expenseForm.value);
+      this.expenseForm.reset();
+      alert('Submitted successfully!');
+      return;
+    }
+
+    this.expensesData.push(this.expenseForm.value);
+    this.expenseForm.reset();
+    this.isvisible = false;
   }
 
   onAdd(): void {
@@ -72,11 +54,11 @@ export class ExpensesComponent implements OnInit {
   }
 
   onDelete(expense: any): void {
-    if (expense.ExpenseID) {
-      this.api.deleteExpense(expense.ExpenseID).subscribe({
-        next: () => this.loadExpenses(),
-        error: () => alert('Failed to delete expense')
-      });
-    }
+  const confirmed = confirm('⚠️ Are you sure you want to delete this expense?');
+  if (confirmed) {
+    this.expensesData = this.expensesData.filter(e => e !== expense);
+    alert('Deleted successfully!');
   }
+}
+
 }
