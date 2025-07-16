@@ -6,11 +6,12 @@
       <div class="row g-3">
 
         <div class="col-md-4">
-          <label for="productionId" class="form-label">Production ID</label>
-          <input type="text" class="form-control" id="productionId" formControlName="productionId"
-            [ngClass]="{ 'is-invalid': productionForm.get('productionId')?.invalid && productionForm.get('productionId')?.touched }" />
-          <div *ngIf="productionForm.get('productionId')?.touched && productionForm.get('productionId')?.invalid" class="text-danger">
-            <small>Production ID is required.</small>
+          <label for="production" class="form-label">Production ID</label>
+          <input type="text" class="form-control" id="production" formControlName="production"
+            [ngClass]="{ 'is-invalid': productionForm.get('production')?.invalid && productionForm.get('production')?.touched }" />
+          <div *ngIf="productionForm.get('production')?.touched && productionForm.get('production')?.invalid" class="text-danger">
+            <small *ngIf="productionForm.get('production')?.errors?.['required']">Production ID is required.</small>
+            <small *ngIf="productionForm.get('production')?.errors?.['pattern']">Only numbers allowed.</small>
           </div>
         </div>
 
@@ -30,8 +31,15 @@
 
         <div class="col-md-4">
           <label for="animalType" class="form-label">Animal Type</label>
-          <input type="text" class="form-control" id="animalType" formControlName="animalType"
-            [ngClass]="{ 'is-invalid': productionForm.get('animalType')?.invalid && productionForm.get('animalType')?.touched }" />
+          <select class="form-select" id="animalType" formControlName="animalType"
+            [ngClass]="{ 'is-invalid': productionForm.get('animalType')?.invalid && productionForm.get('animalType')?.touched }">
+            <option value="">-- Select --</option>
+            <option value="Cow">Cow</option>
+            <option value="Sheep">Sheep</option>
+            <option value="Goat">Goat</option>
+            <option value="Hen">Hen</option>
+            <option value="Buffalo">Buffalo</option>
+          </select>
           <div *ngIf="productionForm.get('animalType')?.touched && productionForm.get('animalType')?.invalid" class="text-danger">
             <small>Animal type is required.</small>
           </div>
@@ -39,7 +47,7 @@
 
         <div class="col-md-4">
           <label for="date" class="form-label">Date</label>
-          <input type="date" class="form-control" id="date" formControlName="date"
+          <input type="date" class="form-control" id="date" formControlName="date" [max]="today"
             [ngClass]="{ 'is-invalid': productionForm.get('date')?.invalid && productionForm.get('date')?.touched }" />
           <div *ngIf="productionForm.get('date')?.touched && productionForm.get('date')?.invalid" class="text-danger">
             <small>Date is required.</small>
@@ -80,16 +88,17 @@
   </div>
 
   <div *ngIf="!isvisible">
-    <h4>Production Records</h4>
+    <h4>Productions </h4>
     <div class="d-flex justify-content-end mb-3">
       <button class="btn btn-success" (click)="onAdd()">Add Production</button>
     </div>
     <hr class="my-5" />
 
-    <table class="table table-bordered table-striped text-center">
-      <thead class="table-dark">
-        <tr>
-          <th>Production ID</th>
+   <table class="table table-bordered text-center shadow-sm bg-white rounded">
+  <thead style="background-color: #f8f9fa;">
+    <tr class="fw-semibold text-dark">
+    
+          <th>Production </th>
           <th>Type</th>
           <th>Animal</th>
           <th>Date</th>
@@ -100,7 +109,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let p of productionData">
-          <td>{{ p.productionId }}</td>
+          <td>{{ p.production }}</td>
           <td>{{ p.productionType }}</td>
           <td>{{ p.animalType }}</td>
           <td>{{ p.date | date: 'yyyy-MM-dd' }}</td>
@@ -112,7 +121,7 @@
           </td>
         </tr>
         <tr *ngIf="productionData.length === 0">
-          <td colspan="7" class="text-center fw-bold py-4">No Data Found</td>
+          <td colspan="7" class="text-center text-danger fw-bold py-4">No records found</td>
         </tr>
       </tbody>
     </table>
