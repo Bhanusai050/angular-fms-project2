@@ -9,30 +9,31 @@ export class ProductionComponent implements OnInit {
   productionForm!: FormGroup;
   isvisible = false;
   productionData: any[] = [];
+   today: string = new Date().toISOString().split('T')[0];
 
   constructor(private fb: FormBuilder) {}
 
-  ngOnInit(): void {
-    this.productionForm = this.fb.group({
-      productionId: ['', Validators.required],
-      productionType: ['', Validators.required],
-      animalType: ['', Validators.required],
-      date: ['', Validators.required],
-      quantity: ['', [Validators.required, Validators.min(1)]],
-      unit: ['', Validators.required]
-    });
-  }
+  ngOnInit() {
+  this.productionForm = this.fb.group({
+    production: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
+    productionType: ['', Validators.required],
+    animalType: ['', Validators.required],
+    date: ['', Validators.required],
+    quantity: ['', [Validators.required, Validators.min(1)]],
+    unit: ['', Validators.required],
+  });
+}
 
-  onSubmit(): void {
-    if (this.productionForm.invalid) {
-      this.productionForm.markAllAsTouched();
-      return;
-    }
 
+
+  onSubmit() {
+  if (this.productionForm.valid) {
     this.productionData.push(this.productionForm.value);
-    this.productionForm.reset();
+      this.productionForm.reset();
+    alert('Submitted successfully!');
     this.isvisible = false;
   }
+}
 
   onAdd(): void {
     this.isvisible = true;
@@ -48,7 +49,13 @@ export class ProductionComponent implements OnInit {
     this.isvisible = true;
   }
 
-  onDelete(production: any): void {
-    this.productionData = this.productionData.filter(p => p !== production);
+  onDelete(p: any) {
+  const confirmDelete = confirm("Are you sure you want to delete?");
+  if (confirmDelete) {
+    // Your deletion logic here
+    this.productionData = this.productionData.filter(x => x !== p);
+     alert('Deleted successfully!');
   }
+}
+
 }
