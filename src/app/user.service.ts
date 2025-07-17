@@ -10,7 +10,7 @@ export interface User {
 @Injectable({ providedIn: 'root' })
 export class UserService {
   private userSubject = new BehaviorSubject<User | null>(null);
-  user$ = this.userSubject.asObservable();
+  currentUser$ = this.userSubject.asObservable();
 
   constructor() {
     const stored = localStorage.getItem('currentUser');
@@ -25,10 +25,7 @@ export class UserService {
   }
 
   clearUser() {
-    this.userSubject.next(null);
     localStorage.removeItem('currentUser');
+    this.userSubject.next(null);
   }
 }
-
-
-

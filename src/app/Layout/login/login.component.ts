@@ -15,13 +15,13 @@ export class LoginComponent implements OnInit {
   submitted = false;
   successMessage = '';
   errorMessage = '';
-  showPassword: boolean = false;
+  showPassword = false;
 
   constructor(
     private fb: FormBuilder,
     private api: ApiService,
     private router: Router,
-    private userService: UserService
+    private userService: UserService // ✅ keep UserService
   ) {}
 
   ngOnInit(): void {
@@ -37,10 +37,7 @@ export class LoginComponent implements OnInit {
 
     const savedEmail = localStorage.getItem('remember_email');
     if (savedEmail) {
-      this.loginForm.patchValue({
-        email: savedEmail,
-        remember: true
-      });
+      this.loginForm.patchValue({ email: savedEmail, remember: true });
     }
   }
 
@@ -60,12 +57,15 @@ export class LoginComponent implements OnInit {
 
     this.api.login(email, password, remember).subscribe({
       next: (resp: LoginResponse) => {
-        // Token and email are already saved in api.service.ts
-        // Save username for dashboard display
         if (resp && resp.username) {
-             localStorage.setItem('username', resp.username);
-             sessionStorage.setItem('username', resp.username);
-    }
+          // 🟢 Use UserService to set and broadcast the current user
+          this.userService.setUser({ 
+            id: resp.username ?? '', 
+            name: resp.username, 
+            email 
+          });
+        }
+
         this.successMessage = 'Login successful!';
         this.router.navigate(['/Dashboard']);
       },
