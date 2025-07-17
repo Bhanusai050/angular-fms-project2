@@ -44,8 +44,13 @@
     <div class="input-group">
       <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
       <input
-        type="text" name="name" class="form-control"
-        required minlength="3" maxlength="15" pattern="^[A-Za-z ]+$"
+        type="text" 
+        name="name" 
+        class="form-control"
+        required minlength="3" 
+        maxlength="15" 
+        pattern="^[A-Za-z ]+$"
+        placeholder="Enter Name"
         [(ngModel)]="formData.name" #nameRef="ngModel"
         (keypress)="allowOnlyLetters($event)"
         [ngClass]="{'is-invalid': nameRef.invalid && nameRef.touched}"
@@ -59,25 +64,31 @@
     </div>
   </div>
               <!-- Phone -->
-             <div class="mb-3">
-    <label class="form-label">Phone Number <span class="text-danger">*</span></label>
-    <div class="input-group">
-      <span class="input-group-text"><i class="bi bi-telephone-fill"></i></span>
-      <input
-        type="text" name="phoneNumber" class="form-control"
-        required
-        pattern="^[0-9]{10}$"
-        [(ngModel)]="formData.phoneNumber"
-        #phoneRef="ngModel"
-        [ngClass]="{'is-invalid': phoneRef.invalid && phoneRef.touched}"
-        (keypress)="onPhoneKeypress($event)"
-      />
-    </div>
-    <div *ngIf="phoneRef.invalid && phoneRef.touched" class="text-danger mt-1">
-      <small *ngIf="phoneRef.errors?.['required']">PhoneNumber Is Required</small>
-      <small *ngIf="phoneRef.errors?.['pattern']">Enter a valid 10-digit number.</small>
-    </div>
+            <div class="mb-3">
+  <label class="form-label">Phone Number <span class="text-danger">*</span></label>
+  <div class="input-group">
+    <span class="input-group-text"><i class="bi bi-telephone-fill"></i></span>
+    <input
+      type="tel"
+      name="phoneNumber"
+      class="form-control"
+      required
+      placeholder="Enter Phone Number"
+      pattern="^(\+[1-9][0-9]{0,3}[-\s]?)?[0-9]{6,14}$"
+      [(ngModel)]="formData.phoneNumber"
+      #phoneRef="ngModel"
+      [ngClass]="{'is-invalid': phoneRef.invalid && phoneRef.touched}"
+      (keypress)="onPhoneKeypress($event)"
+      placeholder="+91-9966332244 or 1234567890"
+    />
   </div>
+  <div *ngIf="phoneRef.invalid && phoneRef.touched" class="text-danger mt-1">
+    <small *ngIf="phoneRef.errors?.['required']">Phone Number is required</small>
+    <small *ngIf="phoneRef.errors?.['pattern']">
+      Enter a valid phone number — either 10 digits, or an international format like +<em>CC</em>-<em>Number</em>.
+    </small>
+  </div>
+</div>
 
               <!-- Email -->
               <div class="mb-3">
@@ -88,6 +99,7 @@
       type="email"
       name="email"
       class="form-control"
+      placeholder="Enter Email"
       required
       [(ngModel)]="formData.email"
       #emailRef="ngModel"
@@ -105,8 +117,12 @@
     <div class="input-group">
       <span class="input-group-text"><i class="bi bi-chat-dots-fill"></i></span>
       <textarea
-        name="message" class="form-control"
-        minlength="3" maxlength="150"
+        name="message" 
+        class="form-control"
+        minlength="3" 
+        maxlength="150"
+        placeholder="Enter Message"
+
         [(ngModel)]="formData.message" #messageRef="ngModel"
         [ngClass]="{'is-invalid': messageRef.invalid && messageRef.touched}"
       ></textarea>

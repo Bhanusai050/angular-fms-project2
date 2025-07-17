@@ -24,10 +24,11 @@ export class ContactComponent {
 
   // Allow only digits for phone field
   onPhoneKeypress(event: KeyboardEvent) {
-    if (!/^[0-9]$/.test(event.key)) {
-      event.preventDefault();
-    }
+  const allowed = /[0-9+\-\s]/;
+  if (!allowed.test(event.key)) {
+    event.preventDefault();
   }
+}
 
   // Submit form data
   onSubmit() {
