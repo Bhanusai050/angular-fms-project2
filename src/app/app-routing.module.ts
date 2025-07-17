@@ -7,10 +7,12 @@ import { HeaderComponent } from './main-layout/header/header.component';
 import { HomepageComponent } from './homepage/homepage.component';
 import { ContactComponent } from './homepage/contact/contact.component';
 import { ResetPasswordComponent } from './Layout/reset-password/reset-password.component';
+import { CustomersComponent } from './Dashboard/dashboard/customers/customers.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' }, // 👈 Set login as default route
   { path: 'login', component: LoginComponent },
+  { path: 'customers', component: CustomersComponent },
   { path: 'SignUp', component: SignUpComponent },
   { path: 'forgot', component: ForgetpasswordComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
@@ -33,4 +35,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
