@@ -29,9 +29,10 @@ export class ExpensesComponent implements OnInit {
   onSubmit(): void {
     if (this.expenseForm.valid) {
     this.expensesData.push(this.expenseForm.value);
-      this.expenseForm.reset();
-      alert('Submitted successfully!');
-      return;
+    this.expenseForm.reset();
+    alert('Submitted successfully!');
+    this.isvisible = false;
+    return;
     }
 
     this.expensesData.push(this.expenseForm.value);
