@@ -17,23 +17,24 @@
 <div class="dashboard-layout">
   <nav class="sidebar">
     <ul>
-      <li><a routerLink="/dashboard/animals" routerLinkActive="active">Animals</a></li>
-      <li><a routerLink="/dashboard/animalbatches" routerLinkActive="active">Animal Batches</a></li>
-      <li><a routerLink="/dashboard/vendor" routerLinkActive="active">Vendors</a></li>
-      <li><a routerLink="/dashboard/feed-inventory" routerLinkActive="active">Feed Inventory</a></li>
-      <li><a routerLink="/dashboard/orders" routerLinkActive="active">Orders</a></li>
-      <li><a routerLink="/dashboard/customers" routerLinkActive="active">Customers</a></li>
-      <li><a routerLink="/dashboard/expenses" routerLinkActive="active">Expenses</a></li>
-      <li><a routerLink="/dashboard/production" routerLinkActive="active">Productions</a></li>
-      <li><a routerLink="/dashboard/investments" routerLinkActive="active">Investments</a></li>
+      <li><a routerLink="animals" routerLinkActive="active">Animals</a></li>
+      <li><a routerLink="animalbatches" routerLinkActive="active">Animal Batches</a></li>
+      <li><a routerLink="vendor" routerLinkActive="active">Vendors</a></li>
+      <li><a routerLink="feed-inventory" routerLinkActive="active">Feed Inventory</a></li>
+      <li><a routerLink="orders" routerLinkActive="active">Orders</a></li>
+      <li><a routerLink="/Dashboard/customers" routerLinkActive="active">Customers</a></li>
+      <li><a routerLink="/Dashboard/expenses" routerLinkActive="active">Expenses</a></li>
+      <li><a routerLink="/Dashboard/production" routerLinkActive="active">Productions</a></li>
+      <li><a routerLink="/Dashboard/investments" routerLinkActive="active">Investments</a></li>
     </ul>
   </nav>
 
   <div class="dashboard-content">
-    <!-- Main content appears here -->
     <router-outlet></router-outlet>
+    
   </div>
 </div>
+
 
 <!-- Dashboard Footer -->
 <footer class="dashboard-footer">
