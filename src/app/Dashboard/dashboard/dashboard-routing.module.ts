@@ -19,13 +19,14 @@ const routes: Routes = [
     component: DashboardComponent,
     children: [
       { path: 'animals', component: AnimalsComponent },
+      { path: 'customers', component: CustomersComponent },
       { path: 'expenses', component: ExpensesComponent },
       { path: 'feed-inventory', component: FeedInventoryComponent,  },
       { path: 'orders', component: OrdersComponent,  },
       { path: 'production', component: ProductionsComponent,  },
       { path: 'vendor', component: VendorComponent,  },
-      { path: 'animalbatches', component: AnimalBatchesComponent, canActivate: [RbacGuard], data: { permission: 'ViewAnimalBatches' } },
-      { path: 'investments', component: InvestmentComponent, canActivate: [RbacGuard], data: { permission: 'ViewInvestments' } },
+      { path: 'animalbatches', component: AnimalBatchesComponent,  } ,
+      { path: 'investments', component: InvestmentComponent, },
     ]
   }
 ];
