@@ -1,3 +1,12 @@
+
+/* --- START RESET: Remove default browser spacing --- */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+ 
+
+
+/* --- END RESET --- */
 /* You can add global styles to this file, and also import other style files */
 .full-bg {
   background-color: #8e44ad; /* Bootstrap success green */
@@ -13,10 +22,11 @@
 }
 
 /* 2. Sections with class `.orange-bg` become full-orange background */
-.orange-bg {
-  background-color: var(--bs-orange) !important;
-  color: white !important;
+nav.navbar {
+  background-color: transparent !important;
+  box-shadow: none !important;
 }
+
 
 /* 3. Orange buttons: apply to all btn, or only specific types */
 .btn-orange,

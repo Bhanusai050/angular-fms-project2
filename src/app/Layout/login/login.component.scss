@@ -1,0 +1,5 @@
+/* Hide Edge/IE built-in password reveal and clear icons */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none !important;
+}

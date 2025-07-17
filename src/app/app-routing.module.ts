@@ -9,14 +9,16 @@ import { ContactComponent } from './homepage/contact/contact.component';
 import { ResetPasswordComponent } from './Layout/reset-password/reset-password.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' }, // 👈 Set login as default route
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'home', component: HomepageComponent }, // 👈 Add homepage as separate path
+  // { path: '', redirectTo: 'login', pathMatch: 'full' }, // 👈 Set login as default route
   { path: 'login', component: LoginComponent },
   { path: 'SignUp', component: SignUpComponent },
   { path: 'forgot', component: ForgetpasswordComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'contact', component: ContactComponent },
   { path: 'header', component: HeaderComponent },
-  { path: 'home', component: HomepageComponent }, // 👈 Add homepage as separate path
+  
   {
     path: 'Dashboard',
     loadChildren: () =>
