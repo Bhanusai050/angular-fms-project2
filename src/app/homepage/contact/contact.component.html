@@ -101,6 +101,7 @@
       class="form-control"
       placeholder="Enter Email"
       required
+      pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
       [(ngModel)]="formData.email"
       #emailRef="ngModel"
       [ngClass]="{'is-invalid': emailRef.invalid && emailRef.touched}"
@@ -108,7 +109,7 @@
   </div>
   <div *ngIf="emailRef.invalid && emailRef.touched" class="text-danger mt-1">
     <small *ngIf="emailRef.errors?.['required']">Email is required.</small>
-    <small *ngIf="emailRef.errors?.['email']">Please enter a valid email.</small>
+    <small *ngIf="emailRef.errors?.['pattern']">Please enter a valid email </small>
   </div>
 </div>
               <!-- Message -->
