@@ -1,26 +1,26 @@
 <!-- Dashboard Header -->
-<header class="dashboard‑header">
-  <div class="header‑content">
-    <img src="https://static.vecteezy.com/system/resources/previews/040/328/743/non_2x/cattle‑animal‑farm‑livestock‑logo‑icon‑and‑template‑illustration‑vector.jpg"
+<header class="dashboard-header">
+  <div class="header-content">
+    <img src="https://static.vecteezy.com/system/resources/previews/040/328/743/non_2x/cattle-animal-farm-livestock-logo-icon-and-template-illustration-vector.jpg"
          alt="Farm Livestock Logo"
          height="50"
-         class="d‑inline‑block align‑text‑top me‑3">
-    <span class="dashboard‑title">Farm Management System</span>
-    <div class="user‑info">
-      <!-- ✅ Displays the username from your component -->
-      <span class="user‑name">{{ userName }}!</span>
+         class="d-inline-block align-text-top me-3">
+    <span class="dashboard-title">Farm Management System</span>
+    <div class="user-info">
+      <!-- Displays the username from your component -->
+      <span class="user-name">{{ userName }}!</span>
       <button class="btn btn-primary" (click)="logout()">Logout</button>
     </div>
   </div>
 </header>
 
-<div class="dashboard‑layout">
+<div class="dashboard-layout">
   <nav class="sidebar">
     <ul>
       <li><a routerLink="animals" routerLinkActive="active">Animals</a></li>
       <li><a routerLink="animalbatches" routerLinkActive="active">Animal Batches</a></li>
       <li><a routerLink="vendor" routerLinkActive="active">Vendors</a></li>
-      <li><a routerLink="feed‑inventory" routerLinkActive="active">Feed Inventory</a></li>
+      <li><a routerLink="feed-inventory" routerLinkActive="active">Feed Inventory</a></li>
       <li><a routerLink="orders" routerLinkActive="active">Orders</a></li>
       <li><a routerLink="/Dashboard/customers" routerLinkActive="active">Customers</a></li>
       <li><a routerLink="/Dashboard/expenses" routerLinkActive="active">Expenses</a></li>
@@ -30,13 +30,14 @@
   </nav>
 
   <div class="dashboard-content">
-  <router-outlet></router-outlet>
+    <router-outlet></router-outlet>
+  </div>
 </div>
 
 <!-- Dashboard Footer -->
-<footer class="dashboard‑footer">
-  <div class="footer‑content">
-    <span class="footer‑center">© 2025 Farm Management System. All rights reserved.</span>
-    <span class="footer‑links"></span>
+<footer class="dashboard-footer">
+  <div class="footer-content">
+    <span class="footer-center">© 2025 Farm Management System. All rights reserved.</span>
+    <span class="footer-links"></span>
   </div>
 </footer>
