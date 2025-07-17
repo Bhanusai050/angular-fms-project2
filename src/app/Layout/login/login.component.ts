@@ -44,34 +44,37 @@ export class LoginComponent implements OnInit {
   get f() { return this.loginForm.controls; }
 
   onSubmit(): void {
-    this.submitted = true;
-    this.successMessage = '';
-    this.errorMessage = '';
+  this.submitted = true;
+  this.successMessage = '';
+  this.errorMessage = '';
 
-    if (this.loginForm.invalid) {
-      this.loginForm.markAllAsTouched();
-      return;
-    }
-
-    const { email, password, remember } = this.loginForm.value;
-
-    this.api.login(email, password, remember).subscribe({
-      next: (resp: LoginResponse) => {
-        if (resp && resp.username) {
-          // 🟢 Use UserService to set and broadcast the current user
-          this.userService.setUser({ 
-            id: resp.username ?? '', 
-            name: resp.username, 
-            email 
-          });
-        }
-
-        this.successMessage = 'Login successful!';
-        this.router.navigate(['/Dashboard']);
-      },
-      error: err => {
-        this.errorMessage = err.message;
-      }
-    });
+  if (this.loginForm.invalid) {
+    this.loginForm.markAllAsTouched();
+    return;
   }
+
+  const { email, password, remember } = this.loginForm.value;
+
+  this.api.login(email, password, remember).subscribe({
+    next: (resp: LoginResponse) => {
+      if (resp && resp.username) {
+        localStorage.setItem('username', resp.username);
+        sessionStorage.setItem('username', resp.username);
+
+        // Set user in service
+        this.userService.setUser({
+          id: resp.username,
+          name: resp.username,
+          email
+        });
+      }
+
+      this.successMessage = 'Login successful!';
+      this.router.navigate(['/Dashboard']);
+    },
+    error: err => {
+      this.errorMessage = err.message;
+    }
+  });
+}
 }

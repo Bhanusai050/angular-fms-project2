@@ -13,9 +13,10 @@ export class DashboardComponent implements OnInit {
 
   constructor(private authService: AuthService) {}
 
-  ngOnInit() {
-  const stored = localStorage.getItem('username') ?? sessionStorage.getItem('username');
-  this.userName = stored || 'User';
+ ngOnInit() {
+  const stored = localStorage.getItem('username') || sessionStorage.getItem('username');
+  console.log('Dashboard loaded with username:', stored);
+  this.userName = stored ?? 'User';
 }
 
   logout() {
