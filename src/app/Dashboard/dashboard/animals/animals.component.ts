@@ -14,7 +14,8 @@ export class AnimalsComponent implements OnInit {
   isEditing: boolean = false;
   editIndex: number = -1;
   record: any;
-  todayString: string = new Date().toISOString().split('T')[0];
+  
+  today: string = new Date().toISOString().split('T')[0];
 
   animalTypes = [
     { id: 1, name: 'Sheep' },
@@ -23,6 +24,9 @@ export class AnimalsComponent implements OnInit {
     { id: 4, name: 'Buffalo' },
     { id: 5, name: 'Cow' }
   ];
+
+ 
+
   genders = [
     { id: 1, name: 'Male' },
     { id: 2, name: 'Female' }
@@ -52,9 +56,9 @@ export class AnimalsComponent implements OnInit {
   ngOnInit() {
     
   this.createForm();
-   this.getAnimals();
-    this.loadVendors();
-    this.getbatchs();
+  this.getAnimals();
+  this.loadVendors();
+  this.getbatchs();
   }
   createForm(){
     this.animalForm = this.fb.group({
@@ -67,7 +71,7 @@ export class AnimalsComponent implements OnInit {
       animalCost: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
       VendorID: [null, Validators.required], // will hold VendorID
       animalStatus: [null, Validators.required],
-      AnimalPurchasedDate: [this.todayString, Validators.required]
+      AnimalPurchasedDate: ['', Validators.required]
     });
   }
   getbatchs() {
@@ -100,10 +104,10 @@ export class AnimalsComponent implements OnInit {
   loadVendors(): void {
      this.vendors = [];
     this.api.getVendors().subscribe({
-      next: data => this.vendors = data,
-      error: err => {
-        this.vendors = [];
-        console.error('Failed to load vendors:', err.message);
+    next: data => this.vendors = data,
+    error: err => {
+    this.vendors = [];
+    console.error('Failed to load vendors:', err.message);
       }
     });
   }
@@ -152,12 +156,14 @@ export class AnimalsComponent implements OnInit {
     {
           this.isvisible=true;
           this.isEditing=false;
-            this.createForm();
+          this.createForm();
+
           //this.animalForm.reset({ AnimalPurchasedDate: this.todayString, animalCost: 0 });
     }
     oncancel()
     {
       this.isvisible=false;
+
     }
 
     onEdits(animal: any): void {
@@ -178,9 +184,11 @@ export class AnimalsComponent implements OnInit {
     }
 
   onDelete(animal: any): void {
+    
       this.api.deleteAnimal(animal.AnimalID).subscribe({
       next: () => { this.getAnimals(); },
       error: () => { alert('Failed to delete animal'); }
+      
     });
   }
 

@@ -5,6 +5,13 @@
       <span *ngIf="isEditing">Edit</span>
       <span *ngIf="!isEditing">Add</span> Vendor
     </h3>
+    <!-- {{vendorForm.value| json }} -->
+       <div *ngIf="showMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+  {{ successMessage }}
+  <button type="button" class="btn-close" (click)="showMessage = false"></button>
+</div>
+
+
     <form [formGroup]="vendorForm" (ngSubmit)="onSubmit()" novalidate>
       <div class="row g-3">
         <div class="col-md-6">
@@ -14,29 +21,74 @@
             Vendor Name is required
           </div>
         </div>
+       <div class="col-md-6">
+  <label for="VendorType" class="form-label"> Vendor Type <span class="text-danger">*</span></label>
+  <select
+    id="VendorType"
+    class="form-select"
+    formControlName="VendorType"
+    [class.is-invalid]="vendorForm.get('VendorType')?.touched && vendorForm.get('VendorType')?.invalid">
+    <option [ngClass]="null">-- Select Vendor Type --</option>
+    <option value="Selling">Selling</option>
+    <option value="Purchase">Purchase</option>
+  </select>
+  <div class="invalid-feedback"*ngIf="vendorForm.get('VendorType')?.touched && vendorForm.get('VendorType')?.hasError('required')">
+           Vendor type is required.
+          </div>
+      </div>
+
         <div class="col-md-6">
-          <label class="form-label">Category</label>
-          <input type="text" class="form-control" formControlName="category" placeholder="Enter Category"/>
+        <label for="category" class="form-label">Category <span class="text-danger">*</span></label>
+        <select id="category" class="form-select" formControlName="category"
+         [class.is-invalid]="vendorForm.get('category')?.touched && vendorForm.get('category')?.invalid">
+         <option [ngValue]="null">-- Select Category --</option>
+          <option value="Supplier">Animals</option>
+          <option value="Customer">Feed</option>
+          <option value="Metailes">Transport</option>
+          <option value="Other">Other</option>
+        </select>
+        <div class="invalid-feedback"*ngIf="vendorForm.get('category')?.touched && vendorForm.get('category')?.hasError('required')">
+          Category is required.
         </div>
+      </div>
+      
         <div class="col-md-6">
           <label class="form-label">Email<span class="text-danger">*</span></label>
-          <input type="email" class="form-control" formControlName="email" placeholder="Enter email" />
+          <input type="email" class="form-control" formControlName="email" placeholder="Enter Email" />
           <div *ngIf="vendorForm.get('email')?.touched && vendorForm.get('email')?.invalid" class="text-danger">
             <span *ngIf="vendorForm.get('email')?.errors?.['required']">Email is required</span>
             <span *ngIf="vendorForm.get('email')?.errors?.['email']">Invalid email</span>
           </div>
         </div>
-        <div class="col-md-6">
-          <label class="form-label">Phone<span class="text-danger">*</span> </label>
-          <input type="text" class="form-control" formControlName="phone" placeholder="Enter Phone Number" maxlength="15" />
-          <div *ngIf="vendorForm.get('phone')?.touched && vendorForm.get('phone')?.invalid" class="text-danger">
-            <span *ngIf="vendorForm.get('phone')?.errors?.['required']">Phone is required</span>
-            <span *ngIf="vendorForm.get('phone')?.errors?.['pattern']">Phone must be digits only</span>
+        <div class="col-md-3">
+          <label for="countryCode" class="form-label">Country Code <span class="text-danger">*</span></label>
+          <select
+            id="countryCode"
+            class="form-control"
+            formControlName="countryCode"
+            title="Select Country Code"
+            [class.is-invalid]="vendorForm.get('countryCode')?.touched && vendorForm.get('countryCode')?.invalid"
+          >
+            <option [ngValue]="null">-- Select Country Code --</option>
+            <option *ngFor="let c of countryCodes || []" [value]="c.code">{{ c.label }} ({{ c.code }})</option>
+          </select>
+          <div class="invalid-feedback" *ngIf="vendorForm.get('countryCode')?.touched && vendorForm.get('countryCode')?.hasError('required')">
+            Country code is required.
           </div>
         </div>
+
+        <div class="col-md-3">
+        <label class="form-label">Phone<span class=text-danger>*</span></label>
+        <input type="text" class="form-control" formControlName="phone" placeholder="Enter Phone Number"
+        maxlength="12"
+        [class.is-invalid]="vendorForm.get('phone')?.touched && vendorForm.get('phone')?.invalid">
+      <div class="invalid-feedback" *ngIf="vendorForm.get('phone')?.hasError('required')">Phone number is required.</div>
+      <div class="invalid-feedback" *ngIf="vendorForm.get('phone')?.hasError('pattern')">Valid Phone number is required.</div>
+    </div>
         <div class="col-12">
-          <label class="form-label">Location</label>
-          <textarea class="form-control" rows="2" formControlName="address" placeholder="Enter Location"></textarea>
+          <label class="form-label">Address<span class=text-danger>*</span></label>
+          <textarea class="form-control" rows="2" formControlName="address" placeholder="Enter Address"></textarea>
+          <div class="invalid-feedback" *ngIf="vendorForm.get('addrees')?.hasError('required')">Address is required.</div>
         </div>
         <div class="col-12 mt-3">
           <button class="btn btn-primary m-2" type="submit">Submit</button>
@@ -48,30 +100,34 @@
 
   <!-- Vendor List -->
   <div *ngIf="!isVisible" class="mb-3">
-    <h4>Vendor List</h4>
+    <h4>Vendors</h4>
     <div class="d-flex justify-content-end mb-3">
-      <button class="btn btn-primary" type="button" (click)="onAdd()">Add Vendor</button>
+      <button class="btn btn-success" type="button" (click)="onAdd()">
+        <i class="bi bi-plus-circle"></i> Add Vendor
+      </button>
     </div>
-    <table class="table table-bordered table-hover">
+    <table class="table table-bordered mt-3">
       <thead class="table-white">
         <tr>
           <th>Name</th>
+          <th>vendorType</th>
           <th>Category</th>
           <th>Email</th>
           <th>Phone</th>
-          <th>Location</th>
+          <th>Address</th>
           <th class="text-center">Action</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let vendor of VendorData; let i = index">
           <td>{{ vendor.VendorName }}</td>
+          <td>{{ vendor.VendorType }}</td>
           <td>{{ vendor.Category }}</td>
           <td>{{ vendor.Email }}</td>
           <td>{{ vendor.PhoneNumber }}</td>
           <td>{{ vendor.Location }}</td>
           <td class="text-center">
-            <button class="btn btn-sm btn-primary me-1" (click)="onEdit(vendor, i)">Edit</button>
+            <button class="btn btn-sm btn-success me-1" (click)="onEdit(vendor, i)">Edit</button>
             <button class="btn btn-sm btn-danger" (click)="onDelete(i)">Delete</button>
           </td>
         </tr>

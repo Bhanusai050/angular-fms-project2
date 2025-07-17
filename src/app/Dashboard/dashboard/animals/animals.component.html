@@ -183,27 +183,13 @@
 
         </div>
 
-
-
-
-
         <div class="col-md-4">
-          <label for="AnimalPurchasedDate" class="form-label">AnimalPurchasedDate <span
-              class="text-danger">*</span></label>
-          <input type="date" class="form-control" id="AnimalPurchasedDate" formControlName="AnimalPurchasedDate"
-            [class.is-invalid]="
-             animalForm.get('AnimalPurchasedDate')?.touched &&
-             animalForm.get('AnimalPurchasedDate')?.invalid
-             " />
-
-          <!-- required -->
-          <div class="invalid-feedback" *ngIf="
-           animalForm.get('AnimalPurchasedDate')?.touched &&
-           animalForm.get('AnimalPurchasedDate')?.hasError('required')
-           ">
-            Purchase date is required.
+          <label for="AnimalPurchasedDate" class="form-label">PurchasedDate</label>
+          <input type="date" class="form-control" id="AnimalPurchasedDate" formControlName="AnimalPurchasedDate"  [attr.max]="today"
+            [ngClass]="{ 'is-invalid': animalForm.get('AnimalPurchasedDate')?.invalid && animalForm.get('AnimalPurchasedDate')?.touched }" />
+          <div *ngIf="animalForm.get('AnimalPurchasedDate')?.touched && animalForm.get('AnimalPurchasedDate')?.invalid" class="text-danger">
+            <small>Date is required.</small>
           </div>
-
         </div>
         <div class="col-12 mt-3">
           <button class="btn btn-success m-2" type="submit">
@@ -217,9 +203,9 @@
     </form>
   </div>
   <div *ngIf="!isvisible">
-    <h4>Animals List</h4>
+    <h4>Animals </h4>
     <div class="d-flex justify-content-end mb-3">
-      <button class="btn btn-primary" type="button" (click)="onAdd()">
+      <button class="btn btn-success" type="button" (click)="onAdd()">
         <i class="bi bi-plus-circle"></i> Add Animal
       </button>
     </div>

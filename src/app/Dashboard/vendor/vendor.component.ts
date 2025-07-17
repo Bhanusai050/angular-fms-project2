@@ -16,15 +16,34 @@ export class VendorComponent implements OnInit {
   editingIndex: number | null = null;
   editingId: number | null = null; // Track VendorID for editing
 
+    countryCodes = [
+    { code: '+91', label: 'India' },
+    { code: '+1', label: 'USA' },
+    { code: '+44', label: 'UK' },
+    { code: '+61', label: 'Australia' }
+  ];
+  successMessage: string = '';
+showMessage: boolean = false;
+
+showSuccessMessage(msg: string) {
+  this.successMessage = msg;
+  this.showMessage = true;
+  setTimeout(() => {
+    this.showMessage = false;
+  }, 0); // auto-hide after 3 seconds
+}
   constructor(private fb: FormBuilder, private api: ApiService) {}
 
   ngOnInit(): void {
     this.vendorForm = this.fb.group({
+      vendorID: [0], // Initialize with 0 for new vendors 
       vendorName: ['', Validators.required],
-      category: [''],
-      email: ['', [Validators.required, Validators.email]],
+      vendorType: ['', Validators.required],
+      category: [null, Validators.required],
+      email: ['',[Validators.required, Validators.pattern('^[a-zA-Z0-9._%+-]+@gmail\\.com$')]],
+      countryCode: ['+91', Validators.required], // Default to India
       phone: ['', [Validators.required, Validators.pattern('^[0-9]{10,15}$')]],
-      address: ['']
+      address: ['', Validators.required]
     });
     this.loadVendors();
   }
@@ -33,8 +52,8 @@ export class VendorComponent implements OnInit {
     this.api.getVendors().subscribe({
       next: data => this.VendorData = data,
       error: err => {
-        this.VendorData = [];
-        console.error('Failed to load vendors:', err.message);
+      this.VendorData = [];
+      console.error('Failed to load vendors:', err.message);
       }
     });
   }
@@ -55,6 +74,7 @@ export class VendorComponent implements OnInit {
   }
 
   onSubmit(): void {
+    debugger;
     if (this.vendorForm.invalid) {
       this.vendorForm.markAllAsTouched();
       return;
@@ -63,7 +83,9 @@ export class VendorComponent implements OnInit {
     // Map form fields to backend property names
     const formData = this.vendorForm.getRawValue();
     const payload = {
+      VendorID: this.editingId || 0, // Use 0 for new vendors
       VendorName: formData.vendorName,
+      VendorType: formData.vendorType, // <-- Use correct property name
       Category: formData.category,
       Email: formData.email,
       PhoneNumber: formData.phone,   // <-- map to PhoneNumber
@@ -74,6 +96,7 @@ export class VendorComponent implements OnInit {
       this.api.updateVendor(this.editingId, payload).subscribe({
         next: () => {
           this.loadVendors();
+          this.showSuccessMessage('Vendor updated successfully');
           this.onCancel();
         },
         error: err => alert(err.message)
@@ -82,6 +105,7 @@ export class VendorComponent implements OnInit {
       this.api.addVendor(payload).subscribe({
         next: () => {
           this.loadVendors();
+          this.showSuccessMessage('Vendor added successfully');
           this.onCancel();
         },
         error: err => alert(err.message)
@@ -90,7 +114,17 @@ export class VendorComponent implements OnInit {
   }
 
   onEdit(data: any, index: number): void {
-    this.vendorForm.patchValue(data);
+    // this.vendorForm.patchValue(data);
+    this.vendorForm.patchValue({
+  vendorID: data.vendorID || data.VendorID, // Use correct property name from your backend  
+  vendorName: data.VendorName,
+  vendorType: data.VendorType,
+  category: data.Category,
+  email: data.Email,
+  countryCode: data.CountryCode,
+  phone: data.PhoneNumber,
+  address: data.Location
+});
     this.isVisible = true;
     this.isEditing = true;
     this.editingIndex = index;
@@ -101,7 +135,9 @@ export class VendorComponent implements OnInit {
     const vendorId = this.VendorData[index].vendorID || this.VendorData[index].VendorID;
     if (vendorId) {
       this.api.deleteVendor(vendorId).subscribe({
-        next: () => this.loadVendors(),
+        next: () =>{ this.loadVendors(),
+        this.showSuccessMessage('Vendor deleted successfully');
+        },
         error: err => alert(err.message)
       });
     }

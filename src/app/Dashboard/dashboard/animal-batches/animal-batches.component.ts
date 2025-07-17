@@ -12,6 +12,7 @@ export class AnimalBatchesComponent implements OnInit {
   isEditing: boolean = false;
   editIndex: number = -1;
   animalBatchesData: any[] = [];
+  today: string = new Date().toISOString().split('T')[0]; 
 
   constructor(private fb: FormBuilder, private api: ApiService) {}
 
@@ -93,6 +94,7 @@ export class AnimalBatchesComponent implements OnInit {
   onEdit(batch: any) {
     this.editIndex = this.animalBatchesData.indexOf(batch);
      const formattedDate = batch.PurchasedDate?.split('T')[0];
+     
 
     this.batchForm.patchValue({
     ...batch,
