@@ -10,7 +10,9 @@ import { ResetPasswordComponent } from './Layout/reset-password/reset-password.c
 import { CustomersComponent } from './Dashboard/dashboard/customers/customers.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' }, // 👈 Set login as default route
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'home', component: HomepageComponent }, // 👈 Add homepage as separate path
+  // { path: '', redirectTo: 'login', pathMatch: 'full' }, // 👈 Set login as default route
   { path: 'login', component: LoginComponent },
   { path: 'customers', component: CustomersComponent },
   { path: 'SignUp', component: SignUpComponent },
@@ -18,7 +20,7 @@ const routes: Routes = [
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'contact', component: ContactComponent },
   { path: 'header', component: HeaderComponent },
-  { path: 'home', component: HomepageComponent }, // 👈 Add homepage as separate path
+  
   {
     path: 'Dashboard',
     loadChildren: () =>
