@@ -319,6 +319,7 @@ export class ApiService {
   getVendors(): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/api/vendor/all`, { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) });
   }
+  
 
   // POST: /api/vendor/add
   addVendor(vendorData: any): Observable<any> {
@@ -334,6 +335,11 @@ export class ApiService {
   deleteVendor(id: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/api/vendor/delete/${id}`, { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) });
   }
+  getVendorTypes(): Observable<string[]> {
+    return this.http.get<string[]>(`${this.baseUrl}/api/vendor/types`, { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) });
+  }
+
+
 
   // GET: /api/feedtypes/all
   getFeedTypes(): Observable<any[]> {

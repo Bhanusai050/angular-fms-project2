@@ -13,8 +13,19 @@ export class AnimalBatchesComponent implements OnInit {
   editIndex: number = -1;
   animalBatchesData: any[] = [];
   today: string = new Date().toISOString().split('T')[0]; 
+    successMessage: string = '';
+showMessage: boolean = false;
+showSuccessMessage(msg: string) {
+  this.successMessage = msg;
+  this.showMessage = true;
+  setTimeout(() => {
+    this.showMessage = false;
+  }, 0); // auto-hide after 3 seconds
+}
+
 
   constructor(private fb: FormBuilder, private api: ApiService) {}
+
 
   ngOnInit(): void {
     this.createform();
@@ -49,6 +60,7 @@ export class AnimalBatchesComponent implements OnInit {
     }
     const payload = this.batchForm.value;
     if (this.isEditing && this.editIndex > -1 && payload.BatchID) {
+      this.showSuccessMessage('Batch updated successfully');
       // Edit
       this.api.updateAnimalBatch(payload.BatchID, payload).subscribe({
         next: () => {
@@ -66,6 +78,7 @@ export class AnimalBatchesComponent implements OnInit {
       // Add
       this.api.addAnimalBatch(payload).subscribe({
         next: () => {
+          this.showSuccessMessage('Batch added successfully');
           this.batchForm.reset();
           this.isvisible = false;
           this.getAnimalBatches();
@@ -106,7 +119,9 @@ export class AnimalBatchesComponent implements OnInit {
 
   onDelete(batch: any) {
     this.api.deleteAnimalBatch(batch.BatchID).subscribe({
-      next: () => { this.getAnimalBatches(); },
+      next: () => { this.getAnimalBatches(); 
+        this.showSuccessMessage('Batch deleted successfully');
+      },
       error: () => { alert('Failed to delete batch'); }
     });
   }

@@ -16,7 +16,7 @@ export class VendorComponent implements OnInit {
   editingIndex: number | null = null;
   editingId: number | null = null; // Track VendorID for editing
 
-    countryCodes = [
+    CountryCodes = [
     { code: '+91', label: 'India' },
     { code: '+1', label: 'USA' },
     { code: '+44', label: 'UK' },
@@ -30,23 +30,28 @@ showSuccessMessage(msg: string) {
   this.showMessage = true;
   setTimeout(() => {
     this.showMessage = false;
-  }, 0); // auto-hide after 3 seconds
+  }, 3000); // auto-hide after 3 seconds
 }
   constructor(private fb: FormBuilder, private api: ApiService) {}
 
   ngOnInit(): void {
-    this.vendorForm = this.fb.group({
+   this.createForm();
+    this.loadVendors();
+  }
+  createForm() {
+     this.vendorForm = this.fb.group({
       vendorID: [0], // Initialize with 0 for new vendors 
       vendorName: ['', Validators.required],
-      vendorType: ['', Validators.required],
+      vendorType: [null, Validators.required],
       category: [null, Validators.required],
-      email: ['',[Validators.required, Validators.pattern('^[a-zA-Z0-9._%+-]+@gmail\\.com$')]],
+      email: ['',[Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]], // Email validation regex
+      // countryCode: [null, Validators.required], // Use null to allow selection of country)]],
       countryCode: ['+91', Validators.required], // Default to India
+
       phone: ['', [Validators.required, Validators.pattern('^[0-9]{10,15}$')]],
       address: ['', Validators.required]
     });
-    this.loadVendors();
-  }
+    }
 
   loadVendors(): void {
     this.api.getVendors().subscribe({
@@ -59,7 +64,8 @@ showSuccessMessage(msg: string) {
   }
 
   onAdd(): void {
-    this.vendorForm.reset();
+   // this.vendorForm.reset();
+   this.createForm();
     this.isVisible = true;
     this.isEditing = false;
     this.editingIndex = null;
@@ -88,6 +94,7 @@ showSuccessMessage(msg: string) {
       VendorType: formData.vendorType, // <-- Use correct property name
       Category: formData.category,
       Email: formData.email,
+      CountryCode: formData.countryCode, // <-- map to CountryCode
       PhoneNumber: formData.phone,   // <-- map to PhoneNumber
       Location: formData.address     // <-- map to Location
     };

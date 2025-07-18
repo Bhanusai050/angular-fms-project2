@@ -1,6 +1,10 @@
 <div class="container mt-4">
   <div *ngIf="isvisible">
     <h3 class="mb-4"><span *ngIf="isEditing">Edit</span> <span *ngIf="!isEditing">Add</span> Animal Batch</h3>
+        <div *ngIf="showMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+          {{ successMessage }}
+           <button type="button" class="btn-close" (click)="showMessage = false"></button>
+        </div>
     <form [formGroup]="batchForm" (ngSubmit)="onSubmit()" novalidate>
       <div class="row g-3">
         <div class="col-md-4">
@@ -68,7 +72,7 @@
           <td>
             <button class="btn btn-warning btn-sm me-2" (click)="onEdit(batch)">
               <i class="bi bi-pencil-square"></i> Edit
-            </button>
+            </button> 
             <button class="btn btn-danger btn-sm" type="button" (click)="onDelete(batch)">
               <i class="bi bi-trash"></i> Delete
             </button>
