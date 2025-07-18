@@ -87,8 +87,10 @@
           <div class="invalid-feedback" *ngIf="vendorForm.get('addrees')?.hasError('required')">Address is required.</div>
         </div>
         <div class="col-12 mt-3">
-          <button class="btn btn-primary m-2" type="submit">Submit</button>
-          <button class="btn btn-danger" type="button" (click)="onCancel()">Cancel</button>
+          <button class="btn btn-success m-2" type="submit"><i class="bi bi-check-circle"></i>Submit</button>
+          <button class="btn btn-danger" type="button" (click)="onCancel()"><i class="bi bi-x-circle"></i>Cancel</button>
+               
+
         </div>
       </div>
     </form>
@@ -131,7 +133,7 @@
           </td>
         </tr>
         <tr *ngIf="VendorData.length === 0">
-          <td colspan="7" class="text-danger text-center"> No vendor records found</td>
+         <td colspan="7" class="text-danger fw-bold fs-7 text-uppercase text-center">No records found</td>
         </tr>
       </tbody>
     </table>

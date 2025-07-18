@@ -195,7 +195,7 @@
           <button class="btn btn-success m-2" type="submit">
             <i class="bi bi-check-circle"></i> Submit
           </button>
-          <button class="btn btn-outline-secondary" type="button" (click)="oncancel()">
+          <button class="btn btn-danger" type="button" (click)="oncancel()">
             <i class="bi bi-x-circle"></i> Cancel
           </button>
         </div>
@@ -245,8 +245,10 @@
           </td>
         </tr>
         <tr *ngIf="AnimalsData.length==0">
-          <td colspan="11" class="text-danger text-center">No records found</td>
+          <td colspan="10" class="text-danger fw-bold fs-7 text-uppercase text-center">No records found</td>
         </tr>
+
+        
       </tbody>
     </table>
   </div>

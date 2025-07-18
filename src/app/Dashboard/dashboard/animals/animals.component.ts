@@ -170,12 +170,12 @@ export class AnimalsComponent implements OnInit {
       this.editIndex = this.AnimalsData.indexOf(animal);
       this.animalForm.patchValue({
         animalName: animal.AnimalName,
-        batch: animal.Batch|| '',
+        Batch: animal.BatchID|| '',
         animalType: animal.AnimalTypeID,
         gender: animal.GenderID,
         healthStatus: animal.HealthStatusID,
         animalCost: animal.AnimalCost,
-        vendor: animal.Vendor,
+        VendorID: animal.VendorID,
         animalStatus: animal.AnimalStatusID,
         animalPurchasedDate: animal.AnimalPurchasedDate
       });
