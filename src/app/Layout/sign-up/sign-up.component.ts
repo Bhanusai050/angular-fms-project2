@@ -5,6 +5,7 @@ import { AbstractControl} from '@angular/forms';
 import { ValidationErrors } from '@angular/forms';
 import { ValidatorFn } from '@angular/forms';
 import { ApiService } from '../../api.service';
+import { UserService } from '../../user.service';
 
 
 // Custom validator factory to ensure password fields match
@@ -32,7 +33,8 @@ export class SignUpComponent {
   constructor(
     private fb: FormBuilder,
     private api: ApiService,
-    private router: Router
+    private router: Router,
+    private userService: UserService // ✅ keep UserService 
   ) {
     this.signupForm = this.fb.group({
       name: ['', [Validators.required, Validators.pattern('^[A-Za-z ]+$')]],
@@ -74,21 +76,24 @@ export class SignUpComponent {
     return;
   }
 
-  const formData = {
-    username: this.signupForm.value.name,
-    email: this.signupForm.value.email,
-    passwordHash: this.signupForm.value.password
-  };
+  const { name, email, password } = this.signupForm.value;
+    const formData = { username: name, email, passwordHash: password };
 
-  this.api.register(formData).subscribe({
-    next: () => {
-      this.successMessage = '✅ Registration successful!';
-      setTimeout(() => this.router.navigate(['/login']), 2000);
-    },
-    error: (err: Error) => {
-      this.errorMessage = err.message;
-    }
-  });
-}
+    this.api.register(formData).subscribe({
+      next: (resp: any) => {
+        // 🎯 Key addition: set user for Dashboard
+        this.userService.setUser({
+          id: resp.username,
+          name,
+          email
+        });
 
+        this.successMessage = '✅ Registration successful!';
+        setTimeout(() => this.router.navigate(['/dashboard']), 2000);
+      },
+      error: (err: Error) => {
+        this.errorMessage = err.message;
+      }
+    });
+  }
 }
