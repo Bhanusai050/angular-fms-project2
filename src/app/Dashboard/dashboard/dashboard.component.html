@@ -1,20 +1,17 @@
-<header class="dashboard-header"> 
+<header class="dashboard-header">
   <div class="header-content d-flex align-items-center">
+    <!-- Toggle button at the top-left corner -->
+    <button class="btn btn-toggle-icon toggle-corner" (click)="toggleSidebar()">
+      <i class="bi" [ngClass]="sidebarToggleIcon"></i>
+    </button>
     <div class="d-flex align-items-center me-3">
-       <img src="assets/images/Farm.png" 
-         alt="Farm Livestock Logo" 
-         height="75" 
+      <img src="assets/images/Farm.png" 
+           alt="Farm Livestock Logo" 
+           height="75" 
            class="d-inline-block me-2">
       <span class="dashboard-title">Farm Management System</span>
     </div>
     <div class="d-flex align-items-center ms-auto">
-      <!-- ✅ Collapse/Expand Button at the top right -->
-      <button class="btn btn-outline-light me-3" (click)="toggleSidebar()">
-        <i class="bi" [ngClass]="sidebarToggleIcon"></i>
-         {{ sidebarToggleLabel }}
-
-      </button>
-      <!-- Displays the username from your component -->
       <span class="user-name">{{ userName }}!</span>
       <button class="btn btn-primary" (click)="logout()">Logout</button>
     </div>
@@ -26,49 +23,55 @@
     <ul>
       <li>
         <a routerLink="animals" routerLinkActive="active">
-          <i class="bi bi-cow"></i>
+          <i class="bi bi-egg"></i>
           <span *ngIf="!isSidebarCollapsed">Animals</span>
         </a>
       </li>
       <li>
         <a routerLink="animalbatches" routerLinkActive="active">
-          <i class="bi bi-collection"></i>
+          <i class="bi bi-grid"></i>
           <span *ngIf="!isSidebarCollapsed">Animal Batches</span>
         </a>
       </li>
       <li>
         <a routerLink="vendor" routerLinkActive="active">
-          <i class="bi bi-truck"></i>
+          <i class="bi bi-shop"></i>
           <span *ngIf="!isSidebarCollapsed">Vendors</span>
         </a>
       </li>
       <li>
         <a routerLink="feed-inventory" routerLinkActive="active">
-          <i class="bi bi-boxes"></i>
+          <i class="bi bi-basket"></i>
           <span *ngIf="!isSidebarCollapsed">Feed Inventory</span>
         </a>
       </li>
       <li>
+        <a routerLink="Orders" routerLinkActive="active">
+          <i class="bi bi-basket"></i>
+          <span *ngIf="!isSidebarCollapsed">Orders</span>
+        </a>
+      </li>
+      <li>
         <a routerLink="/Dashboard/customers" routerLinkActive="active">
-          <i class="bi bi-people"></i>
+          <i class="bi bi-person-circle"></i>
           <span *ngIf="!isSidebarCollapsed">Customers</span>
         </a>
       </li>
       <li>
         <a routerLink="/Dashboard/expenses" routerLinkActive="active">
-          <i class="bi bi-cash-stack"></i>
+          <i class="bi bi-wallet2"></i>
           <span *ngIf="!isSidebarCollapsed">Expenses</span>
         </a>
       </li>
       <li>
         <a routerLink="/Dashboard/production" routerLinkActive="active">
-          <i class="bi bi-bar-chart"></i>
+          <i class="bi bi-graph-up"></i>
           <span *ngIf="!isSidebarCollapsed">Productions</span>
         </a>
       </li>
       <li>
         <a routerLink="/Dashboard/investments" routerLinkActive="active">
-          <i class="bi bi-piggy-bank"></i>
+          <i class="bi bi-bank"></i>
           <span *ngIf="!isSidebarCollapsed">Investments</span>
         </a>
       </li>
@@ -80,7 +83,6 @@
   </div>
 </div>
 
-<!-- Dashboard Footer -->
 <footer class="dashboard-footer">
   <div class="footer-content">
     <span class="footer-center">© 2025 Farm Management System. All rights reserved.</span>

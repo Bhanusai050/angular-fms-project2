@@ -1,4 +1,3 @@
-
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../auth.service';
 import { Observable } from 'rxjs';
@@ -7,11 +6,11 @@ import { UserService, User } from '../../user.service';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss'] // ✅ Use styleUrls, not styleUrl
+  styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
   userName: string = '';
-  isSidebarCollapsed: boolean = false; // ✅ Added for toggle
+  isSidebarCollapsed: boolean = false;
 
   constructor(private authService: AuthService) {}
 
@@ -20,24 +19,21 @@ export class DashboardComponent implements OnInit {
     this.userName = stored || 'User';
   }
 
-  toggleSidebar(): void {
-    this.isSidebarCollapsed = !this.isSidebarCollapsed;
-  }
-  get sidebarToggleIcon(): string {
-    return this.isSidebarCollapsed ? 'bi-chevron-right' : 'bi-chevron-left';
-  }
+toggleSidebar(): void {
+  this.isSidebarCollapsed = !this.isSidebarCollapsed;
+}
 
-  get sidebarToggleLabel(): string {
-    return this.isSidebarCollapsed ? 'Expand' : 'Collapse';
-  }
+get sidebarToggleIcon(): string {
+  return this.isSidebarCollapsed ? 'bi-chevron-right' : 'bi-chevron-left';
+}
 
   logout(): void {
     localStorage.removeItem('auth_token');
     localStorage.removeItem('username');
     sessionStorage.removeItem('auth_token');
     sessionStorage.removeItem('username');
-    window.location.href = '/home'; // Redirect to home after logout
-    
+    window.location.href = '/home';
+
     console.log("Logging out...");
   }
 }
