@@ -1,0 +1,16 @@
+.navbar-brand {
+  padding: 0;
+}
+.navbar-brand img {
+  display: block;
+  height: auto;
+  max-height: 75px;    /* adjust to your navbar height */
+  width: auto;
+  margin: 0;
+}
+.navbar {
+  align-items: center; /* vertically center logo and nav items */
+}
+.navbar-brand.fw-bold {
+  font-size: 1.5rem; /* adjust as needed—1.5rem ≈ 24px */
+}
