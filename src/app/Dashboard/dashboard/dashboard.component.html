@@ -1,12 +1,16 @@
-<!-- Dashboard Header -->
-<header class="dashboard-header">
+<header class="dashboard-header"> 
   <div class="header-content">
     <img src="https://static.vecteezy.com/system/resources/previews/040/328/743/non_2x/cattle-animal-farm-livestock-logo-icon-and-template-illustration-vector.jpg"
          alt="Farm Livestock Logo"
          height="50"
          class="d-inline-block align-text-top me-3">
     <span class="dashboard-title">Farm Management System</span>
-    <div class="user-info">
+    <div class="d-flex align-items-center">
+    <!-- ✅ Collapse/Expand Button at the top right -->
+    <button class="btn btn-outline-light me-3" (click)="toggleSidebar()">
+      <i class="bi" [ngClass]="isSidebarCollapsed ? 'bi-chevron-right' : 'bi-chevron-left'"></i>
+      {{ isSidebarCollapsed ? 'Expand' : 'Collapse' }}
+    </button>
       <!-- Displays the username from your component -->
       <span class="user-name">{{ userName }}!</span>
       <button class="btn btn-primary" (click)="logout()">Logout</button>
@@ -15,7 +19,8 @@
 </header>
 
 <div class="dashboard-layout">
-  <nav class="sidebar">
+  <nav class="sidebar" [ngClass]="{ 'collapsed': isSidebarCollapsed }">
+
     <ul>
       <li><a routerLink="animals" routerLinkActive="active">Animals</a></li>
       <li><a routerLink="animalbatches" routerLinkActive="active">Animal Batches</a></li>
@@ -40,4 +45,4 @@
     <span class="footer-center">© 2025 Farm Management System. All rights reserved.</span>
     <span class="footer-links"></span>
   </div>
-</footer>
+</footer>                       

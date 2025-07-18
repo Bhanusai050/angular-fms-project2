@@ -1,12 +1,7 @@
-.dashboard-header .header-content img {
-  height: 80px;     /* Adjust this value to change logo size */
-  width: auto;      /* Preserve aspect ratio */
-  object-fit: contain; /* Prevent distortion */
-}
 .dashboard-header {
-  background: linear-gradient(90deg,green ,#5fa05f 100%);
+  background: linear-gradient(90deg, green, #5fa05f 100%);
   color: #fff;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
   padding-bottom: 0;
 }
 .header-content {
@@ -31,44 +26,18 @@
   gap: 16px;
   font-size: 1.1rem;
 }
-.dashboard-nav {
-  background: linear-gradient(90deg, green 0%, green 100%);
-  padding: 0 0 16px 0;
-  box-shadow: none;
-}
-.dashboard-nav ul {
-  display: flex;
-  justify-content: center;
-  gap: 32px;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.dashboard-nav a {
-  color: #fff;
-  font-weight: 500;
-  text-decoration: none;
-  padding: 8px 20px;
-  border-radius: 6px;
-  transition: background 0.2s, color 0.2s;
-  font-size: 1.1rem;
-}
-.dashboard-nav a.active,
-.dashboard-nav a:hover {
-  background: #fff;
-  color: #2575fc;
-}
 .dashboard-layout {
   display: flex;
   min-height: 100vh;
 }
 .sidebar {
   width: 220px;
-  background: linear-gradient(180deg, green 0%,green 100%);
+  background: linear-gradient(180deg, green 0%, green 100%);
   color: #fff;
   padding: 32px 0 0 0;
   min-height: 100vh;
-  box-shadow: 2px 0 8px rgba(0,0,0,0.09);
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.09);
+  transition: width 0.3s ease;
 }
 .sidebar ul {
   list-style: none;
@@ -103,7 +72,7 @@
   color: #fff;
   text-align: center;
   padding: 18px 0;
-  box-shadow: 0 -2px 8px rgba(0,0,0,0.07);
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.07);
   position: relative;
 }
 .footer-content {
@@ -121,8 +90,6 @@
   font-size: 1rem;
   opacity: 0.85;
 }
-
-// Section cards (example for dashboard widgets)
 .section-card {
   background: #fff;
   border-radius: 16px;
@@ -134,8 +101,6 @@
 .section-card:hover {
   box-shadow: 0 4px 24px rgba(80, 80, 180, 0.13);
 }
-
-// Button colors
 .btn-primary {
   background: linear-gradient(90deg, #2575fc 0%, #6a11cb 100%);
   border: none;
@@ -162,4 +127,20 @@
 .btn-danger:hover {
   background: linear-gradient(90deg, #f09819 0%, #ff5858 100%);
   color: #fff;
+}
+
+/* NEW: Collapsed sidebar styles */
+.sidebar.collapsed {
+  width: 60px;
+  overflow: hidden;
+}
+.sidebar.collapsed a {
+  font-size: 0;
+  padding: 12px 16px;
+}
+.sidebar.collapsed li {
+  text-align: center;
+}
+.sidebar.collapsed {
+  background-color: red; /* for test */
 }
