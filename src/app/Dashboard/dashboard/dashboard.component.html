@@ -10,8 +10,9 @@
     <div class="d-flex align-items-center ms-auto">
       <!-- ✅ Collapse/Expand Button at the top right -->
       <button class="btn btn-outline-light me-3" (click)="toggleSidebar()">
-        <i class="bi" [ngClass]="isSidebarCollapsed ? 'bi-chevron-right' : 'bi-chevron-left'"></i>
-        {{ isSidebarCollapsed ? 'Expand' : 'Collapse' }}
+        <i class="bi" [ngClass]="sidebarToggleIcon"></i>
+         {{ sidebarToggleLabel }}
+
       </button>
       <!-- Displays the username from your component -->
       <span class="user-name">{{ userName }}!</span>
@@ -20,18 +21,57 @@
   </div>
 </header>
 
-<div class="dashboard-layout">
+<div class="dashboard-layout d-flex">
   <nav class="sidebar" [ngClass]="{ 'collapsed': isSidebarCollapsed }">
     <ul>
-      <li><a routerLink="animals" routerLinkActive="active">Animals</a></li>
-      <li><a routerLink="animalbatches" routerLinkActive="active">Animal Batches</a></li>
-      <li><a routerLink="vendor" routerLinkActive="active">Vendors</a></li>
-      <li><a routerLink="feed-inventory" routerLinkActive="active">Feed Inventory</a></li>
-      <li><a routerLink="orders" routerLinkActive="active">Orders</a></li>
-      <li><a routerLink="/Dashboard/customers" routerLinkActive="active">Customers</a></li>
-      <li><a routerLink="/Dashboard/expenses" routerLinkActive="active">Expenses</a></li>
-      <li><a routerLink="/Dashboard/production" routerLinkActive="active">Productions</a></li>
-      <li><a routerLink="/Dashboard/investments" routerLinkActive="active">Investments</a></li>
+      <li>
+        <a routerLink="animals" routerLinkActive="active">
+          <i class="bi bi-cow"></i>
+          <span *ngIf="!isSidebarCollapsed">Animals</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="animalbatches" routerLinkActive="active">
+          <i class="bi bi-collection"></i>
+          <span *ngIf="!isSidebarCollapsed">Animal Batches</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="vendor" routerLinkActive="active">
+          <i class="bi bi-truck"></i>
+          <span *ngIf="!isSidebarCollapsed">Vendors</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="feed-inventory" routerLinkActive="active">
+          <i class="bi bi-boxes"></i>
+          <span *ngIf="!isSidebarCollapsed">Feed Inventory</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/Dashboard/customers" routerLinkActive="active">
+          <i class="bi bi-people"></i>
+          <span *ngIf="!isSidebarCollapsed">Customers</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/Dashboard/expenses" routerLinkActive="active">
+          <i class="bi bi-cash-stack"></i>
+          <span *ngIf="!isSidebarCollapsed">Expenses</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/Dashboard/production" routerLinkActive="active">
+          <i class="bi bi-bar-chart"></i>
+          <span *ngIf="!isSidebarCollapsed">Productions</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/Dashboard/investments" routerLinkActive="active">
+          <i class="bi bi-piggy-bank"></i>
+          <span *ngIf="!isSidebarCollapsed">Investments</span>
+        </a>
+      </li>
     </ul>
   </nav>
 

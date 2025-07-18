@@ -23,6 +23,13 @@ export class DashboardComponent implements OnInit {
   toggleSidebar(): void {
     this.isSidebarCollapsed = !this.isSidebarCollapsed;
   }
+  get sidebarToggleIcon(): string {
+    return this.isSidebarCollapsed ? 'bi-chevron-right' : 'bi-chevron-left';
+  }
+
+  get sidebarToggleLabel(): string {
+    return this.isSidebarCollapsed ? 'Expand' : 'Collapse';
+  }
 
   logout(): void {
     localStorage.removeItem('auth_token');
