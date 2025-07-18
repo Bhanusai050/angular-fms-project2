@@ -29,7 +29,8 @@ export class DashboardComponent implements OnInit {
     localStorage.removeItem('username');
     sessionStorage.removeItem('auth_token');
     sessionStorage.removeItem('username');
-    window.location.href = '/login';
+    window.location.href = '/home'; // Redirect to home after logout
+    
     console.log("Logging out...");
   }
 }
