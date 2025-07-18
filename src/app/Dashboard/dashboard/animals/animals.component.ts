@@ -14,6 +14,9 @@ export class AnimalsComponent implements OnInit {
   isEditing: boolean = false;
   editIndex: number = -1;
   record: any;
+
+  successMessage: string = '';
+  showMessage: boolean = false;
   
   today: string = new Date().toISOString().split('T')[0];
 
@@ -112,8 +115,10 @@ export class AnimalsComponent implements OnInit {
     });
   }
   getBatchName(BatchID: number): string {
+    const batch = this.batches.find(b => b.BatchID === BatchID);
+    return batch ? batch.BatchName : String(BatchID);
     // Deprecated: Only batchName is used now
-    return '';
+    
   }
 
   onSubmit() {
@@ -144,7 +149,10 @@ export class AnimalsComponent implements OnInit {
     // }
 
     this.api.addAnimal(payload).subscribe({
-      next: () => { /* handle success */ },
+      
+      next: () => { /* handle success */ 
+        
+      },
       error: (err) => {
         console.error('API Error:', err);
         alert('Server error: ' + (err?.message || 'Please try again later.'));
@@ -169,8 +177,8 @@ export class AnimalsComponent implements OnInit {
     onEdits(animal: any): void {
       this.editIndex = this.AnimalsData.indexOf(animal);
       this.animalForm.patchValue({
-        animalName: animal.AnimalName,
-        Batch: animal.BatchID|| '',
+        AnimalName: animal.AnimalName,
+        BatchID: animal.BatchID|| '',
         animalType: animal.AnimalTypeID,
         gender: animal.GenderID,
         healthStatus: animal.HealthStatusID,
@@ -186,9 +194,13 @@ export class AnimalsComponent implements OnInit {
   onDelete(animal: any): void {
     
       this.api.deleteAnimal(animal.AnimalID).subscribe({
-      next: () => { this.getAnimals(); },
+        
+      next: () => { this.getAnimals(); 
+        
+      },
       error: () => { alert('Failed to delete animal'); }
       
+
     });
   }
 
@@ -214,7 +226,7 @@ export class AnimalsComponent implements OnInit {
   // Block anything that is not 0‑9
   const isDigit = /^[0-9]$/.test(event.key);
   if (!isDigit) {
-  event.preventDefault();
+    event.preventDefault();
   }
 }
 

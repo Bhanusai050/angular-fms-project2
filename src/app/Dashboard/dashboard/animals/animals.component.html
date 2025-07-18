@@ -33,14 +33,14 @@
 
 
         <div class="col-md-4">
-          <label for="BatchID" class="form-label">Batch <span class="text-danger">*</span></label>
+          <label for="BatchID" class="form-label">Batch Name<span class="text-danger">*</span></label>
           <!-- <input type="text" class="form-control" id="BatchID" formControlName="BatchID" placeholder="Enter Batch"
             [class.is-invalid]="animalForm.get('BatchID')?.touched && animalForm.get('BatchID')?.invalid" /> -->
          <select class="form-select" id="BatchID" formControlName="BatchID" [class.is-invalid]="
          animalForm.get('BatchID')?.touched &&
          animalForm.get('BatchID')?.invalid">
             <option [ngValue]="null">-- Select Batch --</option>
-            <option *ngFor="let batch of batches" [ngValue]="batch.BatchID">{{ batch.BatchName }}</option>
+            <option *ngFor="let batch of batches" [ngValue]="batch.BatchName">{{ batch.BatchID }}</option>
           </select>
             <div class="invalid-feedback"
             *ngIf="animalForm.get('BatchID')?.touched && animalForm.get('BatchID')?.hasError('required')">
@@ -148,7 +148,7 @@
         "> -->
 
 
-          <select class="form-select" id="VendorID" formControlName="VendorID" [class.is-invalid]="
+        <select class="form-select" id="VendorID" formControlName="VendorID" [class.is-invalid]="
          animalForm.get('VendorID')?.touched &&
          animalForm.get('VendorID')?.invalid">
             <option [ngValue]="null">-- Select Vendor --</option>
@@ -203,6 +203,9 @@
     </form>
   </div>
   <div *ngIf="!isvisible">
+    <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+       {{ successMessage }}
+    </div>
     <h4>Animals </h4>
     <div class="d-flex justify-content-end mb-3">
       <button class="btn btn-success" type="button" (click)="onAdd()">
@@ -213,7 +216,7 @@
       <thead class="table-white">
         <tr>
           <th>Name</th>
-          <th>Batch</th>
+          <th>Batch Name</th>
           <th>Type</th>
           <th>Gender</th>
           <th>Health</th>
@@ -227,7 +230,7 @@
       <tbody>
         <tr *ngFor="let animal of AnimalsData">
           <td>{{ animal.AnimalName }}</td>
-          <td>{{ getBatchName(animal.BatchID) }}</td>
+          <td>{{ getBatchName(animal.BatchName) }}</td>
           <td>{{ getAnimalTypeName(animal.AnimalTypeID) }}</td>
           <td>{{ getGenderName(animal.GenderID) }}</td>
           <td>{{ getHealthStatusName(animal.HealthStatusID) }}</td>
@@ -247,8 +250,6 @@
         <tr *ngIf="AnimalsData.length==0">
           <td colspan="10" class="text-danger fw-bold fs-7 text-uppercase text-center">No records found</td>
         </tr>
-
-        
       </tbody>
     </table>
   </div>

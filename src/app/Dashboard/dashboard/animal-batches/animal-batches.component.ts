@@ -20,7 +20,7 @@ showSuccessMessage(msg: string) {
   this.showMessage = true;
   setTimeout(() => {
     this.showMessage = false;
-  }, 0); // auto-hide after 3 seconds
+  }, 3000); // auto-hide after 3 seconds
 }
 
 
@@ -60,7 +60,7 @@ showSuccessMessage(msg: string) {
     }
     const payload = this.batchForm.value;
     if (this.isEditing && this.editIndex > -1 && payload.BatchID) {
-      this.showSuccessMessage('Batch updated successfully');
+      this.showSuccessMessage('Batch Edited successfully');
       // Edit
       this.api.updateAnimalBatch(payload.BatchID, payload).subscribe({
         next: () => {

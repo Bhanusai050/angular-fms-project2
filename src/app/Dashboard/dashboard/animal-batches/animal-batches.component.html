@@ -48,8 +48,11 @@
       </div>
     </form>
   </div>
-  <div *ngIf="!isvisible">
-    <h4>Animal Batches</h4>
+  <div *ngIf="!isvisible"class="mb-3">
+      <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+       {{ successMessage }}
+       </div>
+   <h4>Animal Batches</h4>
     <div class="d-flex justify-content-end mb-3">
       <button class="btn btn-success" type="button" (click)="onAdd()">
         <i class="bi bi-plus-circle"></i> Add Batch
