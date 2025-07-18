@@ -4,6 +4,7 @@ import { FormBuilder,FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { timer,Subscription } from 'rxjs';
 import{map,takeWhile}from'rxjs/operators';
+import { Location } from '@angular/common'; // ✅ Import Location for back navigation
 
 @Component({
   selector: 'app-forgetpassword',
@@ -12,20 +13,21 @@ import{map,takeWhile}from'rxjs/operators';
 })
 
 export class ForgetpasswordComponent {
-  forgotForm: FormGroup;
+   forgotForm: FormGroup;
   otpForm: FormGroup;
   loading = false;
   otpGenerated = false;
   successMessage = '';
-  otpMessage = '';         // Moved here
+  otpMessage = '';
   timerRunning = false;
   timerDisplay = '';
   private timerSub?: Subscription;
   readonly OTP_VALID_SECONDS = 120;
 
-  constructor(private fb: FormBuilder,
-    private router:Router,
-    
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private location: Location // ✅ Injected Location
   ) {
     this.forgotForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]]
@@ -46,7 +48,7 @@ export class ForgetpasswordComponent {
   get otp() { return this.otpForm.get('otp')!; }
 
   onSubmit() {
-    this.otpMessage = '';  // Clear any old message
+    this.otpMessage = '';
     if (this.forgotForm.invalid) {
       this.forgotForm.markAllAsTouched();
       return;
@@ -61,29 +63,35 @@ export class ForgetpasswordComponent {
   }
 
   verifyOtp() {
-    this.otpMessage = ''; // Clear first
+    this.otpMessage = '';
     if (this.otpForm.invalid) {
       this.otpForm.markAllAsTouched();
       return;
     }
-
-    // Do verification logic (API call) here...
-    // On success:
     this.timerSub?.unsubscribe();
     this.timerRunning = false;
-    this.otpMessage = 'OTP verified successfully!';  
+    this.otpMessage = 'OTP verified successfully!';
     alert('✅ OTP verified successfully!');
 
-    // 🔁 Redirect to login page after verification
-    this.router.navigate(['/login']);
+    // 🔁 Redirect to Reset Password page (instead of login)
+    this.router.navigate(['/reset-password']); // correct use of Router.navigate :contentReference[oaicite:1]{index=1}
   }
 
   resendOtp() {
-    this.otpMessage = '';  // Clear message on resend
+    this.otpMessage = '';
     if (!this.timerRunning) {
       this.successMessage = `OTP resent to ${this.email.value}`;
       this.otpForm.reset();
       this.startTimer(this.OTP_VALID_SECONDS);
+    }
+  }
+
+  // ✅ Back button logic remains intact
+  goBack() {
+    if (window.history.length > 1) {
+      this.location.back();
+    } else {
+      this.router.navigate(['/login']);
     }
   }
 
