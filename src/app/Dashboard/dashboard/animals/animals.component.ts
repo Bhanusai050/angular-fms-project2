@@ -71,7 +71,7 @@ export class AnimalsComponent implements OnInit {
       animalType: [null, Validators.required],
       gender: [null, Validators.required],
       healthStatus: [null, Validators.required],
-      animalCost: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
+      animalCost: ['', [Validators.required, Validators.pattern('^[0-9]{0-7}*$')]],
       VendorID: [null, Validators.required], // will hold VendorID
       animalStatus: [null, Validators.required],
       AnimalPurchasedDate: ['', Validators.required]
@@ -200,7 +200,6 @@ export class AnimalsComponent implements OnInit {
       },
       error: () => { alert('Failed to delete animal'); }
       
-
     });
   }
 
@@ -251,7 +250,3 @@ export class AnimalsComponent implements OnInit {
     return vendor ? vendor.VendorName : String(id);
   }
 }
-
-
-
-
