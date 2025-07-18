@@ -4,7 +4,16 @@
  
     <form [formGroup]="customerForm" (ngSubmit)="onSubmit()" novalidate>
       <div class="row g-3">
-
+ 
+        <div class="col-md-4">
+          <label for="customer" class="form-label">Customer ID</label>
+          <input type="text" class="form-control" id="customer" formControlName="customer"
+            [ngClass]="{ 'is-invalid': customerForm.get('customer')?.invalid && customerForm.get('customer')?.touched }" />
+          <div *ngIf="customerForm.get('customer')?.touched && customerForm.get('customer')?.invalid" class="text-danger">
+            <small *ngIf="customerForm.get('customer')?.errors?.['required']">Customer ID is required.</small>
+            <small *ngIf="customerForm.get('customer')?.errors?.['pattern']">Only integers allowed.</small>
+          </div>
+        </div>
  
         <div class="col-md-4">
           <label for="fullName" class="form-label">Full Name</label>
@@ -64,9 +73,9 @@
   <div *ngIf="!isvisible">
     <h4>Customers</h4>
     <div class="d-flex justify-content-end mb-3">
-      <button class="btn btn-success" (click)="onAdd()"><i class="bi bi-plus-circle"></i> Add Customer</button>
+      <button class="btn btn-success" (click)="onAdd()">Add Customer</button>
     </div>
-    
+    <hr class="my-5" />
  
     <table class="table table-bordered text-center shadow-sm bg-white rounded">
       <thead style="background-color: #f8f9fa;">
@@ -100,4 +109,4 @@
     </table>
   </div>
 </div>
-
+       customers html
