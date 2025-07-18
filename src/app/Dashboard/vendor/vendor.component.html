@@ -128,8 +128,10 @@
           <td>{{ vendor.PhoneNumber }}</td>
           <td>{{ vendor.Location }}</td>
           <td class="text-center">
-            <button class="btn btn-sm btn-success me-1" (click)="onEdit(vendor, i)">Edit</button>
-            <button class="btn btn-sm btn-danger" (click)="onDelete(i)">Delete</button>
+            <button class="btn btn-sm btn-success me-2" (click)="onEdit(vendor, i)">
+              <i class="bi bi-pencil-square"></i>Edit</button>
+            <button class="btn btn-sm btn-danger" (click)="onDelete(i)">
+              <i class="bi bi-pencil-square"></i>Delete</button>
           </td>
         </tr>
         <tr *ngIf="VendorData.length === 0">

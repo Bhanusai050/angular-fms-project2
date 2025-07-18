@@ -236,7 +236,7 @@
           <td>{{ getAnimalStatusName(animal.AnimalStatusID) }}</td>
           <td>{{ animal.AnimalPurchasedDate | date: 'yyyy-MM-dd' }}</td>
           <td>
-            <button class="btn btn-warning btn-sm me-2" (click)="onEdits(animal)">
+            <button class="btn btn-success me-2" (click)="onEdits(animal)">
               <i class="bi bi-pencil-square"></i> Edit
             </button>
             <button class="btn btn-danger btn-sm" type="button" (click)="onDelete(animal)">

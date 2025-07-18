@@ -214,7 +214,7 @@ export class AnimalsComponent implements OnInit {
   // Block anything that is not 0‑9
   const isDigit = /^[0-9]$/.test(event.key);
   if (!isDigit) {
-    event.preventDefault();
+  event.preventDefault();
   }
 }
 
