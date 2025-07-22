@@ -40,8 +40,8 @@ export class CustomersComponent implements OnInit {
     if (this.customerForm.valid) {
       this.customerData.push(this.customerForm.value);
       this.customerForm.reset();
-      this.isvisible = false;
       alert('Customer added successfully!');
+      this.isvisible = false;
     }
   }
 
