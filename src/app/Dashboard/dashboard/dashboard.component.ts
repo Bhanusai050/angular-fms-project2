@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../auth.service';
+
 import { Observable } from 'rxjs';
 import { UserService, User } from '../../user.service';
 
@@ -37,3 +38,4 @@ get sidebarToggleIcon(): string {
     console.log("Logging out...");
   }
 }
+

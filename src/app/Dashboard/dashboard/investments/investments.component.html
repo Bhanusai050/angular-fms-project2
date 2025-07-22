@@ -1,50 +1,44 @@
 <div class="container mt-4">
   <div *ngIf="isvisible">
     <h3 class="mb-4">Add Investment</h3>
-    
-
-
     <form [formGroup]="investmentForm" (ngSubmit)="onSubmit()" novalidate>
       <div class="row g-3">
         <div class="col-md-4">
-          <label for="investment" class="form-label">Investment </label>
-          <input type="text" class="form-control" id="investment" formControlName="investment"
+          <label class="form-label">Investment</label>
+          <input type="text" class="form-control" formControlName="investment"
             [ngClass]="{ 'is-invalid': investmentForm.get('investment')?.invalid && investmentForm.get('investment')?.touched }" />
-          <div *ngIf="investmentForm.get('investment')?.touched && investmentForm.get('investment')?.invalid"
-            class="text-danger">
-            <small *ngIf="investmentForm.get('investment')?.errors?.['required']">Investment is required.</small>
-            <small *ngIf="investmentForm.get('investment')?.errors?.['pattern']">Only integers allowed.</small>
+          <div class="text-danger" *ngIf="investmentForm.get('investment')?.touched && investmentForm.get('investment')?.invalid">
+            <small *ngIf="investmentForm.get('investment')?.errors?.['required']">Required</small>
+            <small *ngIf="investmentForm.get('investment')?.errors?.['pattern']">Only integers</small>
           </div>
         </div>
 
         <div class="col-md-4">
-          <label for="date" class="form-label">Date</label>
-          <input type="date" class="form-control" id="date" formControlName="date" [max]="today"
+          <label class="form-label">Date</label>
+          <input type="date" class="form-control" formControlName="date" [max]="today"
             [ngClass]="{ 'is-invalid': investmentForm.get('date')?.invalid && investmentForm.get('date')?.touched }" />
-          <div *ngIf="investmentForm.get('date')?.touched && investmentForm.get('date')?.invalid" class="text-danger">
-            <small>Date is required.</small>
+          <div class="text-danger" *ngIf="investmentForm.get('date')?.touched && investmentForm.get('date')?.invalid">
+            <small>Date required</small>
           </div>
         </div>
 
         <div class="col-md-4">
-          <label for="capitalAmount" class="form-label">Capital Amount</label>
-          <input type="number" class="form-control" id="capitalAmount" formControlName="capitalAmount"
+          <label class="form-label">Capital Amount</label>
+          <input type="number" class="form-control" formControlName="capitalAmount"
             [ngClass]="{ 'is-invalid': investmentForm.get('capitalAmount')?.invalid && investmentForm.get('capitalAmount')?.touched }" />
-          <div *ngIf="investmentForm.get('capitalAmount')?.touched && investmentForm.get('capitalAmount')?.invalid"
-            class="text-danger">
-            <small *ngIf="investmentForm.get('capitalAmount')?.errors?.['required']">Capital amount is required.</small>
-            <small *ngIf="investmentForm.get('capitalAmount')?.errors?.['min']">Amount must be at least 1.</small>
+          <div class="text-danger" *ngIf="investmentForm.get('capitalAmount')?.touched && investmentForm.get('capitalAmount')?.invalid">
+            <small *ngIf="investmentForm.get('capitalAmount')?.errors?.['required']">Required</small>
+            <small *ngIf="investmentForm.get('capitalAmount')?.errors?.['min']">Min value 1</small>
           </div>
         </div>
 
         <div class="col-md-12">
-          <label for="description" class="form-label">Description</label>
-          <input type="text" class="form-control" id="description" formControlName="description"
+          <label class="form-label">Description</label>
+          <input type="text" class="form-control" formControlName="description"
             [ngClass]="{ 'is-invalid': investmentForm.get('description')?.invalid && investmentForm.get('description')?.touched }" />
-          <div *ngIf="investmentForm.get('description')?.touched && investmentForm.get('description')?.invalid"
-            class="text-danger">
-            <small *ngIf="investmentForm.get('description')?.errors?.['required']">Description is required.</small>
-            <small *ngIf="investmentForm.get('description')?.errors?.['maxlength']">Max 200 characters allowed.</small>
+          <div class="text-danger" *ngIf="investmentForm.get('description')?.touched && investmentForm.get('description')?.invalid">
+            <small *ngIf="investmentForm.get('description')?.errors?.['required']">Required</small>
+            <small *ngIf="investmentForm.get('description')?.errors?.['maxlength']">Max 200 chars</small>
           </div>
         </div>
 
@@ -58,37 +52,54 @@
 
   <div *ngIf="!isvisible">
     <h4>Investments</h4>
-    <div class="d-flex justify-content-end mb-3">
-      <button class="btn btn-success" (click)="onAdd()"><i class="bi bi-plus-circle"></i> Add Investment</button>
-    </div>
-    
 
-    <table class="table table-bordered text-center shadow-sm bg-white rounded">
-      <thead style="background-color: #f8f9fa;">
-        <tr class="fw-semibold text-dark">
+    <div class="d-flex justify-content-between mb-2">
+      <input type="text" class="form-control w-25" [(ngModel)]="searchTerm" placeholder="Search investment..." />
+      <button class="btn btn-success" (click)="onAdd()">Add Investment</button>
+    </div>
+
+    <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+
+    <table class="table table-bordered text-center bg-white">
+      <thead class="table-light">
         <tr>
-          <th>Investment </th>
+          <th>Investment</th>
           <th>Date</th>
-          <th>Capital Amount</th>
+          <th>Capital</th>
           <th>Description</th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let investment of investmentsData">
+        <tr *ngFor="let investment of paginatedInvestments">
           <td>{{ investment.investment }}</td>
           <td>{{ investment.date | date: 'yyyy-MM-dd' }}</td>
           <td>{{ investment.capitalAmount | currency }}</td>
           <td>{{ investment.description }}</td>
           <td>
-            <button class="btn btn-primary btn-sm me-2" (click)="onEdit(investment)">Edit</button>
-            <button class="btn btn-danger btn-sm" (click)="onDelete(investment)">Delete</button>
+            <button class="btn btn-sm btn-primary me-2" (click)="onEdit(investment)">Edit</button>
+            <button class="btn btn-sm btn-danger" (click)="windowConfirmDelete(investment)">Delete</button>
           </td>
         </tr>
-        <tr *ngIf="investmentsData.length === 0">
-          <td colspan="5" class="text-danger py-3 fw-bold">No records found</td>
+        <tr *ngIf="filteredInvestments.length === 0">
+          <td colspan="5" class="text-danger fw-bold py-2">No records found</td>
         </tr>
       </tbody>
     </table>
+
+    <nav *ngIf="totalPages > 1">
+      <ul class="pagination justify-content-center">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <a class="page-link" (click)="changePage(currentPage - 1)">Previous</a>
+        </li>
+        <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index"
+            [class.active]="currentPage === i + 1">
+          <a class="page-link" (click)="changePage(i + 1)">{{ i + 1 }}</a>
+        </li>
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+          <a class="page-link" (click)="changePage(currentPage + 1)">Next</a>
+        </li>
+      </ul>
+    </nav>
   </div>
 </div>

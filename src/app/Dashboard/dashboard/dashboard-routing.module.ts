@@ -11,7 +11,7 @@ import { VendorComponent } from '../vendor/vendor.component';
 
 import { AnimalBatchesComponent } from './animal-batches/animal-batches.component';
 import { RbacGuard } from '../../rbac.guard';
-import { InvestmentComponent } from './investments/investments.component';
+import { InvestmentsComponent } from './investments/investments.component';
 
 const routes: Routes = [
   {
@@ -26,7 +26,7 @@ const routes: Routes = [
       { path: 'production', component: ProductionsComponent,  },
       { path: 'vendor', component: VendorComponent,  },
       { path: 'animalbatches', component: AnimalBatchesComponent,  } ,
-      { path: 'investments', component: InvestmentComponent, },
+      { path: 'investments', component: InvestmentsComponent, },
     ]
   }
 ];

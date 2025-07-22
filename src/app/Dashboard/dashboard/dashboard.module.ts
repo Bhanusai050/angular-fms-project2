@@ -23,7 +23,8 @@ import { CompanyInfoComponent } from './company-info/company-info.component';
 import { LookupManagementComponent } from './lookup-management/lookup-management.component';
 import { ReportsComponent } from './reports/reports.component';
 import { AdminSettingsComponent } from './admin-settings/admin-settings.component';
-import { InvestmentComponent } from './investments/investments.component';
+import { InvestmentsComponent } from './investments/investments.component';
+
 
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { AuthService } from '../../auth.service';
@@ -50,7 +51,7 @@ import { RbacGuard } from '../../rbac.guard';
     LookupManagementComponent,
     ReportsComponent,
     AdminSettingsComponent,
-    InvestmentComponent
+    InvestmentsComponent
   ],
   imports: [
     CommonModule,

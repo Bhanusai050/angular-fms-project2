@@ -17,6 +17,7 @@ import { OnlyNumberDirective } from './only-number.directive';
 import { ApiService } from './api.service';
 import { RouterModule } from '@angular/router';
 import { DashboardModule } from './Dashboard/dashboard/dashboard.module';
+import { CommonModule } from '@angular/common';
 
 
 @NgModule({
@@ -38,7 +39,9 @@ import { DashboardModule } from './Dashboard/dashboard/dashboard.module';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+     CommonModule,
     RouterModule,
+    CommonModule,
     DashboardModule
   ],
   providers: [ApiService],
