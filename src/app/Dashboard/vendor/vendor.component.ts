@@ -10,6 +10,16 @@ import { ApiService } from '../../api.service'; // Adjust path if needed
 export class VendorComponent implements OnInit {
   vendorForm!: FormGroup;
   VendorData: any[] = [];
+  paginatedVendorData: any[] = [];
+  animalBatchesData: any[] = [];
+  filteredBatches: any[] = [];
+  
+
+  searchTerm = '';
+  pageSizeOptions = [5, 10, 25];
+  pageSize = 5;
+  currentPage = 1;
+  totalPages = 1;
 
   isVisible = false;
   isEditing = false;
@@ -52,10 +62,45 @@ showSuccessMessage(msg: string) {
       address: ['', Validators.required]
     });
     }
+    onSearchChange() {
+    this.currentPage = 1;
+    this.filterVendor();
+  }
+
+  onPageSizeChange() {
+    this.currentPage = 1;
+    this.paginateVendors();
+  }
+
+  filterVendor() {
+    const term = this.searchTerm.toLowerCase();
+    this.filteredBatches = this.animalBatchesData.filter(batch =>
+      batch.BatchName.toLowerCase().includes(term) ||
+      batch.Purpose.toLowerCase().includes(term)
+    );
+    this.paginateVendors();
+  }
+
+  paginateVendors() {
+    const start = (this.currentPage - 1) * this.pageSize;
+    const end = start + this.pageSize;
+    this.totalPages = Math.ceil(this.filteredBatches.length / this.pageSize);
+    this.paginatedVendorData = this.filteredBatches.slice(start, end);
+  }
+
+  changePage(page: number) {
+    if (page < 1 || page > this.totalPages) return;
+    this.currentPage = page;
+    this.paginateVendors();
+  }
 
   loadVendors(): void {
     this.api.getVendors().subscribe({
-      next: data => this.VendorData = data,
+      next: data => {
+        this.VendorData = data,
+        this.filteredBatches = data;
+        this.paginateVendors();
+      },
       error: err => {
       this.VendorData = [];
       console.error('Failed to load vendors:', err.message);

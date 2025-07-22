@@ -31,7 +31,7 @@ throw new Error('Method not implemented.');
 
   animalTypes = [
     { id:1, name: 'Sheep' },
-    {id:2,  name: 'Goat' },
+    { id:2,  name: 'Goat' },
     { id:3, name: 'Hen' },
     { id:4, name: 'Buffalo' },
     { id:5,  name: 'Cow' }
@@ -223,6 +223,16 @@ getHealthStatusName(id: number) {
 getAnimalStatusName(id: number) {
   return this.animalStatuses.find(s => s.id === id)?.name || '';
 }
+getVendorName(id: number): string {
+    const vendor = this.vendors.find(v => v.VendorID === id);
+    return vendor ? vendor.VendorName : String(id);
+  }
+  getBatchName(id: number): string {
+     if (!id) return '';
+    const batch = this.batches.find(b => b.BatchID === id);
+    return batch ? batch.BatchName : String(id);
+  }
+
 
 
 }
