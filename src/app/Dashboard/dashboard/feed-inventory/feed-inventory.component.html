@@ -1,112 +1,278 @@
 <div class="container mt-4">
+  <!-- Form Section -->
   <div *ngIf="isvisible">
-    <h3 class="mb-4">Add Feed Inventory</h3>
- 
+    <h3 class="mb-4"><span *ngIf="isEditing">Edit</span> <span *ngIf="!isEditing">Add</span> Feed Inventory</h3>
     <form [formGroup]="feedForm" (ngSubmit)="onSubmit()" novalidate>
       <div class="row g-3">
- 
-       
+        <!-- Feed Name -->
         <div class="col-md-4">
-      <label for="feed" class="form-label">Feed</label>
-      <input type="text" class="form-control" id="feed" formControlName="feed"
-        [ngClass]="{ 'is-invalid': feedForm.get('feed')?.invalid && feedForm.get('feed')?.touched }" />
-      <div *ngIf="feedForm.get('feed')?.touched && feedForm.get('feed')?.invalid" class="text-danger">
-        <small *ngIf="feedForm.get('feed')?.errors?.['required']">Feed is required.</small>
-        <small *ngIf="feedForm.get('feed')?.errors?.['pattern']">Only integers allowed.</small>
-      </div>
-    </div>
- 
+          <label for="FeedName" class="form-label">Feed Name <span class="text-danger">*</span></label>
+          <input
+            type="text"
+            class="form-control"
+            id="FeedName"
+            formControlName="FeedName"
+            placeholder="Enter Feed Name"
+            [class.is-invalid]="feedForm.get('FeedName')?.touched && feedForm.get('FeedName')?.invalid"
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="feedForm.get('FeedName')?.touched && feedForm.get('FeedName')?.hasError('required')"
+          >
+            Feed Name is required.
+          </div>
+          <div
+            class="invalid-feedback"
+            *ngIf="feedForm.get('FeedName')?.touched && feedForm.get('FeedName')?.hasError('minlength')"
+          >
+            Minimum length is 3 characters.
+          </div>
+          <div
+            class="invalid-feedback"
+            *ngIf="feedForm.get('FeedName')?.touched && feedForm.get('FeedName')?.hasError('maxlength')"
+          >
+            Maximum length is 15 characters.
+          </div>
+          <div
+            class="invalid-feedback"
+            *ngIf="feedForm.get('FeedName')?.touched && feedForm.get('FeedName')?.hasError('pattern')"
+          >
+            Only characters allowed.
+          </div>
+        </div>
+
         <!-- Feed Type -->
         <div class="col-md-4">
-          <label for="feedType" class="form-label">Feed Type</label>
-          <input type="text" class="form-control" id="feedType" formControlName="feedType"
-            [ngClass]="{ 'is-invalid': feedForm.get('feedType')?.invalid && feedForm.get('feedType')?.touched }" />
-          <div *ngIf="feedForm.get('feedType')?.touched && feedForm.get('feedType')?.invalid" class="text-danger">
-            <small *ngIf="feedForm.get('feedType')?.errors?.['required']">Feed Type is required.</small>
-            <small *ngIf="feedForm.get('feedType')?.errors?.['pattern']">Only numbers allowed.</small>
-          </div>
-        </div>
- 
-        <!-- Stock Quantity -->
-        <div class="col-md-4">
-          <label for="stockQuantity" class="form-label">Stock Quantity</label>
-          <input type="number" class="form-control" id="stockQuantity" formControlName="stockQuantity"
-            [ngClass]="{ 'is-invalid': feedForm.get('stockQuantity')?.invalid && feedForm.get('stockQuantity')?.touched }" />
-          <div *ngIf="feedForm.get('stockQuantity')?.touched && feedForm.get('stockQuantity')?.invalid" class="text-danger">
-            <small *ngIf="feedForm.get('stockQuantity')?.errors?.['required']">Stock Quantity is required.</small>
-            <small *ngIf="feedForm.get('stockQuantity')?.errors?.['min']">Must be at least 1.</small>
-          </div>
-        </div>
- 
-        <!-- Unit -->
-        <div class="col-md-4">
-          <label for="unit" class="form-label">Unit</label>
-          <select class="form-select" id="unit" formControlName="unit"
-            [ngClass]="{ 'is-invalid': feedForm.get('unit')?.invalid && feedForm.get('unit')?.touched }">
-            <option value="">-- Select --</option>
-            <option value="Kilograms">Kilograms</option>
-            <option value="Liters">Liters</option>
-            <option value="Bags">Bags</option>
+          <label for="FeedTypeID" class="form-label">Feed Type <span class="text-danger">*</span></label>
+          <select
+            class="form-select"
+            id="FeedTypeID"
+            formControlName="FeedTypeID"
+            [class.is-invalid]="feedForm.get('FeedTypeID')?.touched && feedForm.get('FeedTypeID')?.invalid"
+          >
+            <option [ngValue]="null">-- Select Feed Type --</option>
+            <option *ngFor="let type of feedTypes" [ngValue]="type.FeedTypeID">{{ type.FeedTypeName }}</option>
           </select>
-          <div *ngIf="feedForm.get('unit')?.touched && feedForm.get('unit')?.invalid" class="text-danger">
-            <small>Unit is required.</small>
+          <div
+            class="invalid-feedback"
+            *ngIf="feedForm.get('FeedTypeID')?.touched && feedForm.get('FeedTypeID')?.hasError('required')"
+          >
+            Feed Type is required.
           </div>
         </div>
- 
-        <!-- Expiry Date -->
-       <div class="col-md-4">
-      <label for="expiryDate" class="form-label">Expiry Date</label>
-      <input type="date" class="form-control" id="expiryDate" formControlName="expiryDate"
-        [attr.max]="today"
-        [ngClass]="{ 'is-invalid': feedForm.get('expiryDate')?.invalid && feedForm.get('expiryDate')?.touched }" />
-      <div *ngIf="feedForm.get('expiryDate')?.touched && feedForm.get('expiryDate')?.invalid" class="text-danger">
-        <small>Expiry date is required and must be today or earlier.</small>
+
+        <!-- Quantity -->
+        <div class="col-md-4">
+          <label for="Quantity" class="form-label">Quantity <span class="text-danger">*</span></label>
+          <input
+            type="text"
+            class="form-control"
+            id="Quantity"
+            formControlName="Quantity"
+            (keydown)="digitsOnly($event)"
+            placeholder="Enter Quantity"
+            [class.is-invalid]="feedForm.get('Quantity')?.touched && feedForm.get('Quantity')?.invalid"
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="feedForm.get('Quantity')?.touched && feedForm.get('Quantity')?.hasError('required')"
+          >
+            Quantity is required.
+          </div>
+          <div
+            class="invalid-feedback"
+            *ngIf="feedForm.get('Quantity')?.touched && feedForm.get('Quantity')?.hasError('min')"
+          >
+            Quantity must be at least 1.
+          </div>
+          <div
+            class="invalid-feedback"
+            *ngIf="feedForm.get('Quantity')?.touched && feedForm.get('Quantity')?.hasError('pattern')"
+          >
+            Only numbers allowed.
+          </div>
+        </div>
+
+        <!-- Unit Price -->
+        <div class="col-md-4">
+          <label for="UnitPrice" class="form-label">Unit Price <span class="text-danger">*</span></label>
+          <input
+            type="text"
+            class="form-control"
+            id="UnitPrice"
+            formControlName="UnitPrice"
+            (keydown)="digitsOnly($event)"
+            placeholder="Enter Unit Price"
+            [class.is-invalid]="feedForm.get('UnitPrice')?.touched && feedForm.get('UnitPrice')?.invalid"
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="feedForm.get('UnitPrice')?.touched && feedForm.get('UnitPrice')?.hasError('required')"
+          >
+            Unit Price is required.
+          </div>
+          <div
+            class="invalid-feedback"
+            *ngIf="feedForm.get('UnitPrice')?.touched && feedForm.get('UnitPrice')?.hasError('min')"
+          >
+            Unit Price must be at least 1.
+          </div>
+          <div
+            class="invalid-feedback"
+            *ngIf="feedForm.get('UnitPrice')?.touched && feedForm.get('UnitPrice')?.hasError('max')"
+          >
+            Unit Price must not exceed 10,000.
+          </div>
+          <div
+            class="invalid-feedback"
+            *ngIf="feedForm.get('UnitPrice')?.touched && feedForm.get('UnitPrice')?.hasError('pattern')"
+          >
+            Only numbers allowed.
+          </div>
+        </div>
+
+        <!-- Supplier -->
+        <div class="col-md-4">
+          <label for="SupplierID" class="form-label">Supplier <span class="text-danger">*</span></label>
+          <select
+            class="form-select"
+            id="SupplierID"
+            formControlName="SupplierID"
+            [class.is-invalid]="feedForm.get('SupplierID')?.touched && feedForm.get('SupplierID')?.invalid"
+          >
+            <option [ngValue]="null">-- Select Supplier --</option>
+            <option *ngFor="let supplier of vendors" [ngValue]="supplier.VendorID">{{ supplier.VendorName }}</option>
+          </select>
+          <div
+            class="invalid-feedback"
+            *ngIf="feedForm.get('SupplierID')?.touched && feedForm.get('SupplierID')?.hasError('required')"
+          >
+            Supplier is required.
+          </div>
+        </div>
+
+        <!-- Purchase Date -->
+        <div class="col-md-4">
+          <label for="PurchaseDate" class="form-label">Purchase Date <span class="text-danger">*</span></label>
+          <input
+            type="date"
+            class="form-control"
+            id="PurchaseDate"
+            formControlName="PurchaseDate"
+            [attr.max]="today"
+            [class.is-invalid]="feedForm.get('PurchaseDate')?.touched && feedForm.get('PurchaseDate')?.invalid"
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="feedForm.get('PurchaseDate')?.touched && feedForm.get('PurchaseDate')?.hasError('required')"
+          >
+            Purchase Date is required.
+          </div>
+        </div>
+
+        <!-- Submit/Cancel Buttons -->
+        <div class="col-12 mt-3">
+          <button class="btn btn-success m-2" type="submit">
+            <i class="bi bi-check-circle"></i> Submit
+          </button>
+          <button class="btn btn-danger" type="button" (click)="oncancel()">
+            <i class="bi bi-x-circle"></i> Cancel
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Table Section -->
+  <div *ngIf="!isvisible" class="container mt-4">
+    <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+      {{ successMessage }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h4 class="mb-0">Feed Inventory</h4>
+      <div class="d-flex gap-2">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Search feed items..."
+          [(ngModel)]="searchTerm"
+          name="searchTerm"
+          (input)="onSearchChange()"
+          style="width: 250px;"
+        />
+        <button class="btn btn-success" type="button" (click)="onAdd()">
+          <i class="bi bi-plus-circle"></i> Add Feed
+        </button>
       </div>
     </div>
-  </div>
- 
-  <!-- Submit/Cancel Buttons -->
-  <div class="col-12 mt-3">
-    <button class="btn btn-success" type="submit" [disabled]="feedForm.invalid">Submit</button>
-    <button class="btn btn-danger" type="button" (click)="oncancel()">Cancel</button>
-  </div>
-</form>
-  </div>
- 
-  <div *ngIf="!isvisible">
-    <h4>Feed Inventory </h4>
-    <div class="d-flex justify-content-end mb-3">
-      <button class="btn btn-success" (click)="onAdd()"><i class="bi bi-plus-circle"></i> Add Feed</button>
+
+    <div class="mb-3">
+      <label class="form-label me-2">Page Size:</label>
+      <select
+        class="form-select d-inline-block w-auto"
+        [(ngModel)]="pageSize"
+        name="pageSize"
+        (change)="onPageSizeChange()"
+      >
+        <option *ngFor="let size of pageSizeOptions" [ngValue]="size">{{ size }}</option>
+      </select>
     </div>
-    
- 
-    <table class="table table-bordered text-center shadow-sm bg-white rounded">
-      <thead style="background-color: #f8f9fa;">
-        <tr class="fw-semibold text-dark">
-          <th>Feed</th>
+
+    <table class="table table-bordered table-hover mt-3">
+      <thead class="table-light">
+        <tr>
+          <th>Feed ID</th>
+          <th>Feed Name</th>
           <th>Feed Type</th>
-          <th>Stock Quantity</th>
-          <th>Unit</th>
-          <th>Expiry Date</th>
-          <th>Actions</th>
+          <th>Quantity</th>
+          <th>Unit Price</th>
+          <th>Supplier</th>
+          <th>Purchase Date</th>
+          <th class="text-center">Actions</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let f of feedData">
-          <td>{{ f.feed }}</td>
-          <td>{{ f.feedType }}</td>
-          <td>{{ f.stockQuantity }}</td>
-          <td>{{ f.unit }}</td>
-          <td>{{ f.expiryDate | date: 'yyyy-MM-dd' }}</td>
-          <td>
-            <button class="btn btn-primary btn-sm me-2" (click)="onEdit(f)">Edit</button>
-            <button class="btn btn-danger btn-sm" (click)="onDelete(f)">Delete</button>
+        <tr *ngFor="let feed of paginatedFeedData">
+          <td>{{ feed.FeedID }}</td>
+          <td>{{ feed.FeedName }}</td>
+          <td>{{ getFeedTypeName(feed.FeedTypeID) }}</td>
+          <td>{{ feed.Quantity }}</td>
+          <td>{{ feed.UnitPrice | currency: 'USD' }}</td>
+          <td>{{ getSupplierName(feed.SupplierID) }}</td>
+          <td>{{ feed.PurchaseDate | date: 'yyyy-MM-dd' }}</td>
+          <td class="text-center">
+            <button class="btn btn-sm btn-success me-1" (click)="onEdit(feed)">
+              <i class="bi bi-pencil-square"></i>
+            </button>
+            <button class="btn btn-sm btn-danger" (click)="onDelete(feed)">
+              <i class="bi bi-trash"></i>
+            </button>
           </td>
         </tr>
-        <tr *ngIf="feedData.length === 0">
-          <td colspan="6" class="text-center text-danger fw-bold py-4">No records found</td>
+        <tr *ngIf="paginatedFeedData.length === 0">
+          <td colspan="8" class="text-danger fw-bold text-uppercase text-center">No records found</td>
         </tr>
       </tbody>
     </table>
+
+    <nav *ngIf="totalPages > 1">
+      <ul class="pagination justify-content-center">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <button class="page-link" (click)="changePage(currentPage - 1)">Previous</button>
+        </li>
+        <li
+          class="page-item"
+          *ngFor="let page of [].constructor(totalPages); let i = index"
+          [class.active]="currentPage === i + 1"
+        >
+          <button class="page-link" (click)="changePage(i + 1)">{{ i + 1 }}</button>
+        </li>
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+          <button class="page-link" (click)="changePage(currentPage + 1)">Next</button>
+        </li>
+      </ul>
+    </nav>
   </div>
 </div>

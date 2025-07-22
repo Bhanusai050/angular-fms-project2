@@ -15,10 +15,30 @@ export interface CustomerApiResponse {
   templateUrl: './customers.component.html'
 })
 export class CustomersComponent implements OnInit {
+isEditing: any;
+digitsOnly($event: KeyboardEvent) {
+throw new Error('Method not implemented.');
+}
+searchTerm: any;
+successMessage: any;
+onSearchChange() {
+throw new Error('Method not implemented.');
+}
+pageSize: any;
+onPageSizeChange() {
+throw new Error('Method not implemented.');
+}
+paginatedCustomerData: any;
+pageSizeOptions: any;
+changePage(arg0: number) {
+throw new Error('Method not implemented.');
+}
   customerForm!: FormGroup;
   isvisible = false;
   customerData: any[] = [];
   today: string = new Date().toISOString().split('T')[0];
+currentPage: any;
+totalPages: any;
 
   constructor(private fb: FormBuilder) {}
 
@@ -28,8 +48,8 @@ export class CustomersComponent implements OnInit {
       fullName: ['', [Validators.required, Validators.maxLength(100)]],
       phone: ['', [Validators.required, Validators.pattern(/^\+?[1-9]\d{1,14}$/)]],  // E.164 international format
       email: ['', [
-  Validators.required,
-  Validators.pattern(/^[a-zA-Z0-9._%+-]+@gmail\.com$/)]],
+      Validators.required,
+      Validators.pattern(/^[a-zA-Z0-9._%+-]+@gmail\.com$/)]],
 
       address: ['', Validators.required],
       createdAt: ['', Validators.required]

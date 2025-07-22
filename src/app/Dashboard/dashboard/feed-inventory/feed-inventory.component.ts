@@ -6,10 +6,38 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   templateUrl: './feed-inventory.component.html'
 })
 export class FeedInventoryComponent implements OnInit {
+feedTypes: any;
+isEditing: any;
+vendors: any;
+digitsOnly($event: KeyboardEvent) {
+throw new Error('Method not implemented.');
+}
+searchTerm: any;
+successMessage: any;
+onSearchChange() {
+throw new Error('Method not implemented.');
+}
+pageSize: any;
+onPageSizeChange() {
+throw new Error('Method not implemented.');
+}
+pageSizeOptions: any;
+getFeedTypeName(arg0: any) {
+throw new Error('Method not implemented.');
+}
+getSupplierName(arg0: any) {
+throw new Error('Method not implemented.');
+}
+totalPages: any;
+paginatedFeedData: any;
+changePage(arg0: number) {
+throw new Error('Method not implemented.');
+}
   feedForm!: FormGroup;
   feedData: any[] = [];
   isvisible = false;
   today: string = new Date().toISOString().split('T')[0]; // for expiry date validation
+currentPage: any;
  
   constructor(private fb: FormBuilder) {}
  

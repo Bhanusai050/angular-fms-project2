@@ -1,111 +1,239 @@
 <div class="container mt-4">
+  <!-- Form Section -->
   <div *ngIf="isvisible">
-    <h3 class="mb-4">Add Customer</h3>
- 
+    <h3 class="mb-4"><span *ngIf="isEditing">Edit</span> <span *ngIf="!isEditing">Add</span> Customer</h3>
     <form [formGroup]="customerForm" (ngSubmit)="onSubmit()" novalidate>
       <div class="row g-3">
- 
+        <!-- Customer ID (Hidden for Add, Used for Edit) -->
+        <input type="hidden" formControlName="CustomerID" />
+
+        <!-- Full Name -->
         <div class="col-md-4">
-          <label for="customer" class="form-label">Customer ID</label>
-          <input type="text" class="form-control" id="customer" formControlName="customer"
-            [ngClass]="{ 'is-invalid': customerForm.get('customer')?.invalid && customerForm.get('customer')?.touched }" />
-          <div *ngIf="customerForm.get('customer')?.touched && customerForm.get('customer')?.invalid" class="text-danger">
-            <small *ngIf="customerForm.get('customer')?.errors?.['required']">Customer ID is required.</small>
-            <small *ngIf="customerForm.get('customer')?.errors?.['pattern']">Only integers allowed.</small>
+          <label for="FullName" class="form-label">Full Name <span class="text-danger">*</span></label>
+          <input
+            type="text"
+            class="form-control"
+            id="FullName"
+            formControlName="FullName"
+            placeholder="Enter Full Name"
+            [class.is-invalid]="customerForm.get('FullName')?.touched && customerForm.get('FullName')?.invalid"
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="customerForm.get('FullName')?.touched && customerForm.get('FullName')?.hasError('required')"
+          >
+            Full Name is required.
+          </div>
+          <div
+            class="invalid-feedback"
+            *ngIf="customerForm.get('FullName')?.touched && customerForm.get('FullName')?.hasError('minlength')"
+          >
+            Minimum length is 3 characters.
+          </div>
+          <div
+            class="invalid-feedback"
+            *ngIf="customerForm.get('FullName')?.touched && customerForm.get('FullName')?.hasError('maxlength')"
+          >
+            Maximum length is 100 characters.
+          </div>
+          <div
+            class="invalid-feedback"
+            *ngIf="customerForm.get('FullName')?.touched && customerForm.get('FullName')?.hasError('pattern')"
+          >
+            Only letters and spaces allowed.
           </div>
         </div>
- 
+
+        <!-- Phone -->
         <div class="col-md-4">
-          <label for="fullName" class="form-label">Full Name</label>
-          <input type="text" class="form-control" id="fullName" formControlName="fullName"
-            [ngClass]="{ 'is-invalid': customerForm.get('fullName')?.invalid && customerForm.get('fullName')?.touched }" />
-          <div *ngIf="customerForm.get('fullName')?.touched && customerForm.get('fullName')?.invalid" class="text-danger">
-            <small *ngIf="customerForm.get('fullName')?.errors?.['required']">Full Name is required.</small>
-            <small *ngIf="customerForm.get('fullName')?.errors?.['maxlength']">Max 100 characters allowed.</small>
+          <label for="Phone" class="form-label">Phone <span class="text-danger">*</span></label>
+          <input
+            type="text"
+            class="form-control"
+            id="Phone"
+            formControlName="Phone"
+            placeholder="Enter Phone Number"
+            (keydown)="digitsOnly($event)"
+            [class.is-invalid]="customerForm.get('Phone')?.touched && customerForm.get('Phone')?.invalid"
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="customerForm.get('Phone')?.touched && customerForm.get('Phone')?.hasError('required')"
+          >
+            Phone is required.
+          </div>
+          <div
+            class="invalid-feedback"
+            *ngIf="customerForm.get('Phone')?.touched && customerForm.get('Phone')?.hasError('pattern')"
+          >
+            Enter a valid phone number (e.g., +1234567890).
           </div>
         </div>
- 
+
+        <!-- Email -->
         <div class="col-md-4">
-          <label for="phone" class="form-label">Phone Number</label>
-          <input type="text" class="form-control" id="phone" formControlName="phone"
-            [ngClass]="{ 'is-invalid': customerForm.get('phone')?.invalid && customerForm.get('phone')?.touched }" />
-          <div *ngIf="customerForm.get('phone')?.touched && customerForm.get('phone')?.invalid" class="text-danger">
-            <small *ngIf="customerForm.get('phone')?.errors?.['required']">Phone number is required.</small>
-            <small *ngIf="customerForm.get('phone')?.errors?.['pattern']">Enter a valid international phone number (e.g., +91XXXXXXXXXX).</small>
+          <label for="Email" class="form-label">Email <span class="text-danger">*</span></label>
+          <input
+            type="email"
+            class="form-control"
+            id="Email"
+            formControlName="Email"
+            placeholder="Enter Email"
+            [class.is-invalid]="customerForm.get('Email')?.touched && customerForm.get('Email')?.invalid"
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="customerForm.get('Email')?.touched && customerForm.get('Email')?.hasError('required')"
+          >
+            Email is required.
+          </div>
+          <div
+            class="invalid-feedback"
+            *ngIf="customerForm.get('Email')?.touched && customerForm.get('Email')?.hasError('email')"
+          >
+            Enter a valid email address.
           </div>
         </div>
- 
+
+        <!-- Address -->
         <div class="col-md-4">
-          <label for="email" class="form-label">Email</label>
-          <input type="email" class="form-control" id="email" formControlName="email"
-            [ngClass]="{ 'is-invalid': customerForm.get('email')?.invalid && customerForm.get('email')?.touched }" />
-          <div *ngIf="customerForm.get('email')?.touched && customerForm.get('email')?.invalid" class="text-danger">
-            <small>Email is required and must be valid.</small>
+          <label for="Address" class="form-label">Address <span class="text-danger">*</span></label>
+          <input
+            type="text"
+            class="form-control"
+            id="Address"
+            formControlName="Address"
+            placeholder="Enter Address"
+            [class.is-invalid]="customerForm.get('Address')?.touched && customerForm.get('Address')?.invalid"
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="customerForm.get('Address')?.touched && customerForm.get('Address')?.hasError('required')"
+          >
+            Address is required.
           </div>
         </div>
- 
+
+        <!-- Created At -->
         <div class="col-md-4">
-          <label for="address" class="form-label">Address</label>
-          <input type="text" class="form-control" id="address" formControlName="address"
-            [ngClass]="{ 'is-invalid': customerForm.get('address')?.invalid && customerForm.get('address')?.touched }" />
-          <div *ngIf="customerForm.get('address')?.touched && customerForm.get('address')?.invalid" class="text-danger">
-            <small>Address is required.</small>
+          <label for="CreatedAt" class="form-label">Created At <span class="text-danger">*</span></label>
+          <input
+            type="date"
+            class="form-control"
+            id="CreatedAt"
+            formControlName="CreatedAt"
+            [attr.max]="today"
+            [class.is-invalid]="customerForm.get('CreatedAt')?.touched && customerForm.get('CreatedAt')?.invalid"
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="customerForm.get('CreatedAt')?.touched && customerForm.get('CreatedAt')?.hasError('required')"
+          >
+            Created At is required.
           </div>
         </div>
- 
-        <div class="col-md-4">
-          <label for="createdAt" class="form-label">Created At</label>
-          <input type="date" class="form-control" id="createdAt" formControlName="createdAt" [max]="today"
-            [ngClass]="{ 'is-invalid': customerForm.get('createdAt')?.invalid && customerForm.get('createdAt')?.touched }" />
-          <div *ngIf="customerForm.get('createdAt')?.touched && customerForm.get('createdAt')?.invalid" class="text-danger">
-            <small>Valid date is required (today or past only).</small>
-          </div>
-        </div>
- 
+
+        <!-- Submit/Cancel Buttons -->
         <div class="col-12 mt-3">
-          <button class="btn btn-success" type="submit" [disabled]="customerForm.invalid">Submit</button>
-          <button class="btn btn-danger" type="button" (click)="oncancel()">Cancel</button>
+          <button class="btn btn-success m-2" type="submit">
+            <i class="bi bi-check-circle"></i> Submit
+          </button>
+          <button class="btn btn-danger" type="button" (click)="oncancel()">
+            <i class="bi bi-x-circle"></i> Cancel
+          </button>
         </div>
       </div>
     </form>
   </div>
- 
-  <div *ngIf="!isvisible">
-    <h4>Customers</h4>
-    <div class="d-flex justify-content-end mb-3">
-      <button class="btn btn-success" (click)="onAdd()"><i class="bi bi-plus-circle"></i> Add Customer</button>
+
+  <!-- Table Section -->
+  <div *ngIf="!isvisible" class="container mt-4">
+    <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+      {{ successMessage }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-  
- 
-    <table class="table table-bordered text-center shadow-sm bg-white rounded">
-      <thead style="background-color: #f8f9fa;">
-        <tr class="fw-semibold text-dark">
-          <th>Customer</th>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h4 class="mb-0">Customers</h4>
+      <div class="d-flex gap-2">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Search customers..."
+          [(ngModel)]="searchTerm"
+          name="searchTerm"
+          (input)="onSearchChange()"
+          style="width: 250px;"
+        />
+        <button class="btn btn-success" type="button" (click)="onAdd()">
+          <i class="bi bi-plus-circle"></i> Add Customer
+        </button>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label me-2">Page Size:</label>
+      <select
+        class="form-select d-inline-block w-auto"
+        [(ngModel)]="pageSize"
+        name="pageSize"
+        (change)="onPageSizeChange()"
+      >
+        <option *ngFor="let size of pageSizeOptions" [ngValue]="size">{{ size }}</option>
+      </select>
+    </div>
+
+    <table class="table table-bordered table-hover mt-3">
+      <thead class="table-light">
+        <tr>
+          <th>Customer ID</th>
           <th>Full Name</th>
-          <th>Phone Number</th>
+          <th>Phone</th>
           <th>Email</th>
           <th>Address</th>
           <th>Created At</th>
-          <th>Actions</th>
+          <th class="text-center">Actions</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let c of customerData">
-          <td>{{ c.customer }}</td>
-          <td>{{ c.fullName }}</td>
-          <td>{{ c.phone }}</td>
-          <td>{{ c.email }}</td>
-          <td>{{ c.address }}</td>
-          <td>{{ c.createdAt | date: 'yyyy-MM-dd' }}</td>
-          <td>
-            <button class="btn btn-primary btn-sm me-2" (click)="onEdit(c)">Edit</button>
-            <button class="btn btn-danger btn-sm" (click)="onDelete(c)">Delete</button>
+        <tr *ngFor="let customer of paginatedCustomerData">
+          <td>{{ customer.CustomerID }}</td>
+          <td>{{ customer.FullName }}</td>
+          <td>{{ customer.Phone }}</td>
+          <td>{{ customer.Email }}</td>
+          <td>{{ customer.Address }}</td>
+          <td>{{ customer.CreatedAt | date:'yyyy-MM-dd' }}</td>
+          <td class="text-center">
+            <button class="btn btn-sm btn-success me-1" (click)="onEdit(customer)">
+              <i class="bi bi-pencil-square"></i>
+            </button>
+            <button class="btn btn-sm btn-danger" (click)="onDelete(customer)">
+              <i class="bi bi-trash"></i>
+            </button>
           </td>
         </tr>
-        <tr *ngIf="customerData.length === 0">
-          <td colspan="7" class="text-center text-danger fw-bold py-4">No records found</td>
+        <tr *ngIf="paginatedCustomerData.length === 0">
+          <td colspan="7" class="text-danger fw-bold text-uppercase text-center">No records found</td>
         </tr>
       </tbody>
     </table>
+
+    <nav *ngIf="totalPages > 1">
+      <ul class="pagination justify-content-center">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <button class="page-link" (click)="changePage(currentPage - 1)">Previous</button>
+        </li>
+        <li
+          class="page-item"
+          *ngFor="let page of [].constructor(totalPages); let i = index"
+          [class.active]="currentPage === i + 1"
+        >
+          <button class="page-link" (click)="changePage(i + 1)">{{ i + 1 }}</button>
+        </li>
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+          <button class="page-link" (click)="changePage(currentPage + 1)">Next</button>
+        </li>
+      </ul>
+    </nav>
   </div>
 </div>
