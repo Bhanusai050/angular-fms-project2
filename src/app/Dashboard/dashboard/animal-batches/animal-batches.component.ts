@@ -93,7 +93,8 @@ export class AnimalBatchesComponent implements OnInit {
     this.showMessage = true;
     setTimeout(() => {
       this.showMessage = false;
-    }, 3000);
+      this.successMessage = '';
+    }, 2000);
   }
 
   onSubmit() {

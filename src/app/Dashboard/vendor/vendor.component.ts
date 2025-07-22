@@ -40,7 +40,8 @@ showSuccessMessage(msg: string) {
   this.showMessage = true;
   setTimeout(() => {
   this.showMessage = false;
-  }, 3000); // auto-hide after 3 seconds
+  this.successMessage = '';
+  }, 2000); // auto-hide after 3 seconds
 }
   constructor(private fb: FormBuilder, private api: ApiService) {}
 

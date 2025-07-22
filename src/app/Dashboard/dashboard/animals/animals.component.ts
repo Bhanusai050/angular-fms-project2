@@ -9,7 +9,7 @@ import { Inject } from '@angular/core';
 })
 export class AnimalsComponent implements OnInit {
 onPageSizeChange() {
-   this.currentPage = 1;
+  this.currentPage = 1;
   this.updatePagination();
 throw new Error('Method not implemented.');
 }
@@ -150,22 +150,42 @@ updatePagination() {
     this.updatePagination();
   }
 
-  onSubmit() {
-    if (this.animalForm.invalid) return;
-    const payload = this.animalForm.value;
-    const request = this.isEditing ? this.api.updateAnimal(payload.AnimalID, payload) : this.api.addAnimal(payload);
+  onSubmit(): void {
+  if (this.animalForm.invalid) {
+    console.warn('Form is invalid:', this.animalForm.value);
+    return;
+  }
 
-    request.subscribe({
+  const formData = this.animalForm.value;
+  console.log('Submitting form:', formData);
+
+  if (this.isEditing) {
+    this.api.getAnimals().subscribe({
       next: () => {
-        this.showSuccessMessage(this.isEditing ? 'Animal updated successfully' : 'Animal added successfully');
-       
-        this.isvisible = false;
-        this.isEditing = false;
+        this.successMessage = 'Animal updated successfully';
         this.getAnimals();
+        this.isvisible = false;
+       
       },
-      error: () => alert('Failed to submit animal')
+      error: (err) => {
+        console.error('Update failed:', err);
+      }
+    });
+  } else {
+    this.api.addAnimal(formData).subscribe({
+      next: () => {
+        this.successMessage = 'Animal added successfully';
+        this.getAnimals();
+        this.isvisible = false;
+        
+      },
+      error: (err) => {
+        console.error('Add failed:', err);
+      }
     });
   }
+}
+
 
   onAdd() {
     this.isvisible = true;
@@ -201,7 +221,10 @@ updatePagination() {
   showSuccessMessage(msg: string) {
     this.successMessage = msg;
     this.showMessage = true;
-    setTimeout(() => this.showMessage = false, 3000);
+     setTimeout(() => {
+      this.showMessage = false;
+      this.successMessage = '';
+    }, 2000);
   }
   digitsOnly(event: KeyboardEvent) {
   if (!/[0-9]/.test(event.key) && event.key !== 'Backspace' && event.key !== 'Tab') {
@@ -226,12 +249,12 @@ getAnimalStatusName(id: number) {
 getVendorName(id: number): string {
     const vendor = this.vendors.find(v => v.VendorID === id);
     return vendor ? vendor.VendorName : String(id);
-  }
-  getBatchName(id: number): string {
+}
+getBatchName(id: number): string {
      if (!id) return '';
     const batch = this.batches.find(b => b.BatchID === id);
-    return batch ? batch.BatchName : String(id);
-  }
+     return batch ? batch.BatchName : 'N/A';
+}
 
 
 
