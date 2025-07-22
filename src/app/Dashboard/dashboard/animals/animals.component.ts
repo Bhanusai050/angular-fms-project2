@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormsModule } from '@angular/forms';
 import { ApiService } from '../../../api.service';
 import { Inject } from '@angular/core';
 @Component({
@@ -8,245 +8,221 @@ import { Inject } from '@angular/core';
   styleUrls: ['./animals.component.scss']
 })
 export class AnimalsComponent implements OnInit {
+onPageSizeChange() {
+   this.currentPage = 1;
+  this.updatePagination();
+throw new Error('Method not implemented.');
+}
   animalForm!: FormGroup;
-  AnimalsData: any = [];
   isvisible: boolean = false;
   isEditing: boolean = false;
   editIndex: number = -1;
   record: any;
+  AnimalsData: any[] = [];
+  paginatedAnimalsData: any[] = [];
+  batches: any[] = [];
+  vendors: any[] = [];
 
   successMessage: string = '';
   showMessage: boolean = false;
-  
+
+
   today: string = new Date().toISOString().split('T')[0];
 
   animalTypes = [
-    { id: 1, name: 'Sheep' },
-    { id: 2, name: 'Goat' },
-    { id: 3, name: 'Hen' },
-    { id: 4, name: 'Buffalo' },
-    { id: 5, name: 'Cow' }
+    { id:1, name: 'Sheep' },
+    {id:2,  name: 'Goat' },
+    { id:3, name: 'Hen' },
+    { id:4, name: 'Buffalo' },
+    { id:5,  name: 'Cow' }
   ];
-
- 
 
   genders = [
     { id: 1, name: 'Male' },
     { id: 2, name: 'Female' }
   ];
+
   healthStatuses = [
     { id: 1, name: 'Sick' },
     { id: 2, name: 'Healthy' },
     { id: 3, name: 'Injured' },
     { id: 4, name: 'Recovering' }
   ];
+
   animalStatuses = [
     { id: 1, name: 'Death' },
     { id: 2, name: 'Sold' },
     { id: 3, name: 'Active' }
   ];
-  vendors = [
-    { VendorID: 1, VendorName: 'Vendor A' },
-    { VendorID: 2, VendorName: 'Vendor B' },
-    { VendorID: 3, VendorName: 'Suresh' }
-  ];
+  allAnimals: any[] = [];
+  filteredAnimalsData: any[] = [];
+  paginatedAnimals: any[] = [];
+  searchTerm: string = '';
 
-  batches: any[] = [];
+  currentPage = 1;
+  pageSize = 5;
+  pageSizeOptions = [5, 10, 20, 50];
+  totalPages = 0;
 
+  constructor(private fb: FormBuilder, private api: ApiService) {}
 
-  constructor(private fb: FormBuilder, @Inject(ApiService) private api: ApiService) {}
-
-  ngOnInit() {
-    
-  this.createForm();
-  this.getAnimals();
-  this.loadVendors();
-  this.getbatchs();
+  ngOnInit(): void {
+    this.createForm();
+    this.getAnimals();
+    this.loadVendors();
+    this.getBatches();
   }
-  createForm(){
+
+  createForm() {
     this.animalForm = this.fb.group({
-      AnimalName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(15), Validators.pattern('^[A-Za-z ]+$')]],
-      BatchID: [null,Validators.required], // will hold BatchID
-      BirthDate: [new Date() ],
-      animalType: [null, Validators.required],
-      gender: [null, Validators.required],
-      healthStatus: [null, Validators.required],
-      animalCost: ['', [Validators.required, Validators.pattern('^[0-9]{0-7}*$')]],
-      VendorID: [null, Validators.required], // will hold VendorID
-      animalStatus: [null, Validators.required],
+      AnimalID: [0],
+      AnimalName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(7), Validators.pattern('^[A-Za-z ]+$')]],
+      BatchID: [null, Validators.required],
+      BirthDate: [this.today],
+      AnimalTypeID: [null, Validators.required],
+      GenderID: [null, Validators.required],
+      HealthStatusID: [null, Validators.required],
+      AnimalCost: ['', [Validators.required, Validators.pattern('^[0-9]{1,7}$')]],
+      VendorID: [null, Validators.required],
+      AnimalStatusID: [null, Validators.required],
       AnimalPurchasedDate: ['', Validators.required]
-    });
-  }
-  getbatchs() {
-       // Fetch batches from backend
-    this.api.getAnimalBatches().subscribe({
-      next: (data) => {
-        this.batches = data;
-      },
-      error: () => {
-        this.batches = [];
-      }
     });
   }
 
   getAnimals() {
-   // Fetch animals from backend on load
     this.api.getAnimals().subscribe({
-      next: (data) => {
+      next: data => {
         this.AnimalsData = data;
+        this.filteredAnimalsData = data;
+        this.updatePagination();
       },
-      error: (err) => {
-        console.error('Failed to fetch animals:', err);
+      error: () => {
         this.AnimalsData = [];
+        this.filteredAnimalsData = [];
+        this.updatePagination();
       }
     });
-
   }
-
   
-  loadVendors(): void {
-     this.vendors = [];
+  
+  loadVendors() {
     this.api.getVendors().subscribe({
-    next: data => this.vendors = data,
-    error: err => {
-    this.vendors = [];
-    console.error('Failed to load vendors:', err.message);
-      }
+      next: data => this.vendors = data,
+      error: () => this.vendors = []
     });
   }
-  getBatchName(BatchID: number): string {
-    const batch = this.batches.find(b => b.BatchID === BatchID);
-    return batch ? batch.BatchName : String(BatchID);
-    // Deprecated: Only batchName is used now
-    
+
+  getBatches() {
+    this.api.getAnimalBatches().subscribe({
+      next: data => this.batches = data,
+      error: () => this.batches = []
+    });
+  }
+updatePagination() {
+  
+  const searchWords = this.searchTerm.toLowerCase().trim().split(/\s+/); // Split by spaces
+
+  const filteredData = this.AnimalsData.filter(animal => {
+    const name = animal.AnimalName?.toLowerCase() || '';
+    const id = animal.AnimalID?.toString() || '';
+
+    return searchWords.every(word =>
+      name.includes(word) || id.includes(word)
+    );
+  });
+
+  this.totalPages = Math.ceil(filteredData.length / this.pageSize);
+  this.paginatedAnimalsData = filteredData.slice(
+    (this.currentPage - 1) * this.pageSize,
+    this.currentPage * this.pageSize
+  );
+}
+
+  changePage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.updatePagination();
+    }
+  }
+
+  onSearchChange() {
+    this.currentPage = 1;
+    this.updatePagination();
   }
 
   onSubmit() {
-    debugger;
     if (this.animalForm.invalid) return;
+    const payload = this.animalForm.value;
+    const request = this.isEditing ? this.api.updateAnimal(payload.AnimalID, payload) : this.api.addAnimal(payload);
 
-    const formValue = this.animalForm.value;
-    const payload = {
-      AnimalID: this.isEditing && this.record ? this.record.AnimalID : undefined,
-      AnimalTypeID: formValue.animalType,
-      AnimalName: formValue.AnimalName,
-      BirthDate: formValue.BirthDate,
-      GenderID: formValue.gender,
-      HealthStatusID: formValue.healthStatus,
-      AnimalCost: formValue.animalCost,
-      VendorID: formValue.VendorID, // already an ID
-      AnimalStatusID: formValue.animalStatus,
-      AnimalPurchasedDate: formValue.AnimalPurchasedDate ? new Date(formValue.AnimalPurchasedDate).toISOString() : undefined,
-      BatchID: formValue.BatchID // already an ID
-    };
-
-    // const VendorID = this.getVendorName(formValue.VendorID);
-    // const BatchID = this.getBatchName(formValue.BatchID);
-
-    // if (!VendorID || !BatchID) {
-    //   alert('Invalid Vendor or Batch selected.');
-    //   return;
-    // }
-
-    this.api.addAnimal(payload).subscribe({
-      
-      next: () => { /* handle success */ 
-        
+    request.subscribe({
+      next: () => {
+        this.showSuccessMessage(this.isEditing ? 'Animal updated successfully' : 'Animal added successfully');
+       
+        this.isvisible = false;
+        this.isEditing = false;
+        this.getAnimals();
       },
-      error: (err) => {
-        console.error('API Error:', err);
-        alert('Server error: ' + (err?.message || 'Please try again later.'));
-      }
+      error: () => alert('Failed to submit animal')
     });
   }
-  
-    onAdd()
-    {
-          this.isvisible=true;
-          this.isEditing=false;
-          this.createForm();
 
-          //this.animalForm.reset({ AnimalPurchasedDate: this.todayString, animalCost: 0 });
-    }
-    oncancel()
-    {
-      this.isvisible=false;
+  onAdd() {
+    this.isvisible = true;
+    this.isEditing = false;
+    this.createForm();
+  }
 
-    }
-
-    onEdits(animal: any): void {
-      this.editIndex = this.AnimalsData.indexOf(animal);
-      this.animalForm.patchValue({
-        AnimalName: animal.AnimalName,
-        BatchID: animal.BatchID|| '',
-        animalType: animal.AnimalTypeID,
-        gender: animal.GenderID,
-        healthStatus: animal.HealthStatusID,
-        animalCost: animal.AnimalCost,
-        VendorID: animal.VendorID,
-        animalStatus: animal.AnimalStatusID,
-        animalPurchasedDate: animal.AnimalPurchasedDate
-      });
-      this.isvisible = true;
-      this.isEditing = true;
-    }
-
-  onDelete(animal: any): void {
+  onCancel() {
+    this.isvisible = false;
     
-      this.api.deleteAnimal(animal.AnimalID).subscribe({
-        
-      next: () => { this.getAnimals(); 
-        
+  }
+
+  onEdit(animal: any) {
+    this.editIndex = this.AnimalsData.indexOf(animal);
+    this.animalForm.patchValue({
+      ...animal,
+      AnimalPurchasedDate: animal.AnimalPurchasedDate?.split('T')[0]
+    });
+    this.isvisible = true;
+    this.isEditing = true;
+  }
+
+  onDelete(animal: any) {
+    this.api.deleteAnimal(animal.AnimalID).subscribe({
+      next: () => {
+        this.getAnimals();
+        this.showSuccessMessage('Animal deleted successfully');
       },
-      error: () => { alert('Failed to delete animal'); }
-      
+      error: () => alert('Failed to delete animal')
     });
   }
 
-  // animals.component.ts
-   digitsOnly(event: KeyboardEvent): void {
-  const allowedKeys = [
-    'Backspace',  // delete last character
-    'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', // navigation
-    'Tab', 'Delete',
-    'Enter'       // let the Enter key through
-  ];
-
-  // Allow Ctrl/⌘ + C / V / A / X combos
-  if (event.ctrlKey || event.metaKey) {
-    return;
+  showSuccessMessage(msg: string) {
+    this.successMessage = msg;
+    this.showMessage = true;
+    setTimeout(() => this.showMessage = false, 3000);
   }
-
-  // Allow the keys in the list above
-  if (allowedKeys.includes(event.key)) {
-    return;
-  }
-
-  // Block anything that is not 0‑9
-  const isDigit = /^[0-9]$/.test(event.key);
-  if (!isDigit) {
+  digitsOnly(event: KeyboardEvent) {
+  if (!/[0-9]/.test(event.key) && event.key !== 'Backspace' && event.key !== 'Tab') {
     event.preventDefault();
   }
 }
+getAnimalTypeName(id: number) {
+  return this.animalTypes.find(t => t.id === id)?.name || '';
+}
 
-  getAnimalTypeName(id: number): string {
-    const type = this.animalTypes.find(t => t.id === id);
-    return type ? type.name : String(id);
-  }
-  getGenderName(id: number): string {
-    const gender = this.genders.find(g => g.id === id);
-    return gender ? gender.name : String(id);
-  }
-  getHealthStatusName(id: number): string {
-    const health = this.healthStatuses.find(h => h.id === id);
-    return health ? health.name : String(id);
-  }
-  getAnimalStatusName(id: number): string {
-    const status = this.animalStatuses.find(s => s.id === id);
-    return status ? status.name : String(id);
-  }
-  getVendorName(id: number): string {
-    const vendor = this.vendors.find(v => v.VendorID === id);
-    return vendor ? vendor.VendorName : String(id);
-  }
+getGenderName(id: number) {
+  return this.genders.find(g => g.id === id)?.name || '';
+}
+
+getHealthStatusName(id: number) {
+  return this.healthStatuses.find(h => h.id === id)?.name || '';
+}
+
+getAnimalStatusName(id: number) {
+  return this.animalStatuses.find(s => s.id === id)?.name || '';
+}
+
+
 }
