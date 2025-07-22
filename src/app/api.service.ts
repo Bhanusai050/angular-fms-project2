@@ -59,6 +59,7 @@ export class ApiService {
         tap((res) => console.log('✅ Animals fetched:', res)),
         catchError((err) => this.handleError(err))
       );
+      
   }
 
   getAnimalBatches(): Observable<any[]> {

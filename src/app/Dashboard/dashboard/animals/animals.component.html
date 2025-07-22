@@ -1,6 +1,11 @@
 <div class="container mt-4">
   <div *ngIf="isvisible">
     <h3 class="mb-4"><span *ngIf="isEditing">Edit</span> <span *ngIf="!isEditing">Add</span> Animal</h3>
+      <div *ngIf="showMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+          {{ successMessage }}
+           <button type="button" class="btn-close" (click)="showMessage = false"></button>
+        </div>
+
     <form [formGroup]="animalForm" (ngSubmit)="onSubmit()" novalidate>
       <div class="row g-3">
         <div class="col-md-4">
@@ -59,7 +64,7 @@
          animalForm.get('AnimalTypeID')?.touched &&
          animalForm.get('AnimalTypeID')?.invalid">
             <option [ngValue]="null">-- Select Animal type --</option>
-            <option *ngFor="let type of animalTypes" [ngValue]="type.name">{{ type.name }}</option>
+            <option *ngFor="let type of animalTypes" [ngValue]="type.id">{{ type.name }}</option>
           </select>
 
           <div class="invalid-feedback" *ngIf="
@@ -134,7 +139,7 @@
        animalForm.get('AnimalCost')?.touched &&
        animalForm.get('AnimalCost')?.hasError('pattern')
         ">
-            Cost Allowes only numbers
+            Cost Allowes max 7 digits.
           </div>
 
         </div>
@@ -214,7 +219,7 @@
     </div>
     <div class="col-md-6 text-end">
     <button class="btn btn-success" type="button" (click)="onAdd()">
-      <i class="bi bi-plus-circle"></i> Add Batch
+      <i class="bi bi-plus-circle"></i> Add Animal
     </button>
      </div>
  </div>
