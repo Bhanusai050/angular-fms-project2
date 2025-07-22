@@ -7,13 +7,13 @@
     <form [formGroup]="investmentForm" (ngSubmit)="onSubmit()" novalidate>
       <div class="row g-3">
         <div class="col-md-4">
-          <label for="investmentId" class="form-label">Investment ID</label>
-          <input type="text" class="form-control" id="investmentId" formControlName="investmentId"
-            [ngClass]="{ 'is-invalid': investmentForm.get('investmentId')?.invalid && investmentForm.get('investmentId')?.touched }" />
-          <div *ngIf="investmentForm.get('investmentId')?.touched && investmentForm.get('investmentId')?.invalid"
+          <label for="investment" class="form-label">Investment </label>
+          <input type="text" class="form-control" id="investment" formControlName="investment"
+            [ngClass]="{ 'is-invalid': investmentForm.get('investment')?.invalid && investmentForm.get('investment')?.touched }" />
+          <div *ngIf="investmentForm.get('investment')?.touched && investmentForm.get('investment')?.invalid"
             class="text-danger">
-            <small *ngIf="investmentForm.get('investmentId')?.errors?.['required']">Investment ID is required.</small>
-            <small *ngIf="investmentForm.get('investmentId')?.errors?.['pattern']">Only integers allowed.</small>
+            <small *ngIf="investmentForm.get('investment')?.errors?.['required']">Investment is required.</small>
+            <small *ngIf="investmentForm.get('investment')?.errors?.['pattern']">Only integers allowed.</small>
           </div>
         </div>
 
@@ -67,7 +67,7 @@
       <thead style="background-color: #f8f9fa;">
         <tr class="fw-semibold text-dark">
         <tr>
-          <th>Investment ID</th>
+          <th>Investment </th>
           <th>Date</th>
           <th>Capital Amount</th>
           <th>Description</th>
@@ -76,7 +76,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let investment of investmentsData">
-          <td>{{ investment.investmentId }}</td>
+          <td>{{ investment.investment }}</td>
           <td>{{ investment.date | date: 'yyyy-MM-dd' }}</td>
           <td>{{ investment.capitalAmount | currency }}</td>
           <td>{{ investment.description }}</td>

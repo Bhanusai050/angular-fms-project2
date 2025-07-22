@@ -2,60 +2,114 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-production',
-  templateUrl: './production.component.html'
+  selector: 'app-productions',
+  templateUrl: './production.component.html',
+  styleUrls: ['./production.component.scss'],
 })
 export class ProductionsComponent implements OnInit {
-  productionForm!: FormGroup;
+  
+  // ✅ Paste this block inside the class
+  today: string = new Date().toISOString().split('T')[0];
   isvisible = false;
+  isEditing = false;
+  successMessage = '';
+  searchTerm = '';
+  pageSize = 5;
+  pageSizeOptions = [5, 10, 20];
+  currentPage = 1;
+  totalPages = 1;
+  paginatedProductionData: any[] = [];
+
+  productionForm!: FormGroup;
   productionData: any[] = [];
-   today: string = new Date().toISOString().split('T')[0];
 
   constructor(private fb: FormBuilder) {}
 
-  ngOnInit() {
-  this.productionForm = this.fb.group({
-    production: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
-    productionType: ['', Validators.required],
-    animalType: ['', Validators.required],
-    date: ['', Validators.required],
-    quantity: ['', [Validators.required, Validators.min(1)]],
-    unit: ['', Validators.required],
-  });
-}
+  ngOnInit(): void {
+    this.productionForm = this.fb.group({
+      production: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
+      productionType: [null, Validators.required],
+      animalType: [null, Validators.required],
+      date: [null, Validators.required],
+      quantity: [null, [Validators.required, Validators.min(1)]],
+      unit: [null, Validators.required],
+    });
 
-
-
-  onSubmit() {
-  if (this.productionForm.valid) {
-    this.productionData.push(this.productionForm.value);
-      this.productionForm.reset();
-    alert('Submitted successfully!');
-    this.isvisible = false;
+    // Example data
+    this.productionData = []; // Fetch this from API/service if needed
+    this.updatePagination();
   }
-}
+
+  onSubmit(): void {
+    if (this.productionForm.invalid) return;
+
+    const formValue = this.productionForm.value;
+    if (this.isEditing) {
+      // Update existing
+    } else {
+      this.productionData.push(formValue);
+      this.successMessage = 'Production added successfully!';
+    }
+
+    this.productionForm.reset();
+    this.isvisible = false;
+    this.updatePagination();
+  }
 
   onAdd(): void {
     this.isvisible = true;
+    this.isEditing = false;
     this.productionForm.reset();
   }
 
+  onEdit(p: any): void {
+    this.isvisible = true;
+    this.isEditing = true;
+    this.productionForm.patchValue(p);
+  }
+
+  onDelete(p: any): void {
+    if (confirm('Are you sure you want to delete?')) {
+      const index = this.productionData.indexOf(p);
+      if (index > -1) {
+        this.productionData.splice(index, 1);
+        this.successMessage = 'Production deleted successfully!';
+        this.updatePagination();
+      }
+    }
+  }
+
   oncancel(): void {
+    this.productionForm.reset();
     this.isvisible = false;
   }
 
-  onEdit(production: any): void {
-    this.productionForm.patchValue(production);
-    this.isvisible = true;
+  // Pagination and search
+  onSearchChange(): void {
+    this.currentPage = 1;
+    this.updatePagination();
   }
 
-  onDelete(p: any) {
-  const confirmDelete = confirm("Are you sure you want to delete?");
-  if (confirmDelete) {
-    // Your deletion logic here
-    this.productionData = this.productionData.filter(x => x !== p);
-     alert('Deleted successfully!');
+  onPageSizeChange(): void {
+    this.currentPage = 1;
+    this.updatePagination();
   }
-}
 
+  changePage(page: number): void {
+    this.currentPage = page;
+    this.updatePagination();
+  }
+
+  updatePagination(): void {
+    const filteredData = this.productionData.filter((item) =>
+      Object.values(item).some((val) =>
+        val?.toString().toLowerCase().includes(this.searchTerm.toLowerCase())
+      )
+    );
+
+    this.totalPages = Math.ceil(filteredData.length / this.pageSize);
+    const start = (this.currentPage - 1) * this.pageSize;
+    const end = start + this.pageSize;
+    this.paginatedProductionData = filteredData.slice(start, end);
+  }
 }

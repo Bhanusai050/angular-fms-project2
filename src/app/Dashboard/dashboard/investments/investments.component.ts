@@ -17,7 +17,7 @@ export class InvestmentComponent {
 
   constructor(private fb: FormBuilder) {
     this.investmentForm = this.fb.group({
-  investmentId: ['', [Validators.required, Validators.pattern(/^\d+$/)]], // Integers only
+  investment: ['', [Validators.required, Validators.pattern(/^\d+$/)]], // Integers only
   date: ['', [Validators.required]], // Validated in template using [max] attribute
   capitalAmount: ['', [Validators.required, Validators.min(1)]], // Min value 1
   description: ['', [Validators.required, Validators.maxLength(200)]] // Max 200 characters

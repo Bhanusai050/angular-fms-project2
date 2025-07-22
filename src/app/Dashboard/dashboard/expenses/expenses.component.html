@@ -1,21 +1,20 @@
-<div class="container mt-4">
-  <div *ngIf="isvisible">
+<div *ngIf="isvisible">
     <h3 class="mb-4">Add Expense</h3>
-
+ 
     <form [formGroup]="expenseForm" (ngSubmit)="onSubmit()" novalidate>
       <div class="row g-3">
-
+ 
         <!-- Expense ID -->
         <div class="col-md-4">
-          <label for="expenseId" class="form-label">Expense ID</label>
-          <input type="text" class="form-control" id="expenseId" formControlName="expenseId"
-            [ngClass]="{ 'is-invalid': expenseForm.get('expenseId')?.invalid && expenseForm.get('expenseId')?.touched }" />
-          <div *ngIf="expenseForm.get('expenseId')?.touched && expenseForm.get('expenseId')?.invalid" class="text-danger">
-            <small *ngIf="expenseForm.get('expenseId')?.errors?.['required']">Expense ID is required.</small>
-            <small *ngIf="expenseForm.get('expenseId')?.errors?.['pattern']">Only numbers allowed.</small>
+          <label for="expense" class="form-label">Expense </label>
+          <input type="text" class="form-control" id="expense" formControlName="expense"
+            [ngClass]="{ 'is-invalid': expenseForm.get('expense')?.invalid && expenseForm.get('expense')?.touched }" />
+          <div *ngIf="expenseForm.get('expense')?.touched && expenseForm.get('expense')?.invalid" class="text-danger">
+            <small *ngIf="expenseForm.get('expense')?.errors?.['required']">Expense  is required.</small>
+            <small *ngIf="expenseForm.get('expense')?.errors?.['pattern']">Only numbers allowed.</small>
           </div>
         </div>
-
+ 
         <!-- Date -->
         <div class="col-md-4">
           <label for="date" class="form-label">Date</label>
@@ -25,7 +24,7 @@
             <small>Date is required.</small>
           </div>
         </div>
-
+ 
         <!-- Type -->
         <div class="col-md-4">
           <label for="type" class="form-label">Type</label>
@@ -40,7 +39,7 @@
             <small>Type is required.</small>
           </div>
         </div>
-
+ 
         <!-- Amount -->
         <div class="col-md-4">
           <label for="amount" class="form-label">Amount</label>
@@ -51,7 +50,7 @@
             <small *ngIf="expenseForm.get('amount')?.errors?.['max']">Maximum value is 100.</small>
           </div>
         </div>
-
+ 
         <!-- Feed -->
         <div class="col-md-4">
           <label for="feed" class="form-label">Feed</label>
@@ -62,7 +61,7 @@
             <small *ngIf="expenseForm.get('feed')?.errors?.['pattern']">Only numbers allowed.</small>
           </div>
         </div>
-
+ 
         <!-- Animal -->
         <div class="col-md-4">
           <label for="animal" class="form-label">Animal</label>
@@ -73,24 +72,24 @@
             <small *ngIf="expenseForm.get('animal')?.errors?.['pattern']">Only numbers allowed.</small>
           </div>
         </div>
-
+ 
         <!-- Buttons -->
         <div class="col-12 mt-3">
           <button class="btn btn-success" type="submit" [disabled]="expenseForm.invalid">Submit</button>
           <button class="btn btn-danger" type="button" (click)="oncancel()">Cancel</button>
         </div>
-
+ 
       </div>
     </form>
   </div>
-
+ 
   <div *ngIf="!isvisible">
     <h4>Expenses </h4>
     <div class="d-flex justify-content-end mb-3">
       <button class="btn btn-success" (click)="onAdd()"><i class="bi bi-plus-circle"></i> Add Expense</button>
     </div>
-    
-
+   
+ 
     <!-- Updated Table Design -->
     <table class="table table-bordered text-center shadow-sm bg-white rounded">
       <thead style="background-color: #f8f9fa;">
@@ -123,4 +122,4 @@
       </tbody>
     </table>
   </div>
-</div>
+

@@ -392,6 +392,11 @@ export class ApiService {
     });
   }
 
+   // ✅ Update expense
+  updateExpense(id: number, data: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/expenses/${id}`, data);
+  }
+
   // DELETE: /api/expenses/delete/{id}
   deleteExpense(id: number) {
     return this.http.delete(`${this.baseUrl}/api/expenses/delete/${id}`, {
