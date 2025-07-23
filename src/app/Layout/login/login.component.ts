@@ -57,18 +57,8 @@ export class LoginComponent implements OnInit {
 
   this.api.login(email, password, remember).subscribe({
     next: (resp: LoginResponse) => {
-      if (resp && resp.username) {
-        localStorage.setItem('username', resp.username);
-        sessionStorage.setItem('username', resp.username);
-
-        // Set user in service
-        this.userService.setUser({
-          id: resp.username,
-          name: resp.username,
-          email
-        });
-      }
-
+      console.log('Login response:', resp.Username); // Debug
+      localStorage.setItem('fullname', resp.Username ?? '');
       this.successMessage = 'Login successful!';
       this.router.navigate(['/Dashboard']);
     },

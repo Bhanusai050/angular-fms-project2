@@ -67,33 +67,35 @@ export class SignUpComponent {
     }
   }
 
-  onSubmit(): void {
-  this.successMessage = '';
-  this.errorMessage = '';
+  onSubmit() {
+    this.successMessage = '';
+    this.errorMessage = '';
 
-  if (this.signupForm.invalid) {
-    this.signupForm.markAllAsTouched();
-    return;
-  }
+    if (this.signupForm.invalid) {
+      this.signupForm.markAllAsTouched();
+      return;
+    }
 
-  const { name, email, password } = this.signupForm.value;
-    const formData = { username: name, email, passwordHash: password };
+    const { name, email, password } = this.signupForm.value;
+const formData = { Username: name, Email: email, PasswordHash: password }; // <-- update here
 
-    this.api.register(formData).subscribe({
-      next: (resp: any) => {
-        // 🎯 Key addition: set user for Dashboard
-        this.userService.setUser({
-          id: resp.username,
-          name,
-          email
-        });
-
-        this.successMessage = '✅ Registration successful!';
-        setTimeout(() => this.router.navigate(['/dashboard']), 2000);
-      },
-      error: (err: Error) => {
-        this.errorMessage = err.message;
-      }
+this.api.register(formData).subscribe({
+  next: (resp: any) => {
+    localStorage.setItem('fullname', name);
+    this.userService.setUser({
+      id: resp.username,
+      name,
+      email
     });
+
+    this.successMessage = '✅ Registration successful!';
+    setTimeout(() => {
+      this.router.navigate(['/dashboard']).then(() => window.location.reload());
+    }, 2000); // <-- Place here
+  },
+  error: (err: Error) => {
+    this.errorMessage = err.message;
   }
-}
+});
+    }
+  }

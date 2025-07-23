@@ -16,17 +16,18 @@ export class DashboardComponent implements OnInit {
   constructor(private authService: AuthService) {}
 
   ngOnInit() {
-    const stored = localStorage.getItem('username') ?? sessionStorage.getItem('username');
+    const stored = localStorage.getItem('fullname') ?? sessionStorage.getItem('fullname');
+    console.log('Fullname in storage:', stored); // Debug
     this.userName = stored || 'User';
   }
 
-toggleSidebar(): void {
-  this.isSidebarCollapsed = !this.isSidebarCollapsed;
-}
+  toggleSidebar(): void {
+    this.isSidebarCollapsed = !this.isSidebarCollapsed;
+  }
 
-get sidebarToggleIcon(): string {
-  return this.isSidebarCollapsed ? 'bi-chevron-right' : 'bi-chevron-left';
-}
+  get sidebarToggleIcon(): string {
+    return this.isSidebarCollapsed ? 'bi-chevron-right' : 'bi-chevron-left';
+  }
 
   logout(): void {
     localStorage.removeItem('auth_token');
@@ -38,4 +39,5 @@ get sidebarToggleIcon(): string {
     console.log("Logging out...");
   }
 }
+
 

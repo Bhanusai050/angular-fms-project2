@@ -5,8 +5,9 @@ import { tap, catchError } from 'rxjs/operators';
 import { CustomerApiResponse } from './Dashboard/dashboard/customers/customers.component';
 
 export interface LoginResponse {
+  name(arg0: string, name: any): unknown;
   token: string;
-  username?: string;
+  Username?: string;
 }
 
 @Injectable({
