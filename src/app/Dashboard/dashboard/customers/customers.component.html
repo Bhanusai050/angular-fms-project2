@@ -1,6 +1,6 @@
 <div class="container mt-4">
   <!-- Form Section -->
-  <div *ngIf="isvisible">
+  <div *ngIf="isVisible">
     <h3 class="mb-4"><span *ngIf="isEditing">Edit</span> <span *ngIf="!isEditing">Add</span> Customer</h3>
     
     <form [formGroup]="customerForm" (ngSubmit)="onSubmit()" novalidate>
@@ -47,29 +47,21 @@
 
         <!-- Phone -->
         <div class="col-md-4">
-          <label for="Phone" class="form-label">Phone <span class="text-danger">*</span></label>
-          <input
-            type="text"
-            class="form-control"
-            id="Phone"
-            formControlName="Phone"
-            placeholder="Enter Phone Number"
-            (keydown)="digitsOnly($event)"
-            [class.is-invalid]="customerForm.get('Phone')?.touched && customerForm.get('Phone')?.invalid"
-          />
-          <div
-            class="invalid-feedback"
-            *ngIf="customerForm.get('Phone')?.touched && customerForm.get('Phone')?.hasError('required')"
-          >
-            Phone is required.
-          </div>
-          <div
-            class="invalid-feedback"
-            *ngIf="customerForm.get('Phone')?.touched && customerForm.get('Phone')?.hasError('pattern')"
-          >
-            Enter a valid phone number (e.g., +1234567890).
-          </div>
-        </div>
+  <label for="phone" class="form-label">Phone</label>
+  <input
+  type="text"
+  class="form-control"
+  formControlName="phone"
+  maxlength="15"
+  placeholder="+91XXXXXXXXXX"
+/>
+  <div class="invalid-feedback" *ngIf="customerForm.get('phone')?.errors?.['required']">
+    Phone is required.
+  </div>
+  <div class="invalid-feedback" *ngIf="customerForm.get('phone')?.errors?.['pattern']">
+    Enter a valid phone number (e.g., +911234567890 or 1234567890).
+  </div>
+</div>
 
         <!-- Email -->
         <div class="col-md-4">
@@ -139,7 +131,7 @@
           <button class="btn btn-success m-2" type="submit">
             <i class="bi bi-check-circle"></i> Submit
           </button>
-          <button class="btn btn-danger" type="button" (click)="oncancel()">
+          <button class="btn btn-danger" type="button" (click)="onCancel()">
             <i class="bi bi-x-circle"></i> Cancel
           </button>
         </div>
@@ -148,16 +140,22 @@
   </div>
 
   <!-- Table Section -->
-  <div *ngIf="!isvisible" class="container mt-4">
-    <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+  <div *ngIf="!isVisible" class="container mt-4">
+   <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
       {{ successMessage }}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
+</div>
+ 
+    <!-- Search and Add -->
+<div class="d-flex justify-content-between align-items-center mb-3">
+<h4>Customers</h4>
+</div>
+<div class="col-md--6 text-end">
+<button class="btn btn-success" type="button" (click)="onAdd()"><i class="bi bi-plus-circle"></i> Add Customer</button>
+</div>
+ 
 
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <h4 class="mb-0">Customers</h4>
-      <div class="d-flex gap-2">
-        <input
+<div class="d-flex gap-2">
+<input
           type="text"
           class="form-control"
           placeholder="Search customers..."
@@ -166,23 +164,15 @@
           (input)="onSearchChange()"
           style="width: 250px;"
         />
-        <button class="btn btn-success" type="button" (click)="onAdd()">
-          <i class="bi bi-plus-circle"></i> Add Customer
-        </button>
-      </div>
-    </div>
 
-    <div class="mb-3">
-      <label class="form-label me-2">Page Size:</label>
-      <select
-        class="form-select d-inline-block w-auto"
-        [(ngModel)]="pageSize"
-        name="pageSize"
-        (change)="onPageSizeChange()"
-      >
-        <option *ngFor="let size of pageSizeOptions" [ngValue]="size">{{ size }}</option>
-      </select>
-    </div>
+</div>
+    <!-- Page Size Dropdown -->
+<div class="col-mb-3">
+
+<select class="form-select" [(ngModel)]="pageSize" (change)="onPageSizeChange()">
+<option *ngFor="let size of pageSizeOptions" [value]="size">{{ size }}</option>
+</select>
+</div>
 
     <table class="table table-bordered table-hover mt-3">
       <thead class="table-light">
