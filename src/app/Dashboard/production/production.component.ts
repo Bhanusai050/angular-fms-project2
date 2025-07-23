@@ -6,17 +6,27 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   templateUrl: './production.component.html',
   styleUrls: ['./production.component.scss'],
 })
+
+
 export class ProductionsComponent implements OnInit {
+
+  searchTerm: string = '';
+pageSize: number = 5;
+pageSizes: number[] = [5, 10, 20, 50];
+productions: any[] = [];
+filteredProductions: any[] = [];
+currentPage: number = 1;
+
   
   // ✅ Paste this block inside the class
   today: string = new Date().toISOString().split('T')[0];
   isvisible = false;
   isEditing = false;
   successMessage = '';
-  searchTerm = '';
-  pageSize = 5;
+  
+ 
   pageSizeOptions = [5, 10, 20];
-  currentPage = 1;
+ 
   totalPages = 1;
   paginatedProductionData: any[] = [];
 
@@ -39,6 +49,19 @@ export class ProductionsComponent implements OnInit {
     this.productionData = []; // Fetch this from API/service if needed
     this.updatePagination();
   }
+
+  onSearch(): void {
+  if (this.searchTerm.trim()) {
+    this.filteredProductions = this.productions.filter(p =>
+      Object.values(p).some(val =>
+        val?.toString().toLowerCase().includes(this.searchTerm.toLowerCase())
+      )
+    );
+  } else {
+    this.filteredProductions = [...this.productions];
+  }
+}
+
 
   onSubmit(): void {
     if (this.productionForm.invalid) return;
