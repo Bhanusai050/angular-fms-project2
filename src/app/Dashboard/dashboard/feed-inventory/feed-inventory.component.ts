@@ -54,14 +54,14 @@ currentPage: any;
   onSubmit(): void {
     if (this.feedForm.valid) {
       this.feedData.push(this.feedForm.value);
-      this.feedForm.reset();
+     
       alert('Submitted successfully!');
       this.isvisible = false;
     }
   }
  
   onAdd(): void {
-    this.feedForm.reset();
+   
     this.isvisible = true;
   }
  
