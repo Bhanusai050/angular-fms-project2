@@ -160,11 +160,12 @@ updatePagination() {
   console.log('Submitting form:', formData);
 
   if (this.isEditing) {
-    this.api.getAnimals().subscribe({
+     this.api.updateAnimal(formData.AnimalID, formData).subscribe({
       next: () => {
         this.successMessage = 'Animal updated successfully';
         this.getAnimals();
         this.isvisible = false;
+        this.isEditing = false;
        
       },
       error: (err) => {
@@ -184,6 +185,7 @@ updatePagination() {
       }
     });
   }
+  this.showSuccessMessage(this.successMessage);
 }
 
 
@@ -255,7 +257,5 @@ getBatchName(id: number): string {
     const batch = this.batches.find(b => b.BatchID === id);
      return batch ? batch.BatchName : 'N/A';
 }
-
-
 
 }

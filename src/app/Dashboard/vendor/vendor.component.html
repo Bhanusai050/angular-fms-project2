@@ -66,8 +66,9 @@
             title="Select Country Code"
             [class.is-invalid]="vendorForm.get('CountryCode')?.touched && vendorForm.get('countryCode')?.invalid"
           >
-            <option [ngValue]="null">-- Select Country Code --</option>
-            <option *ngFor="let c of CountryCodes || []" [value]="c.code">{{ c.label }} ({{ c.code }})</option>
+            <option [ngValue]="null" disabled>-- Select Country Code --</option>
+            <option *ngFor="let c of CountryCodes" [value]="c.code">{{ c.label }} ({{ c.code }})</option>
+
           </select>
           <div class="invalid-feedback" *ngIf="vendorForm.get('countryCode')?.touched && vendorForm.get('countryCode')?.hasError('required')">
             Country code is required.
@@ -152,7 +153,7 @@
           <td>{{ vendor.VendorType }}</td>
           <td>{{ vendor.Category }}</td>
           <td>{{ vendor.Email }}</td>
-          <td>{{ vendor.CountryCode }} {{ vendor.PhoneNumber }}</td>
+          <td>{{ vendor.CountryCode }} </td>
           <td>{{ vendor.PhoneNumber }}</td>
           <td>{{ vendor.Location }}</td>
           <td class="text-center">
