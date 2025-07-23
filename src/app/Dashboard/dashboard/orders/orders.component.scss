@@ -1,14 +1,14 @@
 .container {
   max-width: 100%;
   padding: 20px;
-  background-color: #f9f9f9;
+  background-color: white;
   border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 10px white(0, 0, 0, 0.1);
 }
 
 h2 {
   font-weight: 600;
-  color: #343a40;
+  color: black;
 }
 
 .table {
@@ -17,8 +17,8 @@ h2 {
 }
 
 .table thead th {
-  background-color: #343a40;
-  color: white;
+  background-color: white;
+  color: black;
   vertical-align: middle;
 }
 
