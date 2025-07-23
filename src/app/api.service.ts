@@ -3,7 +3,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 
-
 export interface LoginResponse {
   name(arg0: string, name: any): unknown;
   token: string;
@@ -60,7 +59,6 @@ export class ApiService {
         tap((res) => console.log('✅ Animals fetched:', res)),
         catchError((err) => this.handleError(err))
       );
-      
   }
 
   getAnimalBatches(): Observable<any[]> {
@@ -402,62 +400,64 @@ export class ApiService {
       );
   }
 
+  addInvestment(investmentData: any): Observable<any> {
+    return this.http
+      .post(`${this.baseUrl}/api/investments/add`, investmentData, {
+        headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+      })
+      .pipe(
+        tap((res) => console.log('✅ Investment added:', res)),
+        catchError((err) => this.handleError(err))
+      );
+  }
+
+  deleteInvestment(investmentId: number): Observable<any> {
+    return this.http
+      .delete(`${this.baseUrl}/api/investments/delete/${investmentId}`, {
+        headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+      })
+      .pipe(
+        tap(() => console.log('✅ Investment deleted:', investmentId)),
+        catchError((err) => this.handleError(err))
+      );
+  }
+
+  updateInvestment(id: number, investmentData: any): Observable<any> {
+    return this.http
+      .put(`${this.baseUrl}/api/investments/update/${id}`, investmentData, {
+        headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+      })
+      .pipe(
+        tap((res) => console.log('✅ Investment updated:', res)),
+        catchError((err) => this.handleError(err))
+      );
+  }
+
+  getInvestments(): Observable<any[]> {
+    return this.http
+      .get<any[]>(`${this.baseUrl}/api/investments/get`, {
+        headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+      })
+      .pipe(
+        tap((res) => console.log('✅ Investments fetched:', res)),
+        catchError((err) => this.handleError(err))
+      );
+  }
+
   get rememberedEmail(): string {
     return localStorage.getItem('remember_email') || '';
   }
 
   private handleError(err: any): Observable<never> {
+    console.error('API Error:', err); // Log full error for debugging
     const msg =
       err.status === 0
         ? 'Network error – unable to reach the server.'
+        : err.status === 401
+        ? 'Unauthorized – please log in again.'
         : err.status >= 400 && err.status < 500
         ? 'Invalid request or input – please check your data.'
         : 'Server error – please try again later.';
     return throwError(() => new Error(msg));
   }
-  addInvestment(investmentData: any): Observable<any> {
-  return this.http
-    .post(`${this.baseUrl}/api/investments/add`, investmentData, {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-    })
-    .pipe(
-      tap((res) => console.log('✅ Investment added:', res)),
-      catchError((err) => this.handleError(err))
-    );
 }
-
-deleteInvestment(investmentId: number): Observable<any> {
-  return this.http
-    .delete(`${this.baseUrl}/api/investments/delete/${investmentId}`, {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-    })
-    .pipe(
-      tap(() => console.log('✅ Investment deleted:', investmentId)),
-      catchError((err) => this.handleError(err))
-    );
-}
-
-updateInvestment(id: number, investmentData: any): Observable<any> {
-  return this.http
-    .put(`${this.baseUrl}/api/investments/update/${id}`, investmentData, {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-    })
-    .pipe(
-      tap((res) => console.log('✅ Investment updated:', res)),
-      catchError((err) => this.handleError(err))
-    );
-}
-
-getInvestments(): Observable<any[]> {
-  return this.http
-    .get<any[]>(`${this.baseUrl}/api/investments/get`, {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-    })
-    .pipe(
-      tap((res) => console.log('✅ Investments fetched:', res)),
-      catchError((err) => this.handleError(err))
-    );
-}
-
-}
-
