@@ -6,11 +6,11 @@
       <div class="row g-3">
         
         <div class="col-md-4">
-          <label for="expenseId" class="form-label">Expense ID <span class="text-danger">*</span></label>
-          <input type="text" id="expenseId" class="form-control" formControlName="expense"
-            placeholder="Enter Expense ID" [class.is-invalid]="expenseForm.get('expense')?.touched && expenseForm.get('expense')?.invalid" />
+          <label for="expense" class="form-label">Expense  <span class="text-danger">*</span></label>
+          <input type="text" id="expense" class="form-control" formControlName="expense"
+            placeholder="Enter Expense " [class.is-invalid]="expenseForm.get('expense')?.touched && expenseForm.get('expense')?.invalid" />
           <div class="invalid-feedback" *ngIf="expenseForm.get('expense')?.touched && expenseForm.get('expense')?.hasError('required')">
-            Expense ID is required.
+            Expense  is required.
           </div>
           <div class="invalid-feedback" *ngIf="expenseForm.get('expense')?.hasError('pattern')">
             Only numbers allowed.
@@ -119,7 +119,7 @@
     <table class="table table-bordered table-hover mt-3 text-center">
       <thead class="table-light">
         <tr>
-          <th>Expense ID</th>
+          <th>Expense </th>
           <th>Date</th>
           <th>Type</th>
           <th>Amount</th>
@@ -130,7 +130,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let e of paginatedExpensesData">
-          <td>{{ e.expenseId }}</td>
+          <td>{{ e.expense }}</td>
           <td>{{ e.date | date: 'yyyy-MM-dd' }}</td>
           <td>{{ e.type }}</td>
           <td>{{ e.amount }}</td>

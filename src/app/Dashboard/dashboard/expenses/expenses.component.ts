@@ -75,7 +75,8 @@ export class ExpensesComponent implements OnInit {
     setTimeout(() => {
       this.successMessage = '';
     }, 3000);
-  }
+    console.log('Submitting expense form:', this.expenseForm.value);
+}
 
   onEdit(expense: any): void {
     this.isvisible = true;
