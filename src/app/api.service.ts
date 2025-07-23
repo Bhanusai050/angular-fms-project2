@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
-import { CustomerApiResponse } from './Dashboard/dashboard/customers/customers.component';
+
 
 export interface LoginResponse {
   token: string;
@@ -414,4 +414,49 @@ export class ApiService {
         : 'Server error – please try again later.';
     return throwError(() => new Error(msg));
   }
+  addInvestment(investmentData: any): Observable<any> {
+  return this.http
+    .post(`${this.baseUrl}/api/investments/add`, investmentData, {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    })
+    .pipe(
+      tap((res) => console.log('✅ Investment added:', res)),
+      catchError((err) => this.handleError(err))
+    );
 }
+
+deleteInvestment(investmentId: number): Observable<any> {
+  return this.http
+    .delete(`${this.baseUrl}/api/investments/delete/${investmentId}`, {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    })
+    .pipe(
+      tap(() => console.log('✅ Investment deleted:', investmentId)),
+      catchError((err) => this.handleError(err))
+    );
+}
+
+updateInvestment(id: number, investmentData: any): Observable<any> {
+  return this.http
+    .put(`${this.baseUrl}/api/investments/update/${id}`, investmentData, {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    })
+    .pipe(
+      tap((res) => console.log('✅ Investment updated:', res)),
+      catchError((err) => this.handleError(err))
+    );
+}
+
+getInvestments(): Observable<any[]> {
+  return this.http
+    .get<any[]>(`${this.baseUrl}/api/investments/get`, {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    })
+    .pipe(
+      tap((res) => console.log('✅ Investments fetched:', res)),
+      catchError((err) => this.handleError(err))
+    );
+}
+
+}
+

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ApiService } from '../../../api.service';
 
 @Component({
   selector: 'app-investments',
@@ -8,92 +9,135 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class InvestmentsComponent implements OnInit {
   investmentForm!: FormGroup;
-  investmentsData: any[] = [];
-  isvisible: boolean = false;
+  investments: any[] = [];
+  paginatedInvestments: any[] = [];
+
+  isvisible = false;
+  isEditing = false;
+  showMessage = false;
+  successMessage = '';
   today: string = new Date().toISOString().split('T')[0];
+
   searchTerm: string = '';
-
-  // Pagination
-  currentPage: number = 1;
   pageSize: number = 5;
-  pageSizeOptions = [5, 10, 20, 50];
+  currentPage: number = 1;
+  totalPages: number = 1;
+  pageSizeOptions: number[] = [5, 10, 20];
 
-  successMessage: string = '';
+  editingInvestmentId: number | null = null;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private api: ApiService) {}
 
   ngOnInit(): void {
+    this.initForm();
+    this.loadInvestments();
+  }
+
+  initForm(): void {
     this.investmentForm = this.fb.group({
-      investment: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
+      investment: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
       date: ['', Validators.required],
-      capitalAmount: ['', [Validators.required, Validators.min(1)]],
+      capitalAmount: [null, [Validators.required, Validators.min(1)]],
       description: ['', [Validators.required, Validators.maxLength(200)]],
     });
   }
 
-  get filteredInvestments() {
-    return this.investmentsData.filter(inv =>
-      inv.investment.toString().includes(this.searchTerm) ||
-      inv.description.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
-  }
-
-  get paginatedInvestments() {
-    const start = (this.currentPage - 1) * this.pageSize;
-    return this.filteredInvestments.slice(start, start + this.pageSize);
-  }
-
-  get totalPages() {
-    return Math.ceil(this.filteredInvestments.length / this.pageSize);
-  }
-
-  changePage(page: number) {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-    }
+  loadInvestments(): void {
+    this.api.getInvestments().subscribe((data: any) => {
+      this.investments = data;
+      this.applyFilter();
+    });
   }
 
   onAdd(): void {
     this.isvisible = true;
+    this.isEditing = false;
     this.investmentForm.reset();
-  }
-
-  oncancel(): void {
-    this.isvisible = false;
+    this.editingInvestmentId = null;
   }
 
   onSubmit(): void {
-    if (this.investmentForm.valid) {
-      const formData = { ...this.investmentForm.value };
-      const index = this.investmentsData.findIndex(i => i.investment === formData.investment);
-      if (index !== -1) {
-        this.investmentsData[index] = formData;
-      } else {
-        this.investmentsData.push(formData);
-      }
-      this.successMessage = 'Submitted successfully!';
-      setTimeout(() => this.successMessage = '', 3000);
-      this.isvisible = false;
+    if (this.investmentForm.invalid) return;
+
+    const formValue = this.investmentForm.value;
+
+    if (this.isEditing && this.editingInvestmentId !== null) {
+      this.api.updateInvestment(this.editingInvestmentId, formValue).subscribe(() => {
+        this.successMessage = 'Investment updated successfully!';
+        this.showSuccess();
+        this.loadInvestments();
+      });
+    } else {
+      this.api.addInvestment(formValue).subscribe(() => {
+        this.successMessage = 'Investment added successfully!';
+        this.showSuccess();
+        this.loadInvestments();
+      });
     }
+
+    this.investmentForm.reset();
+    this.isvisible = false;
   }
 
   onEdit(investment: any): void {
-    this.investmentForm.patchValue(investment);
     this.isvisible = true;
-  }
+    this.isEditing = true;
+    this.editingInvestmentId = investment.id;
 
-  windowConfirmDelete(investment: any): void {
-    if (window.confirm('Are you sure you want to delete?')) {
-      this.onDelete(investment);
-    }
+    this.investmentForm.patchValue({
+      investment: investment.investment,
+      date: investment.date,
+      capitalAmount: investment.capitalAmount,
+      description: investment.description
+    });
   }
 
   onDelete(investment: any): void {
-    const index = this.investmentsData.indexOf(investment);
-    if (index !== -1) {
-      this.investmentsData.splice(index, 1);
-      this.successMessage = 'Deleted successfully!';
-      setTimeout(() => this.successMessage = '', 3000);
+    if (confirm('Are you sure you want to delete this investment?')) {
+      this.api.deleteInvestment(investment.id).subscribe(() => {
+        this.successMessage = 'Investment deleted successfully!';
+        this.showSuccess();
+        this.loadInvestments();
+      });
     }
+  }
+
+  onCancel(): void {
+    this.investmentForm.reset();
+    this.isvisible = false;
+    this.isEditing = false;
+  }
+
+  onSearchChange(): void {
+    this.applyFilter();
+  }
+
+  onPageSizeChange(): void {
+    this.currentPage = 1;
+    this.applyFilter();
+  }
+
+  changePage(page: number): void {
+    this.currentPage = page;
+    this.applyFilter();
+  }
+
+  applyFilter(): void {
+    const filtered = this.investments.filter(i =>
+      i.investment.toString().includes(this.searchTerm.toLowerCase()) ||
+      i.description?.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+
+    this.totalPages = Math.ceil(filtered.length / this.pageSize);
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.paginatedInvestments = filtered.slice(startIndex, endIndex);
+  }
+
+  showSuccess(): void {
+    this.showMessage = true;
+    setTimeout(() => {
+      this.showMessage = false;
+    }, 3000);
   }
 }
