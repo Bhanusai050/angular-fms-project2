@@ -358,16 +358,9 @@ export class ApiService {
       );
   }
 
-  addExpense(expenseData: any): Observable<any> {
-    return this.http
-      .post(`${this.baseUrl}/api/expenses/add`, expenseData, {
-        headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-      })
-      .pipe(
-        tap((res) => console.log('✅ Expense added:', res)),
-        catchError((err) => this.handleError(err))
-      );
-  }
+  addExpense(expense: any): Observable<any> {
+  return this.http.post(`${this.baseUrl}/expenses`, expense);
+}
 
   getExpenses(): Observable<any[]> {
     return this.http
@@ -459,5 +452,26 @@ getInvestments(): Observable<any[]> {
     );
 }
 
+// ✅ Get all productions
+  getProductions(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/productions`);
+  }
+
+  // ✅ Add a new production
+  addProduction(production: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/productions`, production);
+  }
+
+  // ✅ Update existing production
+  updateProduction(id: number, production: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/productions/${id}`, production);
+  }
+
+  // ✅ Delete production
+  deleteProduction(id: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/productions/${id}`);
+  }
 }
+
+
 
