@@ -433,16 +433,18 @@ export class ApiService {
       );
   }
 
-  getInvestments(): Observable<any[]> {
-    return this.http
-      .get<any[]>(`${this.baseUrl}/api/investments/get`, {
-        headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-      })
-      .pipe(
-        tap((res) => console.log('✅ Investments fetched:', res)),
-        catchError((err) => this.handleError(err))
-      );
-  }
+ getInvestments(): Observable<any[]> {
+  return this.http
+    .get<any[]>(`${this.baseUrl}/api/investments/get`, {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    })
+    .pipe(
+      tap((res) => console.log('✅ Investments fetched:', res)),
+      catchError((err) => this.handleError(err))
+    );
+}
+
+
 
   get rememberedEmail(): string {
     return localStorage.getItem('remember_email') || '';

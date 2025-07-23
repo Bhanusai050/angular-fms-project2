@@ -11,6 +11,7 @@ export class InvestmentsComponent implements OnInit {
   investmentForm!: FormGroup;
   investments: any[] = [];
   paginatedInvestments: any[] = [];
+  filteredInvestments: any[] = [];
 
   isvisible = false;
   isEditing = false;
@@ -30,6 +31,7 @@ export class InvestmentsComponent implements OnInit {
 
   ngOnInit(): void {
     this.initForm();
+     
     this.loadInvestments();
   }
 
@@ -49,6 +51,14 @@ export class InvestmentsComponent implements OnInit {
     });
   }
 
+  getInvestments() {
+  this.api.getInvestments().subscribe((data: any[]) => {
+    this.investments = data;
+    this.filteredInvestments = data; // ✅ Important for filtering/pagination
+  });
+}
+
+
   onAdd(): void {
     this.isvisible = true;
     this.isEditing = false;
@@ -65,12 +75,14 @@ export class InvestmentsComponent implements OnInit {
       this.api.updateInvestment(this.editingInvestmentId, formValue).subscribe(() => {
         this.successMessage = 'Investment updated successfully!';
         this.showSuccess();
+        
         this.loadInvestments();
       });
     } else {
       this.api.addInvestment(formValue).subscribe(() => {
         this.successMessage = 'Investment added successfully!';
         this.showSuccess();
+        this.getInvestments(); 
         this.loadInvestments();
       });
     }
