@@ -17,6 +17,7 @@ export class ExpensesComponent implements OnInit {
   pageSizeOptions: number[] = [5, 10, 20];
   currentPage: number = 1;
   totalPages: number = 1;
+  expenses: any[] = [];
 
   isvisible: boolean = false;
   isEditing: boolean = false;
@@ -78,6 +79,15 @@ export class ExpensesComponent implements OnInit {
     console.log('Submitting expense form:', this.expenseForm.value);
 }
 
+
+clearSuccessMessage(): void {
+  setTimeout(() => {
+    this.successMessage = '';
+  }, 3000);
+}
+
+
+
   onEdit(expense: any): void {
     this.isvisible = true;
     this.isEditing = true;
@@ -89,6 +99,10 @@ export class ExpensesComponent implements OnInit {
     if (confirmDelete) {
       this.expensesData = this.expensesData.filter(e => e.expenseId !== expense.expenseId);
       this.onSearchChange();
+      this.successMessage = 'Expense deleted successfully!';
+    setTimeout(() => {
+      this.successMessage = '';
+    }, 3000);
     }
   }
 
@@ -102,6 +116,7 @@ export class ExpensesComponent implements OnInit {
     );
     this.totalPages = Math.ceil(filtered.length / this.pageSize);
     this.currentPage = 1;
+    
     this.paginate(filtered);
   }
 
@@ -126,17 +141,17 @@ export class ExpensesComponent implements OnInit {
   }
 
   getAllExpenses(): void {
-    // If using real API:
-    // this.api.getExpenses().subscribe(data => {
-    //   this.expensesData = data;
-    //   this.onSearchChange();
-    // });
-
-    // Dummy initial data
-    this.expensesData = [
-      { expenseId: '101', date: '2025-07-01', type: 'Food', amount: 75, feed: '300', animal: '501' },
-      { expenseId: '102', date: '2025-07-15', type: 'Transport', amount: 50, feed: '150', animal: '502' }
-    ];
-    this.onSearchChange();
-  }
+  this.api.getExpenses().subscribe({
+    next: (res) => {
+      console.log('Fetched from backend:', res); // 👈 CHECK THIS IN CONSOLE
+      this.expenses = res;
+    },
+    error: (err) => {
+      console.error('Fetching expenses failed:', err);
+    }
+  });
 }
+
+
+}
+

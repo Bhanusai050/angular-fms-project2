@@ -67,29 +67,33 @@ export class InvestmentsComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.investmentForm.invalid) return;
+  if (this.investmentForm.invalid) return;
 
-    const formValue = this.investmentForm.value;
+  const formValue = this.investmentForm.value;
 
-    if (this.isEditing && this.editingInvestmentId !== null) {
-      this.api.updateInvestment(this.editingInvestmentId, formValue).subscribe(() => {
-        this.successMessage = 'Investment updated successfully!';
-        this.showSuccess();
-        
-        this.loadInvestments();
-      });
-    } else {
-      this.api.addInvestment(formValue).subscribe(() => {
-        this.successMessage = 'Investment added successfully!';
-        this.showSuccess();
-        this.getInvestments(); 
-        this.loadInvestments();
-      });
+  if (this.isEditing) {
+    const index = this.investments.findIndex(i => i.investmentId === formValue.investmentId);
+    if (index !== -1) {
+      this.investments[index] = { ...formValue };
+      this.successMessage = 'Investment updated successfully!';
     }
-
-    this.investmentForm.reset();
-    this.isvisible = false;
+  } else {
+    this.investments.push({ ...formValue, investmentId: formValue.investmentId });
+    this.successMessage = 'Investment added successfully!';
   }
+
+  this.investmentForm.reset();
+  this.isvisible = false;
+  this.onSearchChange();
+
+  setTimeout(() => {
+    this.successMessage = '';
+  }, 3000);
+
+  console.log('Submitting investment form:', formValue);
+}
+
+
 
   onEdit(investment: any): void {
     this.isvisible = true;
@@ -104,15 +108,18 @@ export class InvestmentsComponent implements OnInit {
     });
   }
 
-  onDelete(investment: any): void {
-    if (confirm('Are you sure you want to delete this investment?')) {
-      this.api.deleteInvestment(investment.id).subscribe(() => {
-        this.successMessage = 'Investment deleted successfully!';
-        this.showSuccess();
-        this.loadInvestments();
-      });
-    }
+onDelete(investment: any): void {
+  const confirmDelete = confirm('Are you sure you want to delete this investment?');
+  if (confirmDelete) {
+    this.investments = this.investments.filter(i => i.investmentId !== investment.investmentId);
+    this.onSearchChange(); // if applicable
+    this.successMessage = 'Investment deleted successfully!';
+    setTimeout(() => {
+      this.successMessage = '';
+    }, 3000);
   }
+}
+
 
   onCancel(): void {
     this.investmentForm.reset();

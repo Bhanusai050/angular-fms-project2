@@ -64,20 +64,31 @@ currentPage: number = 1;
 
 
   onSubmit(): void {
-    if (this.productionForm.invalid) return;
+  if (this.productionForm.invalid) return;
 
-    const formValue = this.productionForm.value;
-    if (this.isEditing) {
-      // Update existing
-    } else {
-      this.productionData.push(formValue);
-      this.successMessage = 'Production added successfully!';
+  const formValue = this.productionForm.value;
+
+  if (this.isEditing) {
+    const index = this.productionData.findIndex(p => p.productionId === formValue.productionId);
+    if (index !== -1) {
+      this.productionData[index] = { ...formValue };
+      this.successMessage = 'Production updated successfully!';
     }
-
-    this.productionForm.reset();
-    this.isvisible = false;
-    this.updatePagination();
+  } else {
+    this.productionData.push({ ...formValue });
+    this.successMessage = 'Production added successfully!';
   }
+
+  this.productionForm.reset();
+  this.isvisible = false;
+  this.onSearchChange?.(); // Optional chaining if `onSearchChange()` is defined
+
+  setTimeout(() => {
+    this.successMessage = '';
+  }, 3000);
+
+  console.log('Submitting production form:', this.productionForm.value);
+}
 
   onAdd(): void {
     this.isvisible = true;
@@ -97,6 +108,9 @@ currentPage: number = 1;
       if (index > -1) {
         this.productionData.splice(index, 1);
         this.successMessage = 'Production deleted successfully!';
+    setTimeout(() => {
+      this.successMessage = '';
+    }, 3000);
         this.updatePagination();
       }
     }
