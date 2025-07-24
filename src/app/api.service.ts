@@ -183,16 +183,25 @@ export class ApiService {
       );
   }
 
+ 
   getFeedInventory(): Observable<any[]> {
+  return this.http.get<any[]>(`${this.baseUrl}/api/feedinventory`);
+}
+
+  addFeedInventory(feedData: any): Observable<any> {
     return this.http
-      .get<any[]>(`${this.baseUrl}/api/feedinventory/get`, {
+      .post(`${this.baseUrl}/api/feedinventory/add`, feedData, {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
       })
       .pipe(
-        tap((res) => console.log('✅ Feed inventory fetched:', res)),
+        tap((res) => console.log('✅ Feed inventory added:', res)),
         catchError((err) => this.handleError(err))
       );
   }
+  updateFeedInventory(payload: any): Observable<any> {
+  return this.http.put(`/api/feed-inventory/${payload.FeedID}`, payload);
+}
+
 
   updateFeed(id: number, feedData: any): Observable<any> {
     return this.http
@@ -205,16 +214,16 @@ export class ApiService {
       );
   }
 
-  deleteFeed(id: number): Observable<any> {
-    return this.http
-      .delete(`${this.baseUrl}/api/feedinventory/delete/${id}`, {
-        headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-      })
-      .pipe(
-        tap(() => console.log('✅ Feed deleted:', id)),
-        catchError((err) => this.handleError(err))
-      );
-  }
+ 
+  deleteFeed(feedID: number): Observable<any> {
+  return this.http.delete(`${this.baseUrl}/api/feedinventory/delete/${feedID}`, {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+  }).pipe(
+    tap(() => console.log(`🗑️ Feed deleted: ${feedID}`)),
+    catchError((err) => this.handleError(err))
+  );
+}
+
 
   submitContact(formData: any): Observable<any> {
     return this.http

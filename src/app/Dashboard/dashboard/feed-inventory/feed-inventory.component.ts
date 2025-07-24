@@ -8,6 +8,7 @@ import { ApiService } from '../../../api.service';
   styleUrls: ['./feed-inventory.component.scss']
 })
 export class FeedInventoryComponent implements OnInit {
+
   feedForm!: FormGroup;
   feedData: any[] = [];
   
@@ -69,6 +70,19 @@ export class FeedInventoryComponent implements OnInit {
     error: (err) => console.error('Error fetching feed types:', err)
   });
 }
+onAdd(): void {
+  this.feedForm.reset({
+    FeedID: 0,
+    FeedTypeID: null,
+    StockQuantity: 0,
+    Unit: null,
+    ExpiryDate: ''
+  });
+  this.isvisible = true;
+  this.isEditing = false;
+  this.selectedFeedID = null;
+}
+
 
 
 loadFeedInventory(): void {
@@ -82,15 +96,12 @@ loadFeedInventory(): void {
 }
 
 onSubmit(): void {
-  console.log('🧪 Submit button clicked');
-  
   if (this.feedForm.invalid) {
     this.feedForm.markAllAsTouched();
     return;
   }
 
   const formValue = this.feedForm.value;
-
   const payload = {
     FeedID: formValue.FeedID || 0,
     FeedTypeID: Number(formValue.FeedTypeID),
@@ -99,29 +110,49 @@ onSubmit(): void {
     ExpiryDate: new Date(formValue.ExpiryDate).toISOString(),
   };
 
-  console.log('📦 Payload:', payload);
-
-  this.api.addFeed(payload).subscribe({
-    next: (res) => {
-      console.log('✅ Feed added:', res);
-      this.successMessage = 'Feed added successfully!';
-      this.feedForm.patchValue({ FeedID: 0 });
-      this.isvisible = false;
-      this.loadFeedInventory();
-      this.autoDismiss();
-    },
-    error: (err) => {
-      console.error('❌ Error adding feed:', err);
-    }
-  });
+  if (this.isEditing) {
+    // Edit case
+    this.api.updateFeedInventory(payload).subscribe({
+      next: () => {
+        this.successMessage = 'Feed updated successfully!';
+        this.resetFormAndReload();
+      },
+      error: (err) => console.error('Error updating feed:', err)
+    });
+  } else {
+    // Add case
+    this.api.addFeedInventory(payload).subscribe({
+      next: () => {
+        this.successMessage = 'Feed added successfully!';
+        this.resetFormAndReload();
+      },
+      error: (err) => console.error('Error adding feed:', err)
+    });
+  }
 }
 
-  onAdd(): void {
-    this.feedForm.patchValue({ FeedID:0 });
-    this.isvisible = true;
-    this.isEditing = false;
-    this.selectedFeedID = null;
-  }
+resetFormAndReload(): void {
+  this.feedForm.patchValue({ FeedID: 0 });
+  this.isvisible = false;
+  this.loadFeedInventory();
+  this.autoDismiss();
+}
+
+
+
+onEdit(feed: any): void {
+  this.feedForm.patchValue({
+    FeedID: feed.FeedID,
+    FeedTypeID: feed.FeedTypeID,
+    StockQuantity: feed.StockQuantity,
+    Unit: feed.Unit,
+    ExpiryDate: feed.ExpiryDate.split('T')[0]
+  });
+  this.isvisible = true;
+  this.isEditing = true;
+  this.selectedFeedID = feed.FeedID;
+}
+
 
   oncancel(): void {
    
@@ -129,15 +160,19 @@ onSubmit(): void {
     this.isEditing = false;
     this.selectedFeedID = null;
   }
+  getFeedInventory() {
+  this.api.getFeedInventory().subscribe({
+    next: (res) => {
+      this.feedData = res;
+      this.filterData();
+    },
+    error: (err) => {
+      console.error('Error fetching inventory:', err);
+    }
+  });
+}
 
-  onEdit(feed: any): void {
-    this.feedForm.patchValue(feed);
-    this.isvisible = true;
-    this.isEditing = true;
-    this.selectedFeedID = feed.FeedID;
-  }
-
- onDelete(feed: any): void {
+onDelete(feed: any): void {
   const confirmDelete = confirm('Are you sure you want to delete this feed item?');
   if (confirmDelete) {
     this.api.deleteFeed(feed.FeedID).subscribe({
@@ -150,6 +185,7 @@ onSubmit(): void {
     });
   }
 }
+
 
 
   onSearchChange(): void {

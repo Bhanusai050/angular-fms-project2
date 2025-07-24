@@ -120,6 +120,7 @@
     <button class="btn btn-success" type="button" (click)="onAdd()">
       <i class="bi bi-plus-circle"></i> Add Feed
     </button>
+    
     </div>
     </div>
       <div class="row mb-3">
@@ -147,6 +148,7 @@
 
     <table class="table table-bordered mt-3">
       <thead class="table-white">
+     
         <tr>
           <th>Feed Type</th>
           <th>Quantity</th>
@@ -158,14 +160,15 @@
       <tbody>
         <tr *ngFor="let feed of paginatedFeedData">
           <td>{{ getFeedTypeName(feed.FeedTypeID) }}</td>
-          <td>{{ feed.Quantity }}</td>
-          <td>{{ feed.Units }}</td>
+          <td>{{ feed.StockQuantity }}</td>
+          <td>{{ feed.Unit }}</td>
           
           <td>{{ feed.ExpiryDate | date: 'yyyy-MM-dd' }}</td>
           <td class="text-center">
             <button class="btn btn-sm btn-success me-1" (click)="onEdit(feed)">
-              <i class="bi bi-pencil-square"></i>
+                <i class="bi bi-pencil-square"></i>
             </button>
+
             <button class="btn btn-sm btn-danger" (click)="onDelete(feed)">
               <i class="bi bi-trash"></i>
             </button>
