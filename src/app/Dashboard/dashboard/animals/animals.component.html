@@ -42,8 +42,8 @@
           <!-- <input type="text" class="form-control" id="BatchID" formControlName="BatchID" placeholder="Enter Batch"
             [class.is-invalid]="animalForm.get('BatchID')?.touched && animalForm.get('BatchID')?.invalid" /> -->
          <select class="form-select" id="BatchID" formControlName="BatchID" [class.is-invalid]="
-         animalForm.get('BatchID')?.touched &&
-         animalForm.get('BatchID')?.invalid">
+          animalForm.get('BatchID')?.touched &&
+          animalForm.get('BatchID')?.invalid">
             <option [ngValue]="null">-- Select Batch --</option>
             <option *ngFor="let batch of batches" [ngValue]="batch.BatchID">{{ batch.BatchName }}</option>
           </select>
@@ -271,12 +271,13 @@
           <td>{{ getAnimalStatusName(animal.AnimalStatusID) }}</td>
           <td>{{ animal.AnimalPurchasedDate | date: 'yyyy-MM-dd' }}</td>
           <td class="text-center">
-            <button class="btn btn-sm btn-success me-1" (click)="onEdit(animal)">
-              <i class="bi bi-pencil-square"></i>
+            <button class="btn btn-sm btn-success me-2" (click)="onEdit(animal)">
+              <i class="bi bi-pencil-square"></i>Edit
             </button>
-            <button class="btn btn-sm btn-danger" (click)="onDelete(animal)">
-              <i class="bi bi-trash"></i>
+            <button class="btn btn-sm btn-danger"type="button" (click)="onDelete(animal)">
+              <i class="bi bi-trash"></i>Delete
             </button>
+           
           </td>
         </tr>
         <tr *ngIf="paginatedAnimalsData.length == 0">
