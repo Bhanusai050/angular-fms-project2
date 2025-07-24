@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { FormBuilder,FormGroup,Validator } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Validators } from '@angular/forms';
+import{ HttpClient } from '@angular/common/http';
+import { ApiService } from '../../api.service';
+
 @Component({
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',
@@ -15,7 +18,12 @@ export class ResetPasswordComponent {
   showNew = false;
   showConfirm = false;
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(
+    private fb: FormBuilder, 
+    private router: Router,
+    private http: HttpClient,
+  ) 
+  {
     this.resetForm = this.fb.group({
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', Validators.required]
@@ -29,13 +37,19 @@ export class ResetPasswordComponent {
   }
 
   onSubmit() {
-    if (this.resetForm.invalid) return;
+  if (this.resetForm.invalid) return;
 
+  const payload = {
+    identifier: this.resetForm.get('identifier')?.value,
+    otp: this.resetForm.get('otp')?.value,
+    newPassword: this.resetForm.get('password')?.value
+  };
+
+  this.http.post('/api/verify-otp', payload).subscribe(() => {
     this.successMessage = '✅ Password reset successfully! Redirecting...';
-    setTimeout(() => {
-      this.router.navigate(['/login']);
-    }, 2000);
-  }
+    setTimeout(() => this.router.navigate(['/login']), 2000);
+  });
+}
 
   // 👉 New: functions to toggle visibility
   toggleNew() {

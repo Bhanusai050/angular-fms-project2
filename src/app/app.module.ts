@@ -18,6 +18,7 @@ import { ApiService } from './api.service';
 import { RouterModule } from '@angular/router';
 import { DashboardModule } from './Dashboard/dashboard/dashboard.module';
 import { CommonModule } from '@angular/common';
+import { provideHttpClient } from '@angular/common/http';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { CommonModule } from '@angular/common';
     HomepageComponent,
     ContactComponent,
     ResetPasswordComponent,
-    OnlyNumberDirective
+    OnlyNumberDirective,
+   
   ],
   imports: [
     BrowserModule,
@@ -42,7 +44,8 @@ import { CommonModule } from '@angular/common';
      CommonModule,
     RouterModule,
     CommonModule,
-    DashboardModule
+    DashboardModule,
+   
   ],
   providers: [ApiService],
   bootstrap: [AppComponent]
