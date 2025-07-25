@@ -50,7 +50,8 @@ animals: any[] = [];
   quantity: [null, [Validators.required, Validators.min(1)]],
   unit: [null, Validators.required]
 });
-
+    this.getProductions();
+    this.getAnimals();
 
     // Example data
     this.productionData = []; // Fetch this from API/service if needed
@@ -136,7 +137,7 @@ animals: any[] = [];
   }
 
   oncancel(): void {
-    this.productionForm.reset();
+    
     this.isvisible = false;
   }
 
@@ -182,21 +183,12 @@ animals: any[] = [];
 
 toggleForm(): void {
     this.isvisible = !this.isvisible;
-    this.resetForm();
+   
     this.isEditing = false;
   }
 
-  resetForm(): void {
-    this.productionForm.reset({
-      ProductionID: 0,
-      productionType: '',
-      AnimalID: '',
-      date: '',
-      quantity: null,
-      unit: ''
-    });
-  }
-}
+    }
+
 
 
 

@@ -30,7 +30,7 @@
           </select>
           <div class="invalid-feedback" *ngIf="productionForm.get('AnimalID')?.touched && productionForm.get('AnimalID')?.hasError('required')
          ">
-            Vendor is required.
+            Animal is required.
           </div>
           <div class="invalid-feedback"
             *ngIf="productionForm.get('AnimalID')?.touched && productionForm.get('AnimalID')?.hasError('pattern')">
@@ -129,7 +129,6 @@
     <table class="table table-bordered table-hover mt-3">
       <thead class="table-light">
         <tr>
-          <th>Production</th>
           <th>Type</th>
           <th>Animal</th>
           <th>Date</th>
@@ -140,7 +139,6 @@
       </thead>
       <tbody>
         <tr *ngFor="let p of paginatedProductionData">
-          <td>{{ p.production }}</td>
           <td>{{ p.productionType }}</td>
           <td>{{ p.animalType }}</td>
           <td>{{ p.date | date: 'yyyy-MM-dd' }}</td>
