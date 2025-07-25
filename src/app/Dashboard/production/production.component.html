@@ -2,20 +2,10 @@
   <div *ngIf="isvisible">
     <h3 class="mb-4"><span *ngIf="isEditing">Edit</span> <span *ngIf="!isEditing">Add</span> Production</h3>
     <form [formGroup]="productionForm" (ngSubmit)="onSubmit()" novalidate>
+
       <div class="row g-3">
 
-        <div class="col-md-4">
-          <label for="production" class="form-label">Production  <span class="text-danger">*</span></label>
-          <input type="text" class="form-control" id="production" formControlName="production"
-            [ngClass]="{'is-invalid': productionForm.get('production')?.invalid && productionForm.get('production')?.touched}" />
-          <div class="invalid-feedback" *ngIf="productionForm.get('production')?.touched && productionForm.get('production')?.hasError('required')">
-            Production ID is required.
-          </div>
-          <div class="invalid-feedback" *ngIf="productionForm.get('production')?.hasError('pattern')">
-            Only numbers allowed.
-          </div>
-        </div>
-
+        
         <div class="col-md-4">
           <label for="productionType" class="form-label">Production Type <span class="text-danger">*</span></label>
           <select class="form-select" id="productionType" formControlName="productionType"
@@ -27,19 +17,25 @@
           </select>
           <div class="invalid-feedback">Production type is required.</div>
         </div>
+           <div class="col-md-4">
+          <label for="AnimalID" class="form-label">Animal <span class="text-danger">*</span></label>
+         <select class="form-select" id="AnimalID" formControlName="AnimalID" [class.is-invalid]="
+         productionForm.get('AnimalID')?.touched &&
+         productionForm.get('AnimalID')?.invalid">
+            <option [ngValue]="null">-- Select Animal --</option>
+            <option *ngFor="let animal of animals" [ngValue]="animal.AnimalID">
+             {{ animal.AnimalName }}
+           </option>
 
-        <div class="col-md-4">
-          <label for="animalType" class="form-label">Animal Type <span class="text-danger">*</span></label>
-          <select class="form-select" id="animalType" formControlName="animalType"
-            [ngClass]="{'is-invalid': productionForm.get('animalType')?.touched && productionForm.get('animalType')?.invalid}">
-            <option [ngValue]="null">-- Select --</option>
-            <option value="Cow">Cow</option>
-            <option value="Sheep">Sheep</option>
-            <option value="Goat">Goat</option>
-            <option value="Hen">Hen</option>
-            <option value="Buffalo">Buffalo</option>
           </select>
-          <div class="invalid-feedback">Animal type is required.</div>
+          <div class="invalid-feedback" *ngIf="productionForm.get('AnimalID')?.touched && productionForm.get('AnimalID')?.hasError('required')
+         ">
+            Vendor is required.
+          </div>
+          <div class="invalid-feedback"
+            *ngIf="productionForm.get('AnimalID')?.touched && productionForm.get('AnimalID')?.hasError('pattern')">
+            Only characters Allowes.
+          </div>
         </div>
 
         <div class="col-md-4">
@@ -81,6 +77,8 @@
             <i class="bi bi-x-circle"></i> Cancel
           </button>
         </div>
+        
+
 
       </div>
     </form>
@@ -110,7 +108,7 @@
       placeholder="Search productions..."
       [(ngModel)]="searchTerm"
       name="searchTerm"
-      (input)="onSearch()"
+      (input)="onSearchChange()"
     />
   </div>
 

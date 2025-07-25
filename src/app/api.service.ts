@@ -472,4 +472,22 @@ export class ApiService {
         : 'Server error – please try again later.';
     return throwError(() => new Error(msg));
   }
+
+
+  getProductions(): Observable<any[]> {
+  return this.http.get<any[]>(`${this.baseUrl}/api/productions/get`);
 }
+
+addProduction(data: any): Observable<any> {
+  return this.http.post(`${this.baseUrl}/api/productions/add`, data);
+}
+
+updateProduction(data: any): Observable<any> {
+  return this.http.put(`${this.baseUrl}/api/productions/update`, data);
+}
+
+deleteProduction(id: number): Observable<any> {
+  return this.http.delete(`${this.baseUrl}/api/productions/delete/${id}`);
+}
+}
+

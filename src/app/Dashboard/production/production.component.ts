@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ApiService } from '../../api.service';
+
+
 
 @Component({
   selector: 'app-productions',
@@ -16,6 +19,7 @@ pageSizes: number[] = [5, 10, 20, 50];
 productions: any[] = [];
 filteredProductions: any[] = [];
 currentPage: number = 1;
+animals: any[] = [];
 
   
   // ✅ Paste this block inside the class
@@ -33,21 +37,25 @@ currentPage: number = 1;
   productionForm!: FormGroup;
   productionData: any[] = [];
 
-  constructor(private fb: FormBuilder) {}
+  
+  constructor(private fb: FormBuilder, private api: ApiService) {}
+
 
   ngOnInit(): void {
     this.productionForm = this.fb.group({
-      production: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
-      productionType: [null, Validators.required],
-      animalType: [null, Validators.required],
-      date: [null, Validators.required],
-      quantity: [null, [Validators.required, Validators.min(1)]],
-      unit: [null, Validators.required],
-    });
+  ProductionID: [0],
+  productionType: [null, Validators.required],
+  AnimalID: [null, Validators.required], // Changed from animalType
+  date: [null, Validators.required],
+  quantity: [null, [Validators.required, Validators.min(1)]],
+  unit: [null, Validators.required]
+});
+
 
     // Example data
     this.productionData = []; // Fetch this from API/service if needed
     this.updatePagination();
+    this.getAnimals();
   }
 
   onSearch(): void {
@@ -116,6 +124,17 @@ currentPage: number = 1;
     }
   }
 
+  getProductions(): void {
+    this.api.getProductions().subscribe({
+      next: (data) => {
+        this.productions = data;
+      },
+      error: (err) => {
+        console.error('Error fetching productions:', err);
+      }
+    });
+  }
+
   oncancel(): void {
     this.productionForm.reset();
     this.isvisible = false;
@@ -149,4 +168,35 @@ currentPage: number = 1;
     const end = start + this.pageSize;
     this.paginatedProductionData = filteredData.slice(start, end);
   }
+  getAnimals(): void {
+  this.api.getAnimals().subscribe({
+    next: (data: any[]) => {
+      this.animals = data;
+      console.log('Animals fetched:', this.animals);
+    },
+   error: (err: unknown) => {
+  console.error('Error fetching animals:', err);
+    }
+  });
 }
+
+toggleForm(): void {
+    this.isvisible = !this.isvisible;
+    this.resetForm();
+    this.isEditing = false;
+  }
+
+  resetForm(): void {
+    this.productionForm.reset({
+      ProductionID: 0,
+      productionType: '',
+      AnimalID: '',
+      date: '',
+      quantity: null,
+      unit: ''
+    });
+  }
+}
+
+
+
