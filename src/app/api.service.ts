@@ -453,6 +453,54 @@ export class ApiService {
       catchError((err) => this.handleError(err))
     );
 }
+// ✅ Add new production
+addProduction(productionData: any): Observable<any> {
+  return this.http
+    .post(`${this.baseUrl}/api/production`, productionData, {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    })
+    .pipe(
+      tap((res) => console.log('✅ Production added:', res)),
+      catchError((err) => this.handleError(err))
+    );
+}
+
+// ✅ Delete production
+deleteProduction(productionId: number): Observable<any> {
+  return this.http
+    .delete(`${this.baseUrl}/api/production/${productionId}`, {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    })
+    .pipe(
+      tap(() => console.log('✅ Production deleted:', productionId)),
+      catchError((err) => this.handleError(err))
+    );
+}
+
+// ✅ Update production
+updateProduction(productionId: number, productionData: any): Observable<any> {
+  return this.http
+    .put(`${this.baseUrl}/api/production/${productionId}`, productionData, {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    })
+    .pipe(
+      tap((res) => console.log('✅ Production updated:', res)),
+      catchError((err) => this.handleError(err))
+    );
+}
+
+// ✅ Get all productions
+getProductions(): Observable<any[]> {
+  return this.http
+    .get<any[]>(`${this.baseUrl}/api/production`, {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+    })
+    .pipe(
+      tap((res) => console.log('✅ Productions fetched:', res)),
+      catchError((err) => this.handleError(err))
+    );
+}
+
 
 
 
@@ -474,20 +522,4 @@ export class ApiService {
   }
 
 
-  getProductions(): Observable<any[]> {
-  return this.http.get<any[]>(`${this.baseUrl}/api/productions/get`);
 }
-
-addProduction(data: any): Observable<any> {
-  return this.http.post(`${this.baseUrl}/api/productions/add`, data);
-}
-
-updateProduction(data: any): Observable<any> {
-  return this.http.put(`${this.baseUrl}/api/productions/update`, data);
-}
-
-deleteProduction(id: number): Observable<any> {
-  return this.http.delete(`${this.baseUrl}/api/productions/delete/${id}`);
-}
-}
-

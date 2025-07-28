@@ -57,20 +57,9 @@
           </div>
         </div>
 
-        <div class="col-md-4">
-          <label for="unit" class="form-label">Unit <span class="text-danger">*</span></label>
-          <select class="form-select" id="unit" formControlName="unit"
-            [ngClass]="{'is-invalid': productionForm.get('unit')?.touched && productionForm.get('unit')?.invalid}">
-            <option [ngValue]="null">-- Select --</option>
-            <option value="Liters">Liters</option>
-            <option value="Kilograms">Kilograms</option>
-            <option value="Units">Units</option>
-          </select>
-          <div class="invalid-feedback">Unit is required.</div>
-        </div>
-
+        
         <div class="col-12 mt-3">
-          <button class="btn btn-success m-2" type="submit" [disabled]="productionForm.invalid">
+          <button class="btn btn-success m-2" type="submit">
             <i class="bi bi-check-circle"></i> Submit
           </button>
           <button class="btn btn-danger" type="button" (click)="oncancel()">
@@ -78,8 +67,6 @@
           </button>
         </div>
         
-
-
       </div>
     </form>
   </div>
@@ -133,17 +120,17 @@
           <th>Animal</th>
           <th>Date</th>
           <th>Quantity</th>
-          <th>Unit</th>
           <th class="text-center">Actions</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let p of paginatedProductionData">
-          <td>{{ p.productionType }}</td>
-          <td>{{ p.animalType }}</td>
-          <td>{{ p.date | date: 'yyyy-MM-dd' }}</td>
-          <td>{{ p.quantity }}</td>
-          <td>{{ p.unit }}</td>
+          <td>{{ p.ProductionID }}</td>
+          <td>{{ (p.AnimalID) }}</td>
+
+          <td>{{ p.Date | date: 'yyyy-MM-dd' }}</td>
+          <td>{{ p.Quantity }}</td>
+          
           <td class="text-center">
             <button class="btn btn-sm btn-success me-1" (click)="onEdit(p)">
               <i class="bi bi-pencil-square"></i>
